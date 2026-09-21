@@ -1,0 +1,1156 @@
+<title>استبيان اشتراطات الجوف</title>
+<meta name="description" content="نموذج أولي تفاعلي لاستبيان المشاركة الفنية في إعداد أدلة اشتراطات المباني والأنشطة بمنطقة الجوف">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<script>document.documentElement.setAttribute('dir','rtl');document.documentElement.setAttribute('lang','ar');</script>
+<style>
+:root{
+  --bg:#F3F5F6;
+  --surface:#FFFFFF;
+  --surface-2:#EAEFF1;
+  --text:#1B242B;
+  --text-muted:#5C6773;
+  --border:#DBE2E6;
+  --primary:#0E5E5C;
+  --primary-ink:#0A4645;
+  --primary-tint:#E3F1EF;
+  --accent:#C0801F;
+  --accent-tint:#FBF0DC;
+  --success:#2E7D46;
+  --success-tint:#E6F4EA;
+  --danger:#B3261E;
+  --danger-tint:#FBEAE9;
+  --shadow: 0 1px 2px rgba(20,30,35,.06), 0 8px 24px -12px rgba(20,30,35,.18);
+  --radius: 14px;
+  --font-head: "IBM Plex Sans Arabic", "Tajawal", sans-serif;
+  --font-body: "Tajawal", "IBM Plex Sans Arabic", sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#10171A;
+    --surface:#1A2327;
+    --surface-2:#212C30;
+    --text:#E9EEF0;
+    --text-muted:#9FB0B6;
+    --border:#2C393E;
+    --primary:#49BDB6;
+    --primary-ink:#CDEFEC;
+    --primary-tint:#173330;
+    --accent:#E3A94F;
+    --accent-tint:#332711;
+    --success:#63CB8B;
+    --success-tint:#132A1D;
+    --danger:#F2897F;
+    --danger-tint:#331714;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 28px -12px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#10171A;
+  --surface:#1A2327;
+  --surface-2:#212C30;
+  --text:#E9EEF0;
+  --text-muted:#9FB0B6;
+  --border:#2C393E;
+  --primary:#49BDB6;
+  --primary-ink:#CDEFEC;
+  --primary-tint:#173330;
+  --accent:#E3A94F;
+  --accent-tint:#332711;
+  --success:#63CB8B;
+  --success-tint:#132A1D;
+  --danger:#F2897F;
+  --danger-tint:#331714;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 28px -12px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  direction:rtl;
+  text-align:right;
+  padding-inline:16px;
+  padding-block:14px 90px;
+  font-size:15px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:var(--font-head);margin:0;text-wrap:balance}
+button{font-family:inherit}
+.wrap{max-width:720px;margin:0 auto}
+
+/* top bar */
+.topbar{
+  position:sticky; top:env(safe-area-inset-top,0px);
+  z-index:20; background:var(--bg);
+  padding-block:8px 12px; margin-inline:-16px; padding-inline:16px;
+  border-bottom:1px solid transparent;
+}
+.topbar.scrolled{border-bottom-color:var(--border)}
+.brand-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.brand{display:flex;align-items:center;gap:8px}
+.brand .mark{
+  width:30px;height:30px;border-radius:9px;flex:none;
+  background:linear-gradient(155deg,var(--primary),var(--primary-ink));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--font-head);font-weight:700;font-size:13px;
+}
+.brand .name{font-family:var(--font-head);font-weight:700;font-size:14.5px}
+.brand .name small{display:block;font-family:var(--font-body);font-weight:400;color:var(--text-muted);font-size:11.5px}
+.step-pill{
+  font-size:12px;color:var(--text-muted);background:var(--surface-2);
+  border:1px solid var(--border); padding:4px 10px;border-radius:999px;white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+}
+.progress-track{height:6px;border-radius:999px;background:var(--surface-2);overflow:hidden;border:1px solid var(--border)}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:999px;transition:width .35s ease}
+.section-label{margin-top:8px;font-size:12.5px;color:var(--primary-ink);font-weight:700}
+
+/* card */
+.card{
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  padding:20px 18px; box-shadow:var(--shadow); margin-top:14px;
+}
+.q-meta{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.q-code{
+  font-family:var(--font-head); font-size:11px; font-weight:700; color:var(--primary-ink);
+  background:var(--primary-tint); padding:3px 8px; border-radius:7px; letter-spacing:.02em;
+}
+.q-req{font-size:11px;color:var(--danger);background:var(--danger-tint);padding:3px 8px;border-radius:7px;font-weight:700}
+.q-opt-tag{font-size:11px;color:var(--text-muted);background:var(--surface-2);padding:3px 8px;border-radius:7px}
+.q-text{font-family:var(--font-head);font-weight:700;font-size:18px;line-height:1.5;margin-bottom:6px}
+.q-help{color:var(--text-muted);font-size:13.5px;margin-bottom:16px}
+.q-audience{font-size:12px;color:var(--accent);margin-bottom:14px;font-weight:600}
+
+.options{display:flex;flex-direction:column;gap:9px}
+.opt{
+  display:flex; align-items:flex-start; gap:10px; padding:12px 12px;
+  border:1.5px solid var(--border); border-radius:11px; cursor:pointer; background:var(--surface);
+  transition:border-color .15s, background .15s;
+}
+.opt:hover{border-color:var(--primary)}
+.opt.checked{border-color:var(--primary); background:var(--primary-tint)}
+.opt.disabled{opacity:.42; cursor:not-allowed}
+.opt input{margin-top:3px; accent-color:var(--primary); width:17px;height:17px;flex:none}
+.opt .lbl{flex:1; font-size:14.5px}
+.opt .rank-badge{
+  flex:none; width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;
+  font-weight:700;font-size:12.5px;display:flex;align-items:center;justify-content:center;
+  font-variant-numeric:tabular-nums;
+}
+.other-field{margin-top:8px; margin-right:27px}
+input[type=text], textarea{
+  width:100%; border:1.5px solid var(--border); border-radius:10px; padding:10px 12px;
+  font-family:inherit; font-size:14.5px; background:var(--surface); color:var(--text);
+}
+textarea{min-height:96px; resize:vertical}
+input[type=text]:focus, textarea:focus{outline:2px solid var(--primary); outline-offset:1px}
+.hint{font-size:12px;color:var(--text-muted); margin-top:8px}
+.limit-note{font-size:12px;color:var(--accent); margin-top:8px; font-weight:600}
+.err{
+  margin-top:12px; background:var(--danger-tint); color:var(--danger); border:1px solid var(--danger);
+  border-radius:10px; padding:9px 12px; font-size:13px; font-weight:600;
+}
+.empty-pool{color:var(--text-muted); font-size:13.5px; padding:10px 0}
+
+/* nav */
+.navbar{
+  position:fixed; inset-inline:0; bottom:0; z-index:30;
+  background:var(--surface); border-top:1px solid var(--border);
+  padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));
+  box-shadow:0 -6px 18px -12px rgba(0,0,0,.25);
+}
+.navbar .wrap{display:flex; gap:10px}
+.btn{
+  appearance:none; border:none; border-radius:11px; padding:12px 18px; font-size:14.5px; font-weight:700;
+  cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; justify-content:center; gap:6px;
+}
+.btn-primary{background:var(--primary); color:#fff; flex:1}
+.btn-primary:disabled{opacity:.5; cursor:not-allowed}
+.btn-ghost{background:var(--surface-2); color:var(--text); border:1px solid var(--border)}
+.btn-accent{background:var(--accent); color:#fff}
+.btn-block{width:100%}
+.btn-sm{padding:8px 12px;font-size:13px;border-radius:9px}
+
+/* intro / end / done */
+.hero{margin-top:10px}
+.hero-badge{
+  display:inline-block; font-size:12px; font-weight:700; color:var(--accent-ink,var(--accent));
+  background:var(--accent-tint); padding:5px 11px; border-radius:999px; margin-bottom:12px;
+}
+.hero h1{font-size:23px; margin-bottom:10px}
+.hero p{color:var(--text-muted); font-size:14.5px; margin:0 0 10px}
+.notice{
+  border:1.5px dashed var(--accent); background:var(--accent-tint); border-radius:12px;
+  padding:12px 14px; font-size:13px; color:var(--text); margin-top:16px;
+}
+.notice b{color:var(--accent-ink,var(--accent))}
+.info-grid{display:flex; flex-direction:column; gap:10px; margin-top:16px}
+.info-row{background:var(--surface-2); border:1px solid var(--border); border-radius:11px; padding:12px 13px}
+.info-row .k{font-weight:700; font-size:13px; margin-bottom:3px; color:var(--primary-ink)}
+.info-row .v{font-size:13.5px; color:var(--text-muted)}
+
+/* review */
+.rev-item{border-bottom:1px solid var(--border); padding:13px 0}
+.rev-item:last-child{border-bottom:none}
+.rev-head{display:flex; justify-content:space-between; align-items:flex-start; gap:10px}
+.rev-q{font-weight:700; font-size:13.5px; flex:1}
+.rev-ans{font-size:14px; color:var(--text-muted); margin-top:5px}
+.rev-ans.empty{color:var(--border); font-style:italic}
+.rev-edit{
+  flex:none; font-size:12px; color:var(--primary); background:none; border:none; cursor:pointer; font-weight:700;
+  padding:2px 4px;
+}
+.section-divider{
+  font-family:var(--font-head); font-weight:700; font-size:13px; color:var(--accent-ink,var(--accent));
+  margin:18px 0 6px; padding-bottom:4px; border-bottom:2px solid var(--accent-tint);
+}
+.section-divider:first-child{margin-top:0}
+
+/* done */
+.done-icon{
+  width:56px;height:56px;border-radius:50%;background:var(--success-tint);color:var(--success);
+  display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:14px;
+}
+.export-row{display:flex; gap:10px; margin-top:14px; flex-wrap:wrap}
+pre.data-preview{
+  background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:12px;
+  font-size:11.5px; overflow-x:auto; direction:ltr; text-align:left; max-height:260px; color:var(--text);
+  font-family:ui-monospace,Menlo,Consolas,monospace;
+}
+
+@media (min-width:560px){
+  body{padding-inline:24px}
+  .card{padding:26px 26px}
+  .q-text{font-size:19.5px}
+  .navbar .wrap{max-width:720px}
+}
+</style>
+
+<div class="wrap">
+  <div class="topbar" id="topbar">
+    <div class="brand-row">
+      <div class="brand">
+        <div class="mark">ج</div>
+        <div class="name">استبيان المشاركة الفنية<small>أدلة اشتراطات البناء بالجوف — الجزء المشترك</small></div>
+      </div>
+      <div class="step-pill" id="stepPill"></div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="section-label" id="sectionLabel"></div>
+  </div>
+
+  <div id="app"></div>
+</div>
+
+<div class="navbar" id="navbar" hidden>
+  <div class="wrap">
+    <button class="btn btn-ghost" id="btnPrev">السابق</button>
+    <button class="btn btn-primary" id="btnNext">التالي</button>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* رابط استقبال الإجابات الفعلية (Google Apps Script Web App) */
+var SUBMIT_URL = "https://script.google.com/macros/s/AKfycbyKNtX9qockfW7l9LJjiaC4Iek_Yshh9cdvzObRpgrYxisgdUS7GTYWtSH_yGbrgjH6/exec";
+
+/* ---------------------------------------------------------------------
+   مجموعات الخيارات المشتركة (مطابقة لورقة «خيارات الإجابة»)
+--------------------------------------------------------------------- */
+var OPT = {
+  clarity: [
+    {code:"5",label:"واضحة جداً"},
+    {code:"4",label:"واضحة"},
+    {code:"3",label:"واضحة جزئياً"},
+    {code:"2",label:"غير واضحة"},
+    {code:"1",label:"غير واضحة إطلاقاً"},
+    {code:"NA",label:"لا ينطبق على عملي"},
+    {code:"DK",label:"لا أعرف أو ليست لدي خبرة كافية"}
+  ],
+  impact: [
+    {code:"4",label:"تأثير كبير"},
+    {code:"3",label:"تأثير متوسط"},
+    {code:"2",label:"تأثير محدود"},
+    {code:"1",label:"لا تأثير"},
+    {code:"NA",label:"لا ينطبق على عملي"},
+    {code:"DK",label:"لا أعرف أو ليست لدي خبرة كافية"}
+  ],
+  yesNoUnsure: [
+    {code:"YES",label:"نعم"},
+    {code:"NO",label:"لا"},
+    {code:"UNSURE",label:"لست متأكداً"}
+  ],
+  roles: [
+    {code:"CONSULT",label:"مكتب استشاري أو مصمم"},
+    {code:"LICENSE",label:"مهندس أو مراجع تراخيص"},
+    {code:"INSPECT",label:"مراقب بناء أو مفتش"},
+    {code:"SECTOR",label:"ممثل جهة قطاعية"},
+    {code:"CONTRACT",label:"مقاول أو مشرف على التنفيذ"},
+    {code:"OPERATE",label:"مشغل منشأة أو مستثمر"},
+    {code:"ACADEMIC",label:"أكاديمي أو باحث أو خبير"},
+    {code:"OTHER",label:"دور آخر",other:true}
+  ],
+  guides: [
+    {code:"G01",label:"إنشاء المباني السكنية"},
+    {code:"G02",label:"قاعات المناسبات والمعارض"},
+    {code:"G03",label:"مراكز خدمات النقل"},
+    {code:"G04",label:"المباني الترفيهية"},
+    {code:"G05",label:"تصميم مواقف السيارات"},
+    {code:"G06",label:"المباني التعليمية الخاصة"},
+    {code:"G07",label:"المجمعات التجارية والأسواق الشعبية"},
+    {code:"G08",label:"المستودعات والمخازن"},
+    {code:"G09",label:"الورش المهنية"},
+    {code:"G10",label:"المباني الرياضية"},
+    {code:"G11",label:"البقالات والتموينات والأسواق المركزية"},
+    {code:"G12",label:"مغاسل الملابس والمفروشات"},
+    {code:"G13",label:"منافذ بيع المواد غير الغذائية"},
+    {code:"G14",label:"مرافق الضيافة السياحية"}
+  ],
+  stages: [
+    {code:"SITE",label:"دراسة الموقع"},
+    {code:"DESIGN",label:"التصميم"},
+    {code:"SUBMIT",label:"تقديم طلب الترخيص"},
+    {code:"REVIEW",label:"مراجعة طلب الترخيص"},
+    {code:"EXEC",label:"التنفيذ والإشراف"},
+    {code:"INSPECT",label:"التفتيش والرقابة"},
+    {code:"OCCUP",label:"إصدار شهادة الإشغال"},
+    {code:"OPERATE",label:"التشغيل"},
+    {code:"CHANGE",label:"التوسع أو تغيير الاستخدام"},
+    {code:"OTHER",label:"مرحلة أخرى",other:true}
+  ],
+  challenges: [
+    {code:"MULTIREF",label:"تعدد المرجعيات"},
+    {code:"INTERP",label:"اختلاف تفسير الأحكام"},
+    {code:"SCOPE",label:"عدم وضوح نطاق التطبيق"},
+    {code:"DOCS",label:"عدم وضوح المستندات المطلوبة"},
+    {code:"VERIFY",label:"صعوبة قياس بعض المتطلبات أو التحقق منها"},
+    {code:"PROPORTION",label:"عدم تناسب بعض المتطلبات مع طبيعة النشاط أو حجمه"},
+    {code:"EXISTING",label:"عدم وضوح معالجة المباني القائمة"},
+    {code:"CHANGEUSE",label:"صعوبة تطبيق المتطلبات عند تغيير الاستخدام"},
+    {code:"MIXED",label:"تداخل المتطلبات بين الأنشطة داخل المبنى الواحد"},
+    {code:"VISUAL",label:"عدم كفاية الرسومات والأمثلة"},
+    {code:"IDENTITY",label:"عدم وضوح متطلبات الهوية العمرانية"},
+    {code:"AUTH",label:"تداخل اختصاصات الجهات"},
+    {code:"OTHER",label:"تحد آخر",other:true}
+  ],
+  supportTools: [
+    {code:"CHECK",label:"قوائم تحقق"},
+    {code:"DRAW",label:"رسومات ومخططات توضيحية"},
+    {code:"GOODBAD",label:"حالات صحيحة وغير صحيحة"},
+    {code:"TABLES",label:"جداول تلخص المتطلبات"},
+    {code:"CASES",label:"أمثلة لمشروعات أو حالات تطبيقية"},
+    {code:"FAQ",label:"أسئلة وأجوبة متكررة"},
+    {code:"TEMPLATES",label:"نماذج موحدة للمستندات"},
+    {code:"LINKS",label:"إحالات إلكترونية مباشرة إلى المراجع"},
+    {code:"OTHER",label:"وسيلة أخرى",other:true}
+  ]
+};
+
+function consentOk(a){ return a.consent === "A"; }
+function clarityLowKeys(){
+  return ["clarity_governing_reference","clarity_current_version","clarity_activity_code_relation",
+    "clarity_sector_requirements","clarity_mandatory_guidance","clarity_cross_references","clarity_evidence_documents"];
+}
+
+/* ---------------------------------------------------------------------
+   مصفوفة الأسئلة (الجزء المشترك) — مطابقة لورقة «مصفوفة الأسئلة»
+--------------------------------------------------------------------- */
+var Q = [
+  {id:"A01", section:"الموافقة", varName:"consent", type:"single", required:true,
+   text:"هل توافق على المشاركة واستخدام الإجابات والمرفقات لأغراض التحليل الفني وإعداد الأدلة؟",
+   help:"تظهر بعد المقدمة وبيان استخدام البيانات.", audience:"جميع المشاركين",
+   options:[{code:"A",label:"أوافق وأرغب في المتابعة"},{code:"B",label:"لا أوافق"}],
+   showIf:function(){return true;}},
+
+  {id:"P01", section:"بيانات المشارك", varName:"organization_name", type:"short", required:true,
+   text:"اسم المكتب أو الجهة", help:"يكتب الاسم الرسمي أو الاسم المتداول للجهة.", audience:"جميع المشاركين",
+   showIf:consentOk},
+
+  {id:"P02", section:"بيانات المشارك", varName:"respondent_name", type:"short", required:false,
+   text:"اسم المشارك", help:"يمكن جعل الاسم اختيارياً إذا قرر المكتب ذلك.", audience:"جميع المشاركين",
+   showIf:consentOk},
+
+  {id:"P03", section:"بيانات المشارك", varName:"job_title", type:"short", required:true,
+   text:"المسمى الوظيفي", help:"المسمى الحالي داخل المكتب أو الجهة.", audience:"جميع المشاركين",
+   showIf:consentOk},
+
+  {id:"P04", section:"بيانات المشارك", varName:"primary_specialty", type:"single", required:true,
+   text:"ما تخصصك الرئيس؟", help:"اختر التخصص الأقرب إلى طبيعة عملك الحالية.", audience:"جميع المشاركين",
+   options:[
+     {code:"ARCH",label:"عمارة"},{code:"URBAN",label:"تخطيط عمراني"},{code:"CIVIL",label:"هندسة مدنية أو إنشائية"},
+     {code:"MECH",label:"هندسة ميكانيكية"},{code:"ELEC",label:"هندسة كهربائية"},
+     {code:"FIRE",label:"هندسة سلامة وحماية من الحريق"},{code:"TRANS",label:"هندسة نقل ومرور"},
+     {code:"LAND",label:"تنسيق مواقع"},{code:"FM",label:"إدارة وتشغيل منشآت"},{code:"OTHER",label:"تخصص آخر",other:true}
+   ], showIf:consentOk},
+
+  {id:"P05", section:"بيانات المشارك", varName:"experience_band", type:"single", required:true,
+   text:"كم تبلغ سنوات خبرتك المهنية؟", help:"يشمل مجموع الخبرة المهنية ذات الصلة.", audience:"جميع المشاركين",
+   options:[
+     {code:"LT5",label:"أقل من 5 سنوات"},{code:"5_9",label:"من 5 إلى أقل من 10 سنوات"},
+     {code:"10_14",label:"من 10 إلى أقل من 15 سنة"},{code:"15P",label:"15 سنة فأكثر"}
+   ], showIf:consentOk},
+
+  {id:"P06", section:"بيانات المشارك", varName:"work_locations", type:"multi", required:true, max:8,
+   text:"في أي مدن أو محافظات بمنطقة الجوف مارست عملاً ذا صلة؟", help:"يمكن اختيار أكثر من موقع.", audience:"جميع المشاركين",
+   options:[
+     {code:"SAKAKA",label:"سكاكا"},{code:"QURAYYAT",label:"القريات"},{code:"DUMAT",label:"دومة الجندل"},
+     {code:"TABARJAL",label:"طبرجل"},{code:"SAWIR",label:"صوير"},{code:"HADITHA",label:"الحديثة"},
+     {code:"MULTI",label:"أكثر من موقع داخل المنطقة"},{code:"OTHER",label:"موقع آخر",other:true}
+   ], showIf:consentOk},
+
+  {id:"P07", section:"بيانات المشارك", varName:"professional_contact", type:"short", required:false,
+   text:"بيانات التواصل المهنية", help:"بريد إلكتروني أو رقم هاتف مهني لاستخدامه عند الحاجة إلى إيضاح.", audience:"جميع المشاركين",
+   showIf:consentOk},
+
+  {id:"P08", section:"بيانات المشارك", varName:"response_capacity", type:"single", required:true,
+   text:"ما طبيعة الإجابة المقدمة؟", help:"حدد ما إذا كانت الإجابة تمثل خبرة شخصية أو رأياً منسقاً أو إفادة رسمية.", audience:"جميع المشاركين",
+   options:[{code:"PERSONAL",label:"إجابة شخصية تستند إلى الخبرة المهنية"},{code:"COORD",label:"إجابة منسقة باسم المكتب أو الجهة"},{code:"OFFICIAL",label:"إجابة رسمية معتمدة من الجهة"}],
+   showIf:consentOk},
+
+  {id:"R01", section:"الصفة المهنية", varName:"primary_role", type:"single", required:true,
+   text:"ما الدور الرئيس الذي تجيب من خلال خبرتك فيه؟", help:"يبنى على هذا الاختيار المسار التخصصي الذي سيظهر لاحقاً.", audience:"جميع المشاركين",
+   options:OPT.roles, showIf:consentOk},
+
+  {id:"R02", section:"الصفة المهنية", varName:"secondary_roles", type:"multi", required:false, max:6,
+   text:"هل تمارس أدواراً مهنية أخرى ذات صلة؟", help:"اختر كل ما ينطبق بخلاف الدور الرئيس.", audience:"جميع المشاركين",
+   options:OPT.roles, showIf:consentOk},
+
+  {id:"G01", section:"نطاق الخبرة", varName:"experienced_guides", type:"multi", required:true, max:14,
+   text:"ما الأدلة التي لديك خبرة مباشرة في مبانيها أو أنشطتها؟", help:"اختر الأدلة التي تعاملت فعلياً مع موضوعاتها.", audience:"جميع المشاركين",
+   options:OPT.guides, showIf:consentOk},
+
+  {id:"G02", section:"نطاق الخبرة", varName:"priority_guides", type:"multi", required:true, max:3,
+   text:"اختر حتى ثلاثة أدلة تراها أولوية للإجابة التفصيلية", help:"يجب أن تكون الأدلة المختارة ضمن إجابة السؤال السابق.", audience:"جميع المشاركين",
+   poolFrom:"experienced_guides", poolOptions:OPT.guides,
+   showIf:function(a){return (a.experienced_guides||[]).length>0;}},
+
+  {id:"G03", section:"نطاق الخبرة", varName:"experience_stages", type:"multi", required:true, max:9,
+   text:"في أي مراحل تعاملت مع المباني أو الأنشطة المختارة؟", help:"اختر جميع المراحل التي تدخل ضمن خبرتك.", audience:"جميع المشاركين",
+   options:OPT.stages, showIf:function(a){return (a.experienced_guides||[]).length>0;}},
+
+  {id:"RF01", section:"وضوح المرجعيات", varName:"clarity_governing_reference", type:"single", required:true,
+   text:"يسهل تحديد المرجع الحاكم للمبنى أو النشاط", help:"قيّم العبارة وفق خبرتك العملية.", audience:"جميع المشاركين",
+   options:OPT.clarity, showIf:consentOk},
+  {id:"RF02", section:"وضوح المرجعيات", varName:"clarity_current_version", type:"single", required:true,
+   text:"يسهل الوصول إلى النسخة النافذة من المرجع", help:"قيّم العبارة وفق خبرتك العملية.", audience:"جميع المشاركين",
+   options:OPT.clarity, showIf:consentOk},
+  {id:"RF03", section:"وضوح المرجعيات", varName:"clarity_activity_code_relation", type:"single", required:true,
+   text:"العلاقة بين اشتراطات النشاط وكود البناء السعودي واضحة", help:"قيّم العبارة وفق خبرتك العملية.", audience:"جميع المشاركين",
+   options:OPT.clarity, showIf:consentOk},
+  {id:"RF04", section:"وضوح المرجعيات", varName:"clarity_sector_requirements", type:"single", required:true,
+   text:"متطلبات الجهات القطاعية محددة ويمكن التعرف عليها مبكراً", help:"قيّم العبارة وفق خبرتك العملية.", audience:"جميع المشاركين",
+   options:OPT.clarity, showIf:consentOk},
+  {id:"RF05", section:"وضوح المرجعيات", varName:"clarity_mandatory_guidance", type:"single", required:true,
+   text:"يمكن التمييز بين المتطلبات الملزمة والتوجيهات الإرشادية", help:"قيّم العبارة وفق خبرتك العملية.", audience:"جميع المشاركين",
+   options:OPT.clarity, showIf:consentOk},
+  {id:"RF06", section:"وضوح المرجعيات", varName:"clarity_cross_references", type:"single", required:true,
+   text:"الإحالات بين المراجع واضحة ومحددة", help:"قيّم العبارة وفق خبرتك العملية.", audience:"جميع المشاركين",
+   options:OPT.clarity, showIf:consentOk},
+  {id:"RF07", section:"وضوح المرجعيات", varName:"clarity_evidence_documents", type:"single", required:true,
+   text:"الوثائق والمخططات المطلوبة لإثبات الامتثال واضحة", help:"قيّم العبارة وفق خبرتك العملية.", audience:"جميع المشاركين",
+   options:OPT.clarity, showIf:consentOk},
+
+  {id:"RF08", section:"وضوح المرجعيات", varName:"has_reference_difficulty", type:"single", required:false,
+   text:"هل يوجد مرجع يصعب تحديده أو الوصول إليه أو فهم علاقته بالمراجع الأخرى؟",
+   help:"يظهر عند انخفاض تقييم واحد أو أكثر من أسئلة وضوح المرجعيات، ويمكن إتاحته للجميع اختيارياً.", audience:"جميع المشاركين",
+   options:OPT.yesNoUnsure,
+   showIf:function(a){return clarityLowKeys().some(function(k){return ["1","2","3"].indexOf(a[k])>-1;});}},
+
+  {id:"RF09", section:"وضوح المرجعيات", varName:"reference_difficulty_detail", type:"short", required:true,
+   text:"اذكر المرجع أو الموضوع موضع الصعوبة", help:"يكفي وصف موجز، ويمكن ذكر المادة أو الإصدار إن أمكن.", audience:"من اختار نعم في RF08",
+   showIf:function(a){return a.has_reference_difficulty==="YES";}},
+
+  {id:"CH01", section:"تحديات التطبيق", varName:"application_challenges", type:"multi", required:true, max:5,
+   text:"ما أبرز أنواع التحديات التي لاحظتها عند تطبيق الاشتراطات؟", help:"اختر خمسة تحديات بحد أقصى.", audience:"جميع المشاركين",
+   options:OPT.challenges, showIf:consentOk},
+
+  {id:"CH02", section:"تحديات التطبيق", varName:"challenge_priorities", type:"rank", required:true, max:3,
+   text:"حدد التحديات الثلاثة الأعلى أولوية من بين اختياراتك", help:"رتب الأول والثاني والثالث.", audience:"جميع المشاركين",
+   poolFrom:"application_challenges", poolOptions:OPT.challenges,
+   showIf:function(a){return (a.application_challenges||[]).length>0;}},
+
+  {id:"CH03", section:"تحديات التطبيق", varName:"challenge_comment", type:"short", required:false,
+   text:"هل ترغب في توضيح أحد التحديات المختارة؟", help:"يمكن ذكر مثال موجز دون بيانات سرية.", audience:"جميع المشاركين",
+   showIf:function(a){return (a.application_challenges||[]).length>0;}},
+
+  {id:"LC01", section:"خصائص الجوف", varName:"impact_plot_characteristics", type:"single", required:true,
+   text:"ما مدى تأثير أحجام وأشكال قطع الأراضي في تطبيق الاشتراطات؟", help:"قيّم الأثر المباشر وفق خبرتك.", audience:"جميع المشاركين",
+   options:OPT.impact, showIf:consentOk},
+  {id:"LC02", section:"خصائص الجوف", varName:"impact_urban_fabric", type:"single", required:true,
+   text:"ما مدى تأثير طبيعة النسيج العمراني والمجاورات؟", help:"قيّم الأثر المباشر وفق خبرتك.", audience:"جميع المشاركين",
+   options:OPT.impact, showIf:consentOk},
+  {id:"LC03", section:"خصائص الجوف", varName:"impact_streets_access", type:"single", required:true,
+   text:"ما مدى تأثير عرض الشوارع وسهولة الدخول والخروج؟", help:"قيّم الأثر المباشر وفق خبرتك.", audience:"جميع المشاركين",
+   options:OPT.impact, showIf:consentOk},
+  {id:"LC04", section:"خصائص الجوف", varName:"impact_parking_mobility", type:"single", required:true,
+   text:"ما مدى تأثير استخدام المركبات والحاجة إلى المواقف؟", help:"قيّم الأثر المباشر وفق خبرتك.", audience:"جميع المشاركين",
+   options:OPT.impact, showIf:consentOk},
+  {id:"LC05", section:"خصائص الجوف", varName:"impact_climate", type:"single", required:true,
+   text:"ما مدى تأثير الظروف المناخية؟", help:"يشمل الحرارة والإشعاع والرياح والأمطار والغبار.", audience:"جميع المشاركين",
+   options:OPT.impact, showIf:consentOk},
+  {id:"LC06", section:"خصائص الجوف", varName:"impact_infrastructure", type:"single", required:true,
+   text:"ما مدى تأثير توافر البنية التحتية والخدمات؟", help:"قيّم الأثر المباشر وفق خبرتك.", audience:"جميع المشاركين",
+   options:OPT.impact, showIf:consentOk},
+  {id:"LC07", section:"خصائص الجوف", varName:"impact_heritage_sensitive", type:"single", required:true,
+   text:"ما مدى تأثير المواقع التراثية أو ذات الحساسية العمرانية؟", help:"قيّم الأثر المباشر وفق خبرتك.", audience:"جميع المشاركين",
+   options:OPT.impact, showIf:consentOk},
+  {id:"LC08", section:"خصائص الجوف", varName:"impact_subregional_variation", type:"single", required:true,
+   text:"ما مدى تأثير اختلاف الظروف بين مدن ومحافظات المنطقة؟", help:"قيّم الأثر المباشر وفق خبرتك.", audience:"جميع المشاركين",
+   options:OPT.impact, showIf:consentOk},
+  {id:"LC09", section:"خصائص الجوف", varName:"impact_economic_tourism", type:"single", required:true,
+   text:"ما مدى تأثير طبيعة الأنشطة الاقتصادية والسياحية؟", help:"قيّم الأثر المباشر وفق خبرتك.", audience:"جميع المشاركين",
+   options:OPT.impact, showIf:consentOk},
+  {id:"LC10", section:"خصائص الجوف", varName:"impact_existing_buildings", type:"single", required:true,
+   text:"ما مدى تأثير وجود مبان قائمة يصعب تعديلها؟", help:"يشمل التوسع وتغيير الاستخدام وتوفيق الأوضاع.", audience:"جميع المشاركين",
+   options:OPT.impact, showIf:consentOk},
+
+  {id:"LC11", section:"خصائص الجوف", varName:"has_other_local_factor", type:"single", required:false,
+   text:"هل توجد خاصية محلية أخرى لها أثر مباشر في اشتراطات أحد المباني أو الأنشطة؟", help:"اختر نعم إذا كانت لديك خاصية محددة لم ترد أعلاه.", audience:"جميع المشاركين",
+   options:OPT.yesNoUnsure, showIf:consentOk},
+
+  {id:"LC12", section:"خصائص الجوف", varName:"other_local_factor_detail", type:"long", required:true,
+   text:"حدد الخاصية المحلية وأثرها المباشر", help:"اذكر الخاصية والنشاط أو المبنى المتأثر والنتيجة التي تلاحظها.", audience:"من اختار نعم في LC11",
+   showIf:function(a){return a.has_other_local_factor==="YES";}},
+
+  {id:"DS01", section:"وسائل دعم التطبيق", varName:"support_tools", type:"multi", required:true, max:5,
+   text:"ما الوسائل الأكثر فائدة لتوضيح الأدلة ودعم تطبيقها؟", help:"اختر خمس وسائل بحد أقصى.", audience:"جميع المشاركين",
+   options:OPT.supportTools, showIf:consentOk},
+
+  {id:"DS02", section:"وسائل دعم التطبيق", varName:"support_tools_priorities", type:"rank", required:true, max:3,
+   text:"حدد الوسائل الثلاث الأعلى أولوية من بين اختياراتك", help:"رتب الأول والثاني والثالث.", audience:"جميع المشاركين",
+   poolFrom:"support_tools", poolOptions:OPT.supportTools,
+   showIf:function(a){return (a.support_tools||[]).length>0;}}
+];
+
+/* ---------------------------------------------------------------------
+   الحالة العامة
+--------------------------------------------------------------------- */
+var answers = {};        // varName -> value
+var otherTexts = {};     // varName -> نص التوضيح لخيار "أخرى"
+var screen = "intro";    // intro | question | declined | review | done
+var qIndex = 0;
+var lastError = "";
+var submitState = "idle";  // idle | sending | sent | failed
+var hasSubmitted = false;
+
+function submitResponse(obj){
+  if(hasSubmitted) return;
+  hasSubmitted = true;
+  if(!SUBMIT_URL){ submitState = "failed"; render(); return; }
+  submitState = "sending"; render();
+  fetch(SUBMIT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {"Content-Type": "text/plain;charset=utf-8"},
+    body: JSON.stringify(obj)
+  }).then(function(){
+    submitState = "sent"; render();
+  }).catch(function(){
+    submitState = "failed"; render();
+  });
+}
+
+function applicable(q){ return q.showIf(answers); }
+function applicableList(){ return Q.filter(applicable); }
+
+function firstApplicableFrom(i, dir){
+  while(i>=0 && i<Q.length){
+    if(applicable(Q[i])) return i;
+    i += dir;
+  }
+  return dir>0 ? Q.length : -1;
+}
+
+/* ---------------------------------------------------------------------
+   أدوات مساعدة للعرض
+--------------------------------------------------------------------- */
+function el(tag, attrs, children){
+  var e = document.createElement(tag);
+  attrs = attrs || {};
+  for(var k in attrs){
+    if(k==="class") e.className = attrs[k];
+    else if(k==="html") e.innerHTML = attrs[k];
+    else if(k.indexOf("on")===0) e.addEventListener(k.slice(2), attrs[k]);
+    else e.setAttribute(k, attrs[k]);
+  }
+  (children||[]).forEach(function(c){ if(c) e.appendChild(typeof c==="string"?document.createTextNode(c):c); });
+  return e;
+}
+
+function labelFor(list, code){
+  for(var i=0;i<list.length;i++) if(list[i].code===code) return list[i].label;
+  return code;
+}
+
+function optionListForQuestion(q){
+  if(q.poolFrom){
+    var picked = answers[q.poolFrom] || [];
+    return picked.map(function(code){
+      var lbl = labelFor(q.poolOptions, code);
+      if(code==="OTHER" && otherTexts[q.poolFrom]) lbl = "أخرى: " + otherTexts[q.poolFrom];
+      return {code:code, label:lbl};
+    });
+  }
+  return q.options || [];
+}
+
+/* ---------------------------------------------------------------------
+   العرض الرئيسي
+--------------------------------------------------------------------- */
+var app = document.getElementById("app");
+var navbar = document.getElementById("navbar");
+var btnPrev = document.getElementById("btnPrev");
+var btnNext = document.getElementById("btnNext");
+var progressFill = document.getElementById("progressFill");
+var stepPill = document.getElementById("stepPill");
+var sectionLabel = document.getElementById("sectionLabel");
+
+function updateTopbar(){
+  if(screen!=="question"){
+    stepPill.textContent = screen==="intro" ? "البداية" : screen==="review" ? "المراجعة" : screen==="done" ? "تم" : "";
+    sectionLabel.textContent = "";
+    var pct = screen==="intro" ? 0 : screen==="review" ? 96 : screen==="done" ? 100 : 0;
+    progressFill.style.width = pct + "%";
+    return;
+  }
+  var list = applicableList();
+  var pos = list.indexOf(Q[qIndex]) + 1;
+  var total = list.length;
+  stepPill.textContent = "سؤال " + pos + " من " + total;
+  sectionLabel.textContent = Q[qIndex].section;
+  progressFill.style.width = Math.max(4, Math.round((pos/total)*94)) + "%";
+}
+
+function render(){
+  app.innerHTML = "";
+  if(screen==="intro") renderIntro();
+  else if(screen==="question") renderQuestion();
+  else if(screen==="declined") renderDeclined();
+  else if(screen==="review") renderReview();
+  else if(screen==="done") renderDone();
+  updateTopbar();
+  updateNav();
+  window.scrollTo({top:0, behavior:"instant" in window ? "instant":"auto"});
+}
+
+function updateNav(){
+  if(screen==="declined" || screen==="done"){ navbar.hidden = true; return; }
+  navbar.hidden = false;
+  btnPrev.style.visibility = (screen==="intro") ? "hidden" : "visible";
+  if(screen==="review"){
+    btnNext.textContent = "إرسال (تجريبي)";
+  } else if(screen==="intro"){
+    btnNext.textContent = "ابدأ الاستبيان";
+  } else {
+    var list = applicableList();
+    var isLast = list.indexOf(Q[qIndex]) === list.length-1;
+    btnNext.textContent = isLast ? "مراجعة الإجابات" : "التالي";
+  }
+}
+
+/* ---------- شاشة البداية ---------- */
+function renderIntro(){
+  var box = el("div", {class:"card hero"});
+  box.appendChild(el("span", {class:"hero-badge"}, ["نموذج أولي — للمراجعة فقط"]));
+  box.appendChild(el("h1", {}, ["استبيان المشاركة الفنية في إعداد أدلة اشتراطات المباني والأنشطة بمنطقة الجوف"]));
+  box.appendChild(el("p", {}, ["الغرض: تثبيت نصوص الأسئلة وخيارات الإجابة وشروط الظهور ومخرجات التحليل قبل بناء الصفحة الإلكترونية النهائية."]));
+  box.appendChild(el("p", {}, ["النطاق الحالي: الموافقة على المشاركة، بيانات المشارك، الصفة المهنية، نطاق الخبرة، وضوح المرجعيات، تحديات التطبيق، خصائص الجوف، ووسائل دعم التطبيق — الجزء المشترك فقط، دون المسارات التخصصية."]));
+
+  var grid = el("div", {class:"info-grid"});
+  grid.appendChild(el("div", {class:"info-row"}, [
+    el("div", {class:"k"}, ["المدة المتوقعة"]), el("div", {class:"v"}, ["يفضّل ألا تتجاوز الإجابة عن الجزء المشترك عشر دقائق."])
+  ]));
+  grid.appendChild(el("div", {class:"info-row"}, [
+    el("div", {class:"k"}, ["عدد الأسئلة"]), el("div", {class:"v"}, [Q.length + " سؤالاً كحد أقصى، تظهر منها فقط الأسئلة المرتبطة بإجاباتك."])
+  ]));
+  box.appendChild(grid);
+
+  box.appendChild(el("div", {class:"notice"}, [
+    el("b", {}, ["ملاحظة: "]), "هذا نموذج تجريبي أولي لاختبار البنية والتفرعات، وليس جاهزاً للنشر أو لجمع إجابات فعلية. البيانات التي تُدخل هنا تبقى في متصفحك فقط ولا تُرسَل إلى أي خادم."
+  ]));
+
+  var devRow = el("div", {style:"margin-top:14px"});
+  devRow.appendChild(el("button", {class:"btn btn-ghost btn-sm", onclick:autofillDemo}, ["⚡ تعبئة تلقائية ببيانات تجريبية (لأغراض الاختبار)"]));
+  box.appendChild(devRow);
+
+  app.appendChild(box);
+}
+
+/* ---------- شاشة الرفض ---------- */
+function renderDeclined(){
+  var box = el("div", {class:"card hero"});
+  box.appendChild(el("div", {class:"done-icon", style:"background:var(--danger-tint);color:var(--danger)"}, ["✕"]));
+  box.appendChild(el("h1", {}, ["انتهى الاستبيان"]));
+  box.appendChild(el("p", {}, ["بناءً على اختيارك عدم الموافقة على المشاركة، تم إنهاء الاستبيان دون تسجيل أي بيانات أخرى. شكراً لاهتمامك."]));
+  box.appendChild(el("button", {class:"btn btn-ghost", onclick:function(){ resetAll(); }}, ["الرجوع إلى البداية"]));
+  app.appendChild(box);
+}
+
+/* ---------- شاشة السؤال ---------- */
+function renderQuestion(){
+  var q = Q[qIndex];
+  var box = el("div", {class:"card"});
+  var meta = el("div", {class:"q-meta"});
+  meta.appendChild(el("span", {class:"q-code"}, [q.id]));
+  if(q.required) meta.appendChild(el("span", {class:"q-req"}, ["إلزامي"]));
+  else meta.appendChild(el("span", {class:"q-opt-tag"}, ["اختياري"]));
+  if(q.type==="multi") meta.appendChild(el("span", {class:"q-opt-tag"}, ["اختيار متعدد — حتى " + q.max]));
+  if(q.type==="rank") meta.appendChild(el("span", {class:"q-opt-tag"}, ["ترتيب أولويات"]));
+  box.appendChild(meta);
+
+  box.appendChild(el("div", {class:"q-text"}, [q.text]));
+  if(q.help) box.appendChild(el("div", {class:"q-help"}, [q.help]));
+  if(q.audience && q.audience!=="جميع المشاركين") box.appendChild(el("div", {class:"q-audience"}, ["يظهر لـ: " + q.audience]));
+
+  var body = el("div");
+  if(q.type==="single") body.appendChild(renderSingle(q));
+  else if(q.type==="multi") body.appendChild(renderMulti(q));
+  else if(q.type==="short") body.appendChild(renderText(q,false));
+  else if(q.type==="long") body.appendChild(renderText(q,true));
+  else if(q.type==="rank") body.appendChild(renderRank(q));
+  box.appendChild(body);
+
+  if(lastError) box.appendChild(el("div", {class:"err"}, [lastError]));
+  app.appendChild(box);
+}
+
+function optionRow(opt, checked, onToggle, inputType, extraBadge){
+  var row = el("label", {class:"opt" + (checked?" checked":"")});
+  var input = el("input", {type:inputType, onchange:onToggle});
+  input.checked = checked;
+  row.appendChild(input);
+  row.appendChild(el("span", {class:"lbl"}, [opt.label]));
+  if(extraBadge) row.appendChild(extraBadge);
+  return row;
+}
+
+function renderSingle(q){
+  var wrap = el("div");
+  var opts = el("div", {class:"options"});
+  var current = answers[q.varName];
+  q.options.forEach(function(opt){
+    var checked = current===opt.code;
+    opts.appendChild(optionRow(opt, checked, function(){
+      answers[q.varName] = opt.code;
+      if(!opt.other) delete otherTexts[q.varName];
+      lastError=""; render();
+    }, "radio"));
+  });
+  wrap.appendChild(opts);
+  var chosen = q.options.filter(function(o){return o.code===current;})[0];
+  if(chosen && chosen.other) wrap.appendChild(otherField(q));
+  return wrap;
+}
+
+function renderMulti(q){
+  var wrap = el("div");
+  var opts = el("div", {class:"options"});
+  var list = optionListForQuestion(q);
+  var current = answers[q.varName] || [];
+  var atMax = current.length >= q.max;
+  list.forEach(function(opt){
+    var checked = current.indexOf(opt.code) > -1;
+    var disabled = !checked && atMax;
+    var row = optionRow(opt, checked, function(){
+      var arr = (answers[q.varName]||[]).slice();
+      var i = arr.indexOf(opt.code);
+      if(i>-1) arr.splice(i,1);
+      else { if(arr.length>=q.max) return; arr.push(opt.code); }
+      answers[q.varName] = arr;
+      if(opt.code==="OTHER" && i>-1) delete otherTexts[q.varName];
+      lastError=""; render();
+    }, "checkbox");
+    if(disabled) row.className += " disabled";
+    opts.appendChild(row);
+  });
+  if(list.length===0) opts.appendChild(el("div", {class:"empty-pool"}, ["لا توجد خيارات متاحة بعد — عد إلى السؤال المرتبط واختر إجابة أولاً."]));
+  wrap.appendChild(opts);
+  wrap.appendChild(el("div", {class:"limit-note"}, ["تم اختيار " + current.length + " من " + q.max + " كحد أقصى."]));
+  var hasOtherChecked = current.indexOf("OTHER")>-1 && !q.poolFrom;
+  if(hasOtherChecked) wrap.appendChild(otherField(q));
+  return wrap;
+}
+
+function renderText(q, isLong){
+  var wrap = el("div");
+  var val = answers[q.varName] || "";
+  var field = isLong ? el("textarea", {oninput:function(e){answers[q.varName]=e.target.value;}})
+                      : el("input", {type:"text", oninput:function(e){answers[q.varName]=e.target.value;}});
+  field.value = val;
+  wrap.appendChild(field);
+  return wrap;
+}
+
+function otherField(q){
+  var wrap = el("div", {class:"other-field"});
+  var input = el("input", {type:"text", placeholder:"يرجى التوضيح…", oninput:function(e){otherTexts[q.varName]=e.target.value;}});
+  input.value = otherTexts[q.varName] || "";
+  wrap.appendChild(input);
+  return wrap;
+}
+
+function renderRank(q){
+  var wrap = el("div");
+  var pool = optionListForQuestion(q);
+  if(pool.length===0){
+    wrap.appendChild(el("div", {class:"empty-pool"}, ["لا توجد اختيارات لترتيبها — عد إلى السؤال السابق واختر إجابة واحدة على الأقل."]));
+    return wrap;
+  }
+  var maxRank = Math.min(q.max, pool.length);
+  var current = answers[q.varName] || [];
+  var opts = el("div", {class:"options"});
+  pool.forEach(function(opt){
+    var rankPos = current.indexOf(opt.code);
+    var checked = rankPos>-1;
+    var badge = checked ? el("span", {class:"rank-badge"}, [String(rankPos+1)]) : null;
+    var row = optionRow(opt, checked, function(){
+      var arr = current.slice();
+      var i = arr.indexOf(opt.code);
+      if(i>-1) arr.splice(i,1);
+      else { if(arr.length>=maxRank) return; arr.push(opt.code); }
+      answers[q.varName] = arr;
+      lastError=""; render();
+    }, "checkbox", badge);
+    if(!checked && current.length>=maxRank) row.className += " disabled";
+    opts.appendChild(row);
+  });
+  wrap.appendChild(opts);
+  wrap.appendChild(el("div", {class:"limit-note"}, ["انقر على العناصر بترتيب الأولوية (١ فأعلى). المطلوب ترتيب " + maxRank + " من أصل " + pool.length + "."]));
+  return wrap;
+}
+
+/* ---------------------------------------------------------------------
+   التحقق
+--------------------------------------------------------------------- */
+function validateCurrent(){
+  var q = Q[qIndex];
+  var v = answers[q.varName];
+  if(q.type==="single"){
+    if(q.required && !v) return "هذا السؤال إلزامي، يرجى اختيار إجابة.";
+    var chosen = q.options && q.options.filter(function(o){return o.code===v;})[0];
+    if(chosen && chosen.other && !(otherTexts[q.varName]||"").trim()) return "يرجى كتابة توضيح مختصر عند اختيار «أخرى».";
+  } else if(q.type==="multi"){
+    var arr = v||[];
+    if(q.required && arr.length===0) return "هذا السؤال إلزامي، يرجى اختيار خيار واحد على الأقل.";
+    if(arr.length>q.max) return "لا يمكن اختيار أكثر من " + q.max + " خيارات.";
+    if(arr.indexOf("OTHER")>-1 && !q.poolFrom && !(otherTexts[q.varName]||"").trim()) return "يرجى كتابة توضيح مختصر عند اختيار «أخرى».";
+  } else if(q.type==="rank"){
+    var pool = optionListForQuestion(q);
+    var maxRank = Math.min(q.max, pool.length);
+    var arr2 = v||[];
+    if(q.required && pool.length>0 && arr2.length<maxRank) return "يرجى ترتيب " + maxRank + " عناصر على الأقل.";
+  } else if(q.type==="short" || q.type==="long"){
+    if(q.required && !(v||"").trim()) return "هذا السؤال إلزامي، يرجى كتابة إجابة.";
+  }
+  return "";
+}
+
+/* ---------------------------------------------------------------------
+   التنقّل
+--------------------------------------------------------------------- */
+btnNext.addEventListener("click", function(){
+  if(screen==="intro"){
+    qIndex = firstApplicableFrom(0,1);
+    screen="question"; lastError=""; render(); return;
+  }
+  if(screen==="question"){
+    var err = validateCurrent();
+    if(err){ lastError = err; render(); return; }
+    if(Q[qIndex].id==="A01" && answers.consent==="B"){ screen="declined"; lastError=""; render(); return; }
+    var next = firstApplicableFrom(qIndex+1,1);
+    if(next>=Q.length){ screen="review"; lastError=""; render(); }
+    else { qIndex = next; lastError=""; render(); }
+    return;
+  }
+  if(screen==="review"){
+    screen="done"; lastError=""; render();
+    submitResponse(buildExportObject());
+    return;
+  }
+});
+
+btnPrev.addEventListener("click", function(){
+  if(screen==="question"){
+    var prev = firstApplicableFrom(qIndex-1,-1);
+    if(prev<0){ screen="intro"; lastError=""; render(); }
+    else { qIndex=prev; lastError=""; render(); }
+    return;
+  }
+  if(screen==="review"){
+    qIndex = firstApplicableFrom(Q.length-1,-1);
+    screen="question"; lastError=""; render(); return;
+  }
+});
+
+function jumpToQuestion(id){
+  var i = Q.map(function(q){return q.id;}).indexOf(id);
+  if(i>-1){ qIndex=i; screen="question"; lastError=""; render(); }
+}
+
+function resetAll(){
+  answers = {}; otherTexts = {}; qIndex = 0; screen = "intro"; lastError="";
+  submitState = "idle"; hasSubmitted = false;
+  render();
+}
+
+/* ---------------------------------------------------------------------
+   شاشة المراجعة
+--------------------------------------------------------------------- */
+function formatAnswer(q){
+  var v = answers[q.varName];
+  if(q.type==="single"){
+    if(!v) return null;
+    var opt = (q.options||[]).filter(function(o){return o.code===v;})[0];
+    var lbl = opt?opt.label:v;
+    if(opt && opt.other && otherTexts[q.varName]) lbl += "（" + otherTexts[q.varName] + "）";
+    return lbl;
+  }
+  if(q.type==="multi"){
+    var arr = v||[];
+    if(arr.length===0) return null;
+    var list = optionListForQuestion(q);
+    var labels = arr.map(function(c){
+      var o = list.filter(function(x){return x.code===c;})[0];
+      var l = o?o.label:c;
+      if(c==="OTHER" && otherTexts[q.varName] && !q.poolFrom) l += "（" + otherTexts[q.varName] + "）";
+      return l;
+    });
+    return labels.join("، ");
+  }
+  if(q.type==="rank"){
+    var arr2 = v||[];
+    if(arr2.length===0) return null;
+    var pool = optionListForQuestion(q);
+    return arr2.map(function(c,idx){
+      var o = pool.filter(function(x){return x.code===c;})[0];
+      return (idx+1) + ") " + (o?o.label:c);
+    }).join("  ·  ");
+  }
+  if(q.type==="short" || q.type==="long"){
+    return (v||"").trim() || null;
+  }
+  return null;
+}
+
+function renderReview(){
+  var box = el("div", {class:"card"});
+  box.appendChild(el("h2", {}, ["مراجعة الإجابات"]));
+  box.appendChild(el("p", {class:"q-help", style:"margin-top:6px"}, ["تحقق من إجاباتك قبل الإرسال. يمكنك الضغط على «تعديل» للعودة إلى أي سؤال."]));
+
+  var currentSection = null;
+  applicableList().forEach(function(q){
+    if(q.section !== currentSection){
+      currentSection = q.section;
+      box.appendChild(el("div", {class:"section-divider"}, [currentSection]));
+    }
+    var ans = formatAnswer(q);
+    var item = el("div", {class:"rev-item"});
+    var head = el("div", {class:"rev-head"});
+    head.appendChild(el("div", {class:"rev-q"}, ["[" + q.id + "] " + q.text]));
+    head.appendChild(el("button", {class:"rev-edit", onclick:function(){ jumpToQuestion(q.id); }}, ["تعديل"]));
+    item.appendChild(head);
+    item.appendChild(el("div", {class:"rev-ans" + (ans?"":" empty")}, [ans || "بدون إجابة"]));
+    box.appendChild(item);
+  });
+
+  app.appendChild(box);
+}
+
+/* ---------------------------------------------------------------------
+   بناء بيانات التصدير
+--------------------------------------------------------------------- */
+/* أسئلة تحتوي خيار "أخرى" فعلي (غير معتمد على تجميع سؤال سابق) — تُعطى
+   عمود "_other_text" ثابتاً دائماً حتى يبقى رأس الجدول منتظماً لكل المشاركين. */
+var QUESTIONS_WITH_OTHER = Q.filter(function(q){
+  return !q.poolFrom && q.options && q.options.some(function(o){return o.other;});
+}).map(function(q){ return q.varName; });
+
+/* يبني كائن الإجابة الكامل: كل الأسئلة الأربعين بأسماء متغيرات ثابتة دائماً،
+   بقيمة فارغة لما لم يظهر لهذا المشارك (شرط ظهور لم يتحقق)، حتى يبقى
+   عدد وترتيب الأعمدة ثابتاً في كل صف يصل إلى الجدول. */
+function buildExportObject(){
+  var applicableIds = applicableList().map(function(q){return q.id;});
+  var out = {
+    submitted_at: new Date().toISOString(),
+    form: "survey_common_part_v0",
+    applicable_questions: applicableIds.join("|")
+  };
+  Q.forEach(function(q){
+    var shown = applicableIds.indexOf(q.id) > -1;
+    var val = shown && answers[q.varName] !== undefined ? answers[q.varName] : (q.type==="multi"||q.type==="rank" ? [] : "");
+    out[q.varName] = val;
+  });
+  QUESTIONS_WITH_OTHER.forEach(function(varName){
+    out[varName + "_other_text"] = otherTexts[varName] || "";
+  });
+  return out;
+}
+
+function toCsvValue(v){
+  if(Array.isArray(v)) v = v.join("|");
+  v = String(v===undefined||v===null?"":v);
+  if(/[",\n]/.test(v)) v = '"' + v.replace(/"/g,'""') + '"';
+  return v;
+}
+
+function buildCsv(obj){
+  var keys = Object.keys(obj).filter(function(k){return k!=="meta";});
+  var header = keys.join(",");
+  var row = keys.map(function(k){return toCsvValue(obj[k]);}).join(",");
+  return header + "\n" + row;
+}
+
+var downloadsCap = null;
+if(window.claude && typeof window.claude.use === "function"){
+  window.claude.use("downloads").then(function(d){ downloadsCap = d; }).catch(function(){ downloadsCap = null; });
+}
+
+function download(filename, content, mime, btn){
+  var blob = new Blob([content], {type:mime});
+  if(downloadsCap){
+    var prevLabel = btn ? btn.textContent : null;
+    if(btn){ btn.disabled = true; btn.textContent = "جارٍ التنزيل…"; }
+    downloadsCap.save({filename:filename, data:blob}).then(function(){
+      if(btn){ btn.disabled = false; btn.textContent = prevLabel; }
+    }).catch(function(err){
+      if(btn){ btn.disabled = false; btn.textContent = prevLabel; }
+      if(err && err.code==="declined") return;
+      showDownloadFallback(filename, content, mime);
+    });
+    return;
+  }
+  showDownloadFallback(filename, content, mime);
+}
+
+function showDownloadFallback(filename, content, mime){
+  var win = window.open("", "_blank");
+  if(win && win.document){
+    win.document.title = filename;
+    var pre = win.document.createElement("pre");
+    pre.style.whiteSpace = "pre-wrap";
+    pre.style.direction = "ltr";
+    pre.style.textAlign = "left";
+    pre.style.fontFamily = "ui-monospace,Menlo,Consolas,monospace";
+    pre.style.padding = "16px";
+    pre.textContent = content;
+    win.document.body.appendChild(pre);
+  } else {
+    alert("تعذّر حفظ الملف تلقائياً في هذه البيئة. المحتوى معروض في معاينة JSON أدناه لنسخه يدوياً.");
+  }
+}
+
+/* ---------------------------------------------------------------------
+   شاشة الانتهاء
+--------------------------------------------------------------------- */
+function renderDone(){
+  var box = el("div", {class:"card hero"});
+
+  if(submitState==="sending"){
+    box.appendChild(el("div", {class:"done-icon", style:"background:var(--surface-2);color:var(--text-muted)"}, ["…"]));
+    box.appendChild(el("h1", {}, ["جارٍ إرسال إجابتك…"]));
+    box.appendChild(el("p", {}, ["يرجى الانتظار لحظة."]));
+  } else if(submitState==="sent"){
+    box.appendChild(el("div", {class:"done-icon"}, ["✓"]));
+    box.appendChild(el("h1", {}, ["تم إرسال إجابتك"]));
+    box.appendChild(el("p", {}, ["شكراً لمشاركتك. تم إرسال إجاباتك لتُحفظ ضمن إجابات الاستبيان."]));
+    box.appendChild(el("div", {class:"notice"}, [
+      el("b", {}, ["ملاحظة: "]), "لأسباب تقنية في المتصفح لا يمكن للصفحة تأكيد استلام الخادم للبيانات بنسبة قطعية. يمكنك أيضاً تنزيل نسخة من إجابتك أدناه للاحتفاظ بها."
+    ]));
+  } else if(submitState==="failed"){
+    box.appendChild(el("div", {class:"done-icon", style:"background:var(--danger-tint);color:var(--danger)"}, ["!"]));
+    box.appendChild(el("h1", {}, ["تعذّر إرسال الإجابة تلقائياً"]));
+    box.appendChild(el("p", {}, ["حدث خطأ في الاتصال أثناء الإرسال. يرجى تنزيل نسخة من إجابتك أدناه وإرسالها يدوياً، أو إعادة المحاولة لاحقاً."]));
+  } else {
+    box.appendChild(el("div", {class:"done-icon"}, ["✓"]));
+    box.appendChild(el("h1", {}, ["تم إنهاء الاستبيان"]));
+  }
+
+  var obj = buildExportObject();
+  var exportRow = el("div", {class:"export-row"});
+  var jsonBtn = el("button", {class:"btn btn-accent"}, ["⭳ تصدير JSON"]);
+  jsonBtn.addEventListener("click", function(){
+    download("trial-response.json", JSON.stringify(obj, null, 2), "application/json", jsonBtn);
+  });
+  var csvBtn = el("button", {class:"btn btn-ghost"}, ["⭳ تصدير CSV"]);
+  csvBtn.addEventListener("click", function(){
+    download("trial-response.csv", buildCsv(obj), "text/csv;charset=utf-8", csvBtn);
+  });
+  exportRow.appendChild(jsonBtn);
+  exportRow.appendChild(csvBtn);
+  box.appendChild(exportRow);
+
+  box.appendChild(el("div", {style:"margin-top:16px"}, [el("div",{class:"q-help",style:"margin-bottom:6px"},["معاينة JSON:"])]));
+  box.appendChild(el("pre", {class:"data-preview"}, [JSON.stringify(obj, null, 2)]));
+
+  box.appendChild(el("button", {class:"btn btn-ghost btn-block", style:"margin-top:16px", onclick:resetAll}, ["بدء تعبئة جديدة"]));
+  app.appendChild(box);
+}
+
+/* ---------------------------------------------------------------------
+   تعبئة تجريبية سريعة (أداة اختبار)
+--------------------------------------------------------------------- */
+function autofillDemo(){
+  answers = {
+    consent:"A",
+    organization_name:"مكتب الواحة الاستشاري",
+    respondent_name:"م. سالم العتيبي",
+    job_title:"مدير القسم الفني",
+    primary_specialty:"ARCH",
+    experience_band:"10_14",
+    work_locations:["SAKAKA","DUMAT"],
+    professional_contact:"salem@example.com",
+    response_capacity:"PERSONAL",
+    primary_role:"CONSULT",
+    secondary_roles:["LICENSE"],
+    experienced_guides:["G01","G06","G07","G14"],
+    priority_guides:["G01","G07"],
+    experience_stages:["DESIGN","SUBMIT","REVIEW"],
+    clarity_governing_reference:"3",
+    clarity_current_version:"2",
+    clarity_activity_code_relation:"3",
+    clarity_sector_requirements:"4",
+    clarity_mandatory_guidance:"3",
+    clarity_cross_references:"2",
+    clarity_evidence_documents:"4",
+    has_reference_difficulty:"YES",
+    reference_difficulty_detail:"يصعب أحياناً تحديد النسخة النافذة من كود البناء السعودي عند التعارض مع اشتراط محلي.",
+    application_challenges:["MULTIREF","INTERP","DOCS","VISUAL"],
+    challenge_priorities:["MULTIREF","DOCS","INTERP"],
+    challenge_comment:"غالباً ما تتعدد جهات المراجعة لنفس النشاط التجاري.",
+    impact_plot_characteristics:"3",
+    impact_urban_fabric:"3",
+    impact_streets_access:"4",
+    impact_parking_mobility:"4",
+    impact_climate:"3",
+    impact_infrastructure:"2",
+    impact_heritage_sensitive:"2",
+    impact_subregional_variation:"3",
+    impact_economic_tourism:"2",
+    impact_existing_buildings:"3",
+    has_other_local_factor:"NO",
+    support_tools:["CHECK","DRAW","GOODBAD","TEMPLATES"],
+    support_tools_priorities:["DRAW","CHECK","GOODBAD"]
+  };
+  otherTexts = {};
+  qIndex = firstApplicableFrom(0,1);
+  screen = "question";
+  lastError = "";
+  render();
+}
+
+/* ---------------------------------------------------------------------
+   ضبط ظل الشريط العلوي عند التمرير + الإقلاع
+--------------------------------------------------------------------- */
+var topbar = document.getElementById("topbar");
+document.addEventListener("scroll", function(){
+  if(window.scrollY>4) topbar.classList.add("scrolled"); else topbar.classList.remove("scrolled");
+});
+
+render();
+})();
+</script>
