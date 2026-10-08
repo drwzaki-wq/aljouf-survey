@@ -92,10 +92,8 @@ button{font-family:inherit}
 .topbar.scrolled{border-bottom-color:var(--border)}
 .brand-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
 .brand{display:flex;align-items:center;gap:8px}
-.brand .mark{
-  width:30px;height:30px;border-radius:9px;flex:none;
-  background:linear-gradient(155deg,var(--primary),var(--primary-ink));
-  display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--font-head);font-weight:700;font-size:13px;
+.brand .mark-logo{
+  height:38px;width:auto;flex:none;object-fit:contain;
 }
 .brand .name{font-family:var(--font-head);font-weight:700;font-size:14.5px}
 .brand .name small{display:block;font-family:var(--font-body);font-weight:400;color:var(--text-muted);font-size:11.5px}
@@ -176,12 +174,13 @@ input[type=text]:focus, textarea:focus{outline:2px solid var(--primary); outline
 
 /* intro / end / done */
 .hero{margin-top:10px}
-.hero-badge{
-  display:inline-block; font-size:12px; font-weight:700; color:var(--accent-ink,var(--accent));
-  background:var(--accent-tint); padding:5px 11px; border-radius:999px; margin-bottom:12px;
-}
+.intro-logo{height:56px;width:auto;display:block;margin-bottom:14px}
 .hero h1{font-size:23px; margin-bottom:10px}
 .hero p{color:var(--text-muted); font-size:14.5px; margin:0 0 10px}
+.intro-motivate{
+  color:var(--text); font-size:14.5px; line-height:1.9; margin-top:6px;
+  border-inline-start:3px solid var(--primary); padding-inline-start:12px;
+}
 .notice{
   border:1.5px dashed var(--accent); background:var(--accent-tint); border-radius:12px;
   padding:12px 14px; font-size:13px; color:var(--text); margin-top:16px;
@@ -214,13 +213,6 @@ input[type=text]:focus, textarea:focus{outline:2px solid var(--primary); outline
   width:56px;height:56px;border-radius:50%;background:var(--success-tint);color:var(--success);
   display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:14px;
 }
-.export-row{display:flex; gap:10px; margin-top:14px; flex-wrap:wrap}
-pre.data-preview{
-  background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:12px;
-  font-size:11.5px; overflow-x:auto; direction:ltr; text-align:left; max-height:260px; color:var(--text);
-  font-family:ui-monospace,Menlo,Consolas,monospace;
-}
-
 @media (min-width:560px){
   body{padding-inline:24px}
   .card{padding:26px 26px}
@@ -233,7 +225,7 @@ pre.data-preview{
   <div class="topbar" id="topbar">
     <div class="brand-row">
       <div class="brand">
-        <div class="mark">ج</div>
+        <img class="mark-logo" id="topbarLogo" alt="شعار المكتب الاستراتيجي لتطوير منطقة الجوف" src="">
         <div class="name">استبيان المشاركة الفنية<small>أدلة اشتراطات البناء بالجوف — الجزء المشترك</small></div>
       </div>
       <div class="step-pill" id="stepPill"></div>
@@ -258,6 +250,9 @@ pre.data-preview{
 
 /* رابط استقبال الإجابات الفعلية (Google Apps Script Web App) */
 var SUBMIT_URL = "https://script.google.com/macros/s/AKfycbyKNtX9qockfW7l9LJjiaC4Iek_Yshh9cdvzObRpgrYxisgdUS7GTYWtSH_yGbrgjH6/exec";
+
+/* شعار المكتب الاستراتيجي لتطوير منطقة الجوف (WEBP بترميز base64) — يُستخدم في الشريط العلوي وشاشة البداية */
+var LOGO_B64 = "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";
 
 /* ---------------------------------------------------------------------
    مجموعات الخيارات المشتركة (مطابقة لورقة «خيارات الإجابة»)
@@ -309,7 +304,16 @@ var OPT = {
     {code:"G11",label:"البقالات والتموينات والأسواق المركزية"},
     {code:"G12",label:"مغاسل الملابس والمفروشات"},
     {code:"G13",label:"منافذ بيع المواد غير الغذائية"},
-    {code:"G14",label:"مرافق الضيافة السياحية"}
+    {code:"G14",label:"مرافق الضيافة السياحية"},
+    {code:"NONE",label:"لا ينطبق — ليست لدي خبرة مباشرة بأي منها",exclusive:true}
+  ],
+  referenceTypes: [
+    {code:"MUNI_GUIDE",label:"أدلة اشتراطات إنشاء المباني (وزارة الشؤون البلدية والقروية والإسكان)"},
+    {code:"SBC",label:"كود البناء السعودي"},
+    {code:"DESIGN_GUIDE",label:"الموجهات التصميمية الوطنية للهوية العمرانية (مثل الموجهات التصميمية للعمارة النجدية الشمالية)"},
+    {code:"REG_PLAN",label:"المخططات التنظيمية للمدن والمحافظات"},
+    {code:"SECTOR_REQ",label:"اشتراطات جهة قطاعية (الدفاع المدني، الكهرباء، الاتصالات، المياه...)"},
+    {code:"OTHER",label:"مرجع آخر",other:true}
   ],
   stages: [
     {code:"SITE",label:"دراسة الموقع"},
@@ -351,25 +355,27 @@ var OPT = {
   ]
 };
 
-function consentOk(a){ return a.consent === "A"; }
+function consentOk(){ return true; } /* الموافقة أُلغيت كسؤال منفصل؛ هذه الدالة تُبقي شرط الظهور صحيحاً دائماً */
+function hasGuideExperience(a){
+  return (a.experienced_guides||[]).some(function(c){return c!=="NONE";});
+}
 function clarityLowKeys(){
-  return ["clarity_governing_reference","clarity_current_version","clarity_activity_code_relation",
-    "clarity_sector_requirements","clarity_mandatory_guidance","clarity_cross_references","clarity_evidence_documents"];
+  return ["clarity_governing_reference","clarity_activity_code_relation",
+    "clarity_sector_requirements","clarity_mandatory_guidance","clarity_evidence_documents"];
 }
 
 /* ---------------------------------------------------------------------
    مصفوفة الأسئلة (الجزء المشترك) — مطابقة لورقة «مصفوفة الأسئلة»
 --------------------------------------------------------------------- */
 var Q = [
-  {id:"A01", section:"الموافقة", varName:"consent", type:"single", required:true,
-   text:"هل توافق على المشاركة واستخدام الإجابات والمرفقات لأغراض التحليل الفني وإعداد الأدلة؟",
-   help:"تظهر بعد المقدمة وبيان استخدام البيانات.", audience:"جميع المشاركين",
-   options:[{code:"A",label:"أوافق وأرغب في المتابعة"},{code:"B",label:"لا أوافق"}],
-   showIf:function(){return true;}},
-
-  {id:"P01", section:"بيانات المشارك", varName:"organization_name", type:"short", required:true,
-   text:"اسم المكتب أو الجهة", help:"يكتب الاسم الرسمي أو الاسم المتداول للجهة.", audience:"جميع المشاركين",
+  {id:"P01", section:"بيانات المشارك", varName:"participation_capacity", type:"single", required:true,
+   text:"هل تمثل مشاركتك شخصكم أم جهة خاصة أم جهة حكومية؟", help:"يحدد هذا السؤال الصفة التي تُقدَّم بها الإجابة.", audience:"جميع المشاركين",
+   options:[{code:"PERSONAL",label:"شخصية (بصفتي الفردية)"},{code:"PRIVATE",label:"جهة خاصة (مكتب استشاري أو منشأة خاصة)"},{code:"GOV",label:"جهة حكومية"}],
    showIf:consentOk},
+
+  {id:"P01B", section:"بيانات المشارك", varName:"organization_name", type:"short", required:true,
+   text:"اسم المكتب أو الجهة", help:"يكتب الاسم الرسمي أو الاسم المتداول للجهة.", audience:"من اختار جهة خاصة أو جهة حكومية في السؤال السابق",
+   showIf:function(a){return a.participation_capacity==="PRIVATE" || a.participation_capacity==="GOV";}},
 
   {id:"P02", section:"بيانات المشارك", varName:"respondent_name", type:"short", required:false,
    text:"اسم المشارك", help:"يمكن جعل الاسم اختيارياً إذا قرر المكتب ذلك.", audience:"جميع المشاركين",
@@ -407,11 +413,6 @@ var Q = [
    text:"بيانات التواصل المهنية", help:"بريد إلكتروني أو رقم هاتف مهني لاستخدامه عند الحاجة إلى إيضاح.", audience:"جميع المشاركين",
    showIf:consentOk},
 
-  {id:"P08", section:"بيانات المشارك", varName:"response_capacity", type:"single", required:true,
-   text:"ما طبيعة الإجابة المقدمة؟", help:"حدد ما إذا كانت الإجابة تمثل خبرة شخصية أو رأياً منسقاً أو إفادة رسمية.", audience:"جميع المشاركين",
-   options:[{code:"PERSONAL",label:"إجابة شخصية تستند إلى الخبرة المهنية"},{code:"COORD",label:"إجابة منسقة باسم المكتب أو الجهة"},{code:"OFFICIAL",label:"إجابة رسمية معتمدة من الجهة"}],
-   showIf:consentOk},
-
   {id:"R01", section:"الصفة المهنية", varName:"primary_role", type:"single", required:true,
    text:"ما الدور الرئيس الذي تجيب من خلال خبرتك فيه؟", help:"يبنى على هذا الاختيار المسار التخصصي الذي سيظهر لاحقاً.", audience:"جميع المشاركين",
    options:OPT.roles, showIf:consentOk},
@@ -427,32 +428,29 @@ var Q = [
   {id:"G02", section:"نطاق الخبرة", varName:"priority_guides", type:"multi", required:true, max:3,
    text:"اختر حتى ثلاثة أدلة تراها أولوية للإجابة التفصيلية", help:"يجب أن تكون الأدلة المختارة ضمن إجابة السؤال السابق.", audience:"جميع المشاركين",
    poolFrom:"experienced_guides", poolOptions:OPT.guides,
-   showIf:function(a){return (a.experienced_guides||[]).length>0;}},
+   showIf:hasGuideExperience},
 
   {id:"G03", section:"نطاق الخبرة", varName:"experience_stages", type:"multi", required:true, max:9,
    text:"في أي مراحل تعاملت مع المباني أو الأنشطة المختارة؟", help:"اختر جميع المراحل التي تدخل ضمن خبرتك.", audience:"جميع المشاركين",
-   options:OPT.stages, showIf:function(a){return (a.experienced_guides||[]).length>0;}},
+   options:OPT.stages, showIf:hasGuideExperience},
 
   {id:"RF01", section:"وضوح المرجعيات", varName:"clarity_governing_reference", type:"single", required:true,
-   text:"يسهل تحديد المرجع الحاكم للمبنى أو النشاط", help:"قيّم العبارة وفق خبرتك العملية.", audience:"جميع المشاركين",
-   options:OPT.clarity, showIf:consentOk},
-  {id:"RF02", section:"وضوح المرجعيات", varName:"clarity_current_version", type:"single", required:true,
-   text:"يسهل الوصول إلى النسخة النافذة من المرجع", help:"قيّم العبارة وفق خبرتك العملية.", audience:"جميع المشاركين",
+   text:"يسهل تحديد المرجع الحاكم للمبنى أو النشاط",
+   help:"المرجع الحاكم هو الدليل أو الكود الأساسي الذي يجب الرجوع إليه أولاً لمعرفة اشتراطات مبنى أو نشاط معيّن (مثل دليل تخصصي معتمد أو كود البناء السعودي).",
+   sectionNote:"يقصد بـ\"المرجع\" في هذا القسم: الوثائق والأكواد الوطنية القائمة فعلياً التي يُرجع إليها عند تصميم المبنى أو النشاط أو ترخيصه — مثل أدلة اشتراطات إنشاء المباني الصادرة عن وزارة الشؤون البلدية والقروية والإسكان، والموجهات التصميمية الوطنية للهوية العمرانية، وكود البناء السعودي، والمخططات التنظيمية للمدن والمحافظات، واشتراطات الجهات القطاعية (الدفاع المدني، الكهرباء، الاتصالات، المياه...). هذه الأسئلة لا تتعلق بأدلة الجوف الأربعة عشر التي يجري إعدادها حالياً ضمن هذا المشروع.",
+   audience:"جميع المشاركين",
    options:OPT.clarity, showIf:consentOk},
   {id:"RF03", section:"وضوح المرجعيات", varName:"clarity_activity_code_relation", type:"single", required:true,
    text:"العلاقة بين اشتراطات النشاط وكود البناء السعودي واضحة", help:"قيّم العبارة وفق خبرتك العملية.", audience:"جميع المشاركين",
    options:OPT.clarity, showIf:consentOk},
   {id:"RF04", section:"وضوح المرجعيات", varName:"clarity_sector_requirements", type:"single", required:true,
-   text:"متطلبات الجهات القطاعية محددة ويمكن التعرف عليها مبكراً", help:"قيّم العبارة وفق خبرتك العملية.", audience:"جميع المشاركين",
+   text:"متطلبات الجهات القطاعية (مثل: كهرباء، ...) محددة ويمكن التعرف عليها مبكراً", help:"قيّم العبارة وفق خبرتك العملية.", audience:"جميع المشاركين",
    options:OPT.clarity, showIf:consentOk},
   {id:"RF05", section:"وضوح المرجعيات", varName:"clarity_mandatory_guidance", type:"single", required:true,
-   text:"يمكن التمييز بين المتطلبات الملزمة والتوجيهات الإرشادية", help:"قيّم العبارة وفق خبرتك العملية.", audience:"جميع المشاركين",
-   options:OPT.clarity, showIf:consentOk},
-  {id:"RF06", section:"وضوح المرجعيات", varName:"clarity_cross_references", type:"single", required:true,
-   text:"الإحالات بين المراجع واضحة ومحددة", help:"قيّم العبارة وفق خبرتك العملية.", audience:"جميع المشاركين",
+   text:"يمكن التمييز بين المتطلبات الملزمة والتوجيهات الإرشادية", help:"المتطلب الملزم اشتراط لا بد من تحقيقه ويترتب على مخالفته رفض أو تعديل، أما التوجيه الإرشادي فتوصية لتحسين جودة التصميم دون إلزام قانوني بتطبيقه بحذافيره.", audience:"جميع المشاركين",
    options:OPT.clarity, showIf:consentOk},
   {id:"RF07", section:"وضوح المرجعيات", varName:"clarity_evidence_documents", type:"single", required:true,
-   text:"الوثائق والمخططات المطلوبة لإثبات الامتثال واضحة", help:"قيّم العبارة وفق خبرتك العملية.", audience:"جميع المشاركين",
+   text:"الوثائق والمخططات المطلوبة واضحة", help:"قيّم العبارة وفق خبرتك العملية.", audience:"جميع المشاركين",
    options:OPT.clarity, showIf:consentOk},
 
   {id:"RF08", section:"وضوح المرجعيات", varName:"has_reference_difficulty", type:"single", required:false,
@@ -461,8 +459,9 @@ var Q = [
    options:OPT.yesNoUnsure,
    showIf:function(a){return clarityLowKeys().some(function(k){return ["1","2","3"].indexOf(a[k])>-1;});}},
 
-  {id:"RF09", section:"وضوح المرجعيات", varName:"reference_difficulty_detail", type:"short", required:true,
-   text:"اذكر المرجع أو الموضوع موضع الصعوبة", help:"يكفي وصف موجز، ويمكن ذكر المادة أو الإصدار إن أمكن.", audience:"من اختار نعم في RF08",
+  {id:"RF09", section:"وضوح المرجعيات", varName:"reference_difficulty_detail", type:"multi", required:true, max:2,
+   text:"ما المرجع الذي يصعب تحديده أو الوصول إليه أو فهم علاقته بالمراجع الأخرى؟", help:"اختر مما يلي (حتى مرجعين)، أو اذكره في \"مرجع آخر\" إن لم يكن ضمن القائمة.", audience:"من اختار نعم في RF08",
+   options:OPT.referenceTypes,
    showIf:function(a){return a.has_reference_difficulty==="YES";}},
 
   {id:"CH01", section:"تحديات التطبيق", varName:"application_challenges", type:"multi", required:true, max:5,
@@ -528,15 +527,253 @@ var Q = [
 ];
 
 /* ---------------------------------------------------------------------
+   بيانات المسارات التخصصية (v0.2) — مطابقة لأوراق «خريطة المسارات»،
+   «مصفوفة المسارات»، «خيارات المسارات»
+--------------------------------------------------------------------- */
+var TRACK_OPT = {
+  "CN01": [{code:"LT5",label:"أقل من 5"}, {code:"5_14",label:"من 5 إلى 14"}, {code:"15_29",label:"من 15 إلى 29"}, {code:"30_49",label:"من 30 إلى 49"}, {code:"50P",label:"50 فأكثر"}, {code:"DK",label:"لا أستطيع التقدير"}],
+  "CN02": [{code:"SITE",label:"دراسة الموقع"}, {code:"DESIGN",label:"التصميم"}, {code:"SUBMIT",label:"تقديم طلب الترخيص"}, {code:"REVIEW",label:"مراجعة طلب الترخيص"}, {code:"COORD",label:"التنسيق مع جهة قطاعية"}, {code:"EXEC",label:"التنفيذ"}, {code:"INSPECT",label:"التفتيش"}, {code:"OCCUP",label:"شهادة الإشغال"}, {code:"OPERATE",label:"التشغيل"}, {code:"CHANGE",label:"التوسع أو تغيير الاستخدام"}, {code:"OTHER",label:"مرحلة أخرى",other:true}],
+  "CN03": [{code:"LATE",label:"ظهور متطلب في مرحلة متأخرة"}, {code:"INTERP",label:"اختلاف تفسير الاشتراط"}, {code:"SITE",label:"عدم ملاءمة الموقع أو استعمال الأرض"}, {code:"SECTOR",label:"متطلب جهة قطاعية"}, {code:"PARKING",label:"المواقف والحركة"}, {code:"FIRE",label:"متطلبات السلامة"}, {code:"IDENTITY",label:"موجهات الهوية"}, {code:"DOCS",label:"نقص البيانات أو المستندات"}, {code:"CLIENT",label:"تغيير متطلبات المالك أو النشاط"}, {code:"OTHER",label:"سبب آخر",other:true}],
+  "CN04": [{code:"5",label:"واضح جداً"}, {code:"4",label:"واضح"}, {code:"3",label:"واضح جزئياً"}, {code:"2",label:"غير واضح"}, {code:"1",label:"غير واضح إطلاقاً"}, {code:"NA",label:"لا ينطبق على عملي"}, {code:"DK",label:"لا أعرف أو ليست لدي خبرة كافية"}],
+  "CN05": [{code:"5",label:"واضح جداً"}, {code:"4",label:"واضح"}, {code:"3",label:"واضح جزئياً"}, {code:"2",label:"غير واضح"}, {code:"1",label:"غير واضح إطلاقاً"}, {code:"NA",label:"لا ينطبق على عملي"}, {code:"DK",label:"لا أعرف أو ليست لدي خبرة كافية"}],
+  "CN06": [{code:"1",label:"حدثت مرة واحدة"}, {code:"2",label:"نادراً"}, {code:"3",label:"أحياناً"}, {code:"4",label:"غالباً"}, {code:"5",label:"دائماً أو بصورة شبه دائمة"}, {code:"DK",label:"لا أستطيع التقدير"}],
+  "CN07": [{code:"LAND",label:"استعمال الأرض أو ملاءمة الموقع"}, {code:"SETBACK",label:"الارتدادات والارتفاعات"}, {code:"PARKING",label:"مواقف السيارات"}, {code:"ACCESS",label:"المداخل والمخارج والحركة"}, {code:"FIRE",label:"السلامة والحماية من الحريق"}, {code:"SERVICES",label:"الخدمات والمعدات الفنية"}, {code:"FACADE",label:"الواجهات والهوية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"EXISTING",label:"المباني القائمة أو تغيير الاستخدام"}, {code:"DOCS",label:"المستندات والإثباتات"}, {code:"SECTOR",label:"متطلبات الجهات القطاعية"}, {code:"OTHER",label:"موضوع آخر",other:true}],
+  "CN08": [{code:"LAND",label:"استعمال الأرض أو ملاءمة الموقع"}, {code:"SETBACK",label:"الارتدادات والارتفاعات"}, {code:"PARKING",label:"مواقف السيارات"}, {code:"ACCESS",label:"المداخل والمخارج والحركة"}, {code:"FIRE",label:"السلامة والحماية من الحريق"}, {code:"SERVICES",label:"الخدمات والمعدات الفنية"}, {code:"FACADE",label:"الواجهات والهوية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"EXISTING",label:"المباني القائمة أو تغيير الاستخدام"}, {code:"DOCS",label:"المستندات والإثباتات"}, {code:"SECTOR",label:"متطلبات الجهات القطاعية"}, {code:"OTHER",label:"موضوع آخر",other:true}],
+  "CN09": [{code:"5",label:"واضح جداً"}, {code:"4",label:"واضح"}, {code:"3",label:"واضح جزئياً"}, {code:"2",label:"غير واضح"}, {code:"1",label:"غير واضح إطلاقاً"}, {code:"NA",label:"لا ينطبق على عملي"}, {code:"DK",label:"لا أعرف أو ليست لدي خبرة كافية"}],
+  "CN10": [{code:"MASS",label:"الكتلة والنسب"}, {code:"OPENINGS",label:"الفتحات والإيقاع"}, {code:"SHADE",label:"التظليل والعمق"}, {code:"MATERIAL",label:"المواد والألوان"}, {code:"ENTRANCE",label:"المداخل"}, {code:"BOUNDARY",label:"الأسوار والحدود"}, {code:"COURT",label:"الأفنية والفراغات الخارجية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"SERVICES",label:"حجب الخدمات والمعدات"}, {code:"SIGNAGE",label:"اللوحات والعناصر الظاهرة"}, {code:"OTHER",label:"عنصر آخر",other:true}],
+  "CN11": [{code:"CHECK",label:"قائمة تحقق"}, {code:"DRAW",label:"رسومات توضيحية"}, {code:"GOODBAD",label:"حالات صحيحة وغير صحيحة"}, {code:"DETAIL",label:"تفاصيل نموذجية"}, {code:"TABLE",label:"جداول مختصرة"}, {code:"FAQ",label:"أسئلة متكررة"}, {code:"FORM",label:"نماذج موحدة"}, {code:"LINK",label:"روابط مباشرة للمراجع"}, {code:"OTHER",label:"أداة أخرى",other:true}],
+  "LN01": [{code:"LT5",label:"أقل من 5"}, {code:"5_14",label:"من 5 إلى 14"}, {code:"15_29",label:"من 15 إلى 29"}, {code:"30_49",label:"من 30 إلى 49"}, {code:"50P",label:"50 فأكثر"}, {code:"DK",label:"لا أستطيع التقدير"}],
+  "LN02": [{code:"LT20",label:"أقل من 20%"}, {code:"20_39",label:"من 20% إلى أقل من 40%"}, {code:"40_59",label:"من 40% إلى أقل من 60%"}, {code:"60_79",label:"من 60% إلى أقل من 80%"}, {code:"80P",label:"80% فأكثر"}, {code:"DK",label:"لا أستطيع التقدير"}],
+  "LN03": [{code:"DOCS",label:"نقص المستندات أو المخططات"}, {code:"SITE",label:"عدم وضوح الموقع أو الاستعمال"}, {code:"SETBACK",label:"مخالفات الارتدادات أو الارتفاعات"}, {code:"PARKING",label:"عدم استيفاء المواقف"}, {code:"ACCESS",label:"مشكلات المداخل والمخارج"}, {code:"FIRE",label:"متطلبات السلامة"}, {code:"SECTOR",label:"غياب موافقة قطاعية"}, {code:"INTERP",label:"اختلاف تفسير حكم"}, {code:"IDENTITY",label:"متطلبات الهوية"}, {code:"EXISTING",label:"المباني القائمة أو تغيير الاستخدام"}, {code:"OTHER",label:"سبب آخر",other:true}],
+  "LN04": [{code:"SITEPLAN",label:"مخطط الموقع"}, {code:"PLANS",label:"المخططات المعمارية"}, {code:"SECTIONS",label:"القطاعات والواجهات"}, {code:"AREA",label:"جداول المساحات والنسب"}, {code:"PARKING",label:"مخطط الحركة والمواقف"}, {code:"FIRE",label:"مخططات السلامة"}, {code:"MEP",label:"مخططات الخدمات"}, {code:"MATERIALS",label:"عينات أو جدول المواد والألوان"}, {code:"REPORT",label:"تقرير فني أو تبريري"}, {code:"APPROVAL",label:"موافقة جهة قطاعية"}, {code:"OTHER",label:"مستند آخر",other:true}],
+  "LN05": [{code:"1",label:"حدثت مرة واحدة"}, {code:"2",label:"نادراً"}, {code:"3",label:"أحياناً"}, {code:"4",label:"غالباً"}, {code:"5",label:"دائماً أو بصورة شبه دائمة"}, {code:"DK",label:"لا أستطيع التقدير"}],
+  "LN06": [{code:"LAND",label:"استعمال الأرض أو ملاءمة الموقع"}, {code:"SETBACK",label:"الارتدادات والارتفاعات"}, {code:"PARKING",label:"مواقف السيارات"}, {code:"ACCESS",label:"المداخل والمخارج والحركة"}, {code:"FIRE",label:"السلامة والحماية من الحريق"}, {code:"SERVICES",label:"الخدمات والمعدات الفنية"}, {code:"FACADE",label:"الواجهات والهوية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"EXISTING",label:"المباني القائمة أو تغيير الاستخدام"}, {code:"DOCS",label:"المستندات والإثباتات"}, {code:"SECTOR",label:"متطلبات الجهات القطاعية"}, {code:"OTHER",label:"موضوع آخر",other:true}],
+  "LN07": [{code:"5",label:"سهل جداً"}, {code:"4",label:"سهل"}, {code:"3",label:"متوسط السهولة"}, {code:"2",label:"صعب"}, {code:"1",label:"صعب جداً"}, {code:"NA",label:"لا ينطبق على عملي"}, {code:"DK",label:"لا أعرف أو ليست لدي خبرة كافية"}],
+  "LN08": [{code:"LAND",label:"استعمال الأرض أو ملاءمة الموقع"}, {code:"SETBACK",label:"الارتدادات والارتفاعات"}, {code:"PARKING",label:"مواقف السيارات"}, {code:"ACCESS",label:"المداخل والمخارج والحركة"}, {code:"FIRE",label:"السلامة والحماية من الحريق"}, {code:"SERVICES",label:"الخدمات والمعدات الفنية"}, {code:"FACADE",label:"الواجهات والهوية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"EXISTING",label:"المباني القائمة أو تغيير الاستخدام"}, {code:"DOCS",label:"المستندات والإثباتات"}, {code:"SECTOR",label:"متطلبات الجهات القطاعية"}, {code:"OTHER",label:"موضوع آخر",other:true}],
+  "LN09": [{code:"5",label:"واضح جداً"}, {code:"4",label:"واضح"}, {code:"3",label:"واضح جزئياً"}, {code:"2",label:"غير واضح"}, {code:"1",label:"غير واضح إطلاقاً"}, {code:"NA",label:"لا ينطبق على عملي"}, {code:"DK",label:"لا أعرف أو ليست لدي خبرة كافية"}],
+  "LN10": [{code:"5",label:"واضح جداً"}, {code:"4",label:"واضح"}, {code:"3",label:"واضح جزئياً"}, {code:"2",label:"غير واضح"}, {code:"1",label:"غير واضح إطلاقاً"}, {code:"NA",label:"لا ينطبق على عملي"}, {code:"DK",label:"لا أعرف أو ليست لدي خبرة كافية"}],
+  "LN11": [{code:"OWNER",label:"قائمة للمالك أو المستثمر"}, {code:"DESIGNER",label:"قائمة للمصمم"}, {code:"SUBMIT",label:"قائمة اكتمال التقديم"}, {code:"REVIEW",label:"قائمة مراجعة الترخيص"}, {code:"SECTOR",label:"قائمة التنسيق القطاعي"}, {code:"EXISTING",label:"قائمة المباني القائمة وتغيير الاستخدام"}, {code:"OTHER",label:"قائمة أخرى",other:true}],
+  "IN01": [{code:"LT5",label:"أقل من 5 سنوات"}, {code:"5_9",label:"من 5 إلى أقل من 10 سنوات"}, {code:"10_14",label:"من 10 إلى أقل من 15 سنة"}, {code:"15P",label:"15 سنة فأكثر"}],
+  "IN02": [{code:"LAND",label:"استعمال الأرض أو ملاءمة الموقع"}, {code:"SETBACK",label:"الارتدادات والارتفاعات"}, {code:"PARKING",label:"مواقف السيارات"}, {code:"ACCESS",label:"المداخل والمخارج والحركة"}, {code:"FIRE",label:"السلامة والحماية من الحريق"}, {code:"SERVICES",label:"الخدمات والمعدات الفنية"}, {code:"FACADE",label:"الواجهات والهوية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"EXISTING",label:"المباني القائمة أو تغيير الاستخدام"}, {code:"DOCS",label:"المستندات والإثباتات"}, {code:"SECTOR",label:"متطلبات الجهات القطاعية"}, {code:"OTHER",label:"موضوع آخر",other:true}],
+  "IN03": [{code:"SITE",label:"دراسة الموقع"}, {code:"DESIGN",label:"التصميم"}, {code:"SUBMIT",label:"تقديم طلب الترخيص"}, {code:"REVIEW",label:"مراجعة طلب الترخيص"}, {code:"COORD",label:"التنسيق مع جهة قطاعية"}, {code:"EXEC",label:"التنفيذ"}, {code:"INSPECT",label:"التفتيش"}, {code:"OCCUP",label:"شهادة الإشغال"}, {code:"OPERATE",label:"التشغيل"}, {code:"CHANGE",label:"التوسع أو تغيير الاستخدام"}, {code:"OTHER",label:"مرحلة أخرى",other:true}],
+  "IN04": [{code:"5",label:"سهل جداً"}, {code:"4",label:"سهل"}, {code:"3",label:"متوسط السهولة"}, {code:"2",label:"صعب"}, {code:"1",label:"صعب جداً"}, {code:"NA",label:"لا ينطبق على عملي"}, {code:"DK",label:"لا أعرف أو ليست لدي خبرة كافية"}],
+  "IN05": [{code:"LAND",label:"استعمال الأرض أو ملاءمة الموقع"}, {code:"SETBACK",label:"الارتدادات والارتفاعات"}, {code:"PARKING",label:"مواقف السيارات"}, {code:"ACCESS",label:"المداخل والمخارج والحركة"}, {code:"FIRE",label:"السلامة والحماية من الحريق"}, {code:"SERVICES",label:"الخدمات والمعدات الفنية"}, {code:"FACADE",label:"الواجهات والهوية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"EXISTING",label:"المباني القائمة أو تغيير الاستخدام"}, {code:"DOCS",label:"المستندات والإثباتات"}, {code:"SECTOR",label:"متطلبات الجهات القطاعية"}, {code:"OTHER",label:"موضوع آخر",other:true}],
+  "IN06": [{code:"SITEPLAN",label:"مخطط الموقع"}, {code:"PLANS",label:"المخططات المعمارية"}, {code:"SECTIONS",label:"القطاعات والواجهات"}, {code:"AREA",label:"جداول المساحات والنسب"}, {code:"PARKING",label:"مخطط الحركة والمواقف"}, {code:"FIRE",label:"مخططات السلامة"}, {code:"MEP",label:"مخططات الخدمات"}, {code:"MATERIALS",label:"عينات أو جدول المواد والألوان"}, {code:"REPORT",label:"تقرير فني أو تبريري"}, {code:"APPROVAL",label:"موافقة جهة قطاعية"}, {code:"OTHER",label:"مستند آخر",other:true}],
+  "IN07": [{code:"LAND",label:"استعمال الأرض أو ملاءمة الموقع"}, {code:"SETBACK",label:"الارتدادات والارتفاعات"}, {code:"PARKING",label:"مواقف السيارات"}, {code:"ACCESS",label:"المداخل والمخارج والحركة"}, {code:"FIRE",label:"السلامة والحماية من الحريق"}, {code:"SERVICES",label:"الخدمات والمعدات الفنية"}, {code:"FACADE",label:"الواجهات والهوية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"EXISTING",label:"المباني القائمة أو تغيير الاستخدام"}, {code:"DOCS",label:"المستندات والإثباتات"}, {code:"SECTOR",label:"متطلبات الجهات القطاعية"}, {code:"OTHER",label:"موضوع آخر",other:true}],
+  "IN08": [{code:"LAND",label:"استعمال الأرض أو ملاءمة الموقع"}, {code:"SETBACK",label:"الارتدادات والارتفاعات"}, {code:"PARKING",label:"مواقف السيارات"}, {code:"ACCESS",label:"المداخل والمخارج والحركة"}, {code:"FIRE",label:"السلامة والحماية من الحريق"}, {code:"SERVICES",label:"الخدمات والمعدات الفنية"}, {code:"FACADE",label:"الواجهات والهوية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"EXISTING",label:"المباني القائمة أو تغيير الاستخدام"}, {code:"DOCS",label:"المستندات والإثباتات"}, {code:"SECTOR",label:"متطلبات الجهات القطاعية"}, {code:"OTHER",label:"موضوع آخر",other:true}],
+  "IN09": [{code:"MASS",label:"الكتلة والنسب"}, {code:"OPENINGS",label:"الفتحات والإيقاع"}, {code:"SHADE",label:"التظليل والعمق"}, {code:"MATERIAL",label:"المواد والألوان"}, {code:"ENTRANCE",label:"المداخل"}, {code:"BOUNDARY",label:"الأسوار والحدود"}, {code:"COURT",label:"الأفنية والفراغات الخارجية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"SERVICES",label:"حجب الخدمات والمعدات"}, {code:"SIGNAGE",label:"اللوحات والعناصر الظاهرة"}, {code:"OTHER",label:"عنصر آخر",other:true}],
+  "IN10": [{code:"CHECK",label:"قائمة تحقق"}, {code:"DRAW",label:"رسومات توضيحية"}, {code:"GOODBAD",label:"حالات صحيحة وغير صحيحة"}, {code:"DETAIL",label:"تفاصيل نموذجية"}, {code:"TABLE",label:"جداول مختصرة"}, {code:"FAQ",label:"أسئلة متكررة"}, {code:"FORM",label:"نماذج موحدة"}, {code:"LINK",label:"روابط مباشرة للمراجع"}, {code:"OTHER",label:"أداة أخرى",other:true}],
+  "SC02": [{code:"G01",label:"إنشاء المباني السكنية"}, {code:"G02",label:"قاعات المناسبات والمعارض"}, {code:"G03",label:"مراكز خدمات النقل"}, {code:"G04",label:"المباني الترفيهية"}, {code:"G05",label:"تصميم مواقف السيارات"}, {code:"G06",label:"المباني التعليمية الخاصة"}, {code:"G07",label:"المجمعات التجارية والأسواق الشعبية"}, {code:"G08",label:"المستودعات والمخازن"}, {code:"G09",label:"الورش المهنية"}, {code:"G10",label:"المباني الرياضية"}, {code:"G11",label:"البقالات والتموينات والأسواق المركزية"}, {code:"G12",label:"مغاسل الملابس والمفروشات"}, {code:"G13",label:"منافذ بيع المواد غير الغذائية"}, {code:"G14",label:"مرافق الضيافة السياحية"}, {code:"OTHER",label:"نشاط آخر",other:true}],
+  "SC03": [{code:"SITE",label:"دراسة الموقع"}, {code:"DESIGN",label:"التصميم"}, {code:"SUBMIT",label:"تقديم طلب الترخيص"}, {code:"REVIEW",label:"مراجعة طلب الترخيص"}, {code:"COORD",label:"التنسيق مع جهة قطاعية"}, {code:"EXEC",label:"التنفيذ"}, {code:"INSPECT",label:"التفتيش"}, {code:"OCCUP",label:"شهادة الإشغال"}, {code:"OPERATE",label:"التشغيل"}, {code:"CHANGE",label:"التوسع أو تغيير الاستخدام"}, {code:"OTHER",label:"مرحلة أخرى",other:true}],
+  "SC04": [{code:"5",label:"واضح جداً"}, {code:"4",label:"واضح"}, {code:"3",label:"واضح جزئياً"}, {code:"2",label:"غير واضح"}, {code:"1",label:"غير واضح إطلاقاً"}, {code:"NA",label:"لا ينطبق على عملي"}, {code:"DK",label:"لا أعرف أو ليست لدي خبرة كافية"}],
+  "SC05": [{code:"SITEPLAN",label:"مخطط الموقع"}, {code:"PLANS",label:"المخططات المعمارية"}, {code:"SECTIONS",label:"القطاعات والواجهات"}, {code:"AREA",label:"جداول المساحات والنسب"}, {code:"PARKING",label:"مخطط الحركة والمواقف"}, {code:"FIRE",label:"مخططات السلامة"}, {code:"MEP",label:"مخططات الخدمات"}, {code:"MATERIALS",label:"عينات أو جدول المواد والألوان"}, {code:"REPORT",label:"تقرير فني أو تبريري"}, {code:"APPROVAL",label:"موافقة جهة قطاعية"}, {code:"OTHER",label:"مستند آخر",other:true}],
+  "SC06": [{code:"JURIS",label:"عدم وضوح الاختصاص"}, {code:"TIMING",label:"تأخر الإحالة أو التنسيق"}, {code:"DOCS",label:"نقص المستندات"}, {code:"DUP",label:"تكرار المتطلبات"}, {code:"CONFLICT",label:"اختلاف أو تعارض المتطلبات"}, {code:"VERSION",label:"استخدام إصدار غير نافذ"}, {code:"CONTACT",label:"عدم وضوح قناة التواصل"}, {code:"OTHER",label:"مشكلة أخرى",other:true}],
+  "SC07": [{code:"LAND",label:"استعمال الأرض أو ملاءمة الموقع"}, {code:"SETBACK",label:"الارتدادات والارتفاعات"}, {code:"PARKING",label:"مواقف السيارات"}, {code:"ACCESS",label:"المداخل والمخارج والحركة"}, {code:"FIRE",label:"السلامة والحماية من الحريق"}, {code:"SERVICES",label:"الخدمات والمعدات الفنية"}, {code:"FACADE",label:"الواجهات والهوية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"EXISTING",label:"المباني القائمة أو تغيير الاستخدام"}, {code:"DOCS",label:"المستندات والإثباتات"}, {code:"SECTOR",label:"متطلبات الجهات القطاعية"}, {code:"OTHER",label:"موضوع آخر",other:true}],
+  "SC08": [{code:"LAND",label:"استعمال الأرض أو ملاءمة الموقع"}, {code:"SETBACK",label:"الارتدادات والارتفاعات"}, {code:"PARKING",label:"مواقف السيارات"}, {code:"ACCESS",label:"المداخل والمخارج والحركة"}, {code:"FIRE",label:"السلامة والحماية من الحريق"}, {code:"SERVICES",label:"الخدمات والمعدات الفنية"}, {code:"FACADE",label:"الواجهات والهوية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"EXISTING",label:"المباني القائمة أو تغيير الاستخدام"}, {code:"DOCS",label:"المستندات والإثباتات"}, {code:"SECTOR",label:"متطلبات الجهات القطاعية"}, {code:"OTHER",label:"موضوع آخر",other:true}],
+  "CT01": [{code:"CONTRACTOR",label:"مقاول رئيس"}, {code:"SITEENG",label:"مهندس موقع"}, {code:"SUPERVISION",label:"استشاري إشراف"}, {code:"SPECIALIST",label:"مقاول متخصص"}, {code:"QAQC",label:"جودة وضبط تنفيذ"}, {code:"OTHER",label:"دور آخر",other:true}],
+  "CT02": [{code:"LAND",label:"استعمال الأرض أو ملاءمة الموقع"}, {code:"SETBACK",label:"الارتدادات والارتفاعات"}, {code:"PARKING",label:"مواقف السيارات"}, {code:"ACCESS",label:"المداخل والمخارج والحركة"}, {code:"FIRE",label:"السلامة والحماية من الحريق"}, {code:"SERVICES",label:"الخدمات والمعدات الفنية"}, {code:"FACADE",label:"الواجهات والهوية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"EXISTING",label:"المباني القائمة أو تغيير الاستخدام"}, {code:"DOCS",label:"المستندات والإثباتات"}, {code:"SECTOR",label:"متطلبات الجهات القطاعية"}, {code:"OTHER",label:"موضوع آخر",other:true}],
+  "CT03": [{code:"ARCHSTR",label:"معماري وإنشائي"}, {code:"ARCHMEP",label:"معماري وخدمات"}, {code:"MEPEACH",label:"بين تخصصات الخدمات"}, {code:"DRAWREAL",label:"المخططات والواقع القائم"}, {code:"MATERIAL",label:"المواد والتفاصيل"}, {code:"AUTH",label:"متطلبات الجهات"}, {code:"OTHER",label:"تعارض آخر",other:true}],
+  "CT04": [{code:"5",label:"سهل جداً"}, {code:"4",label:"سهل"}, {code:"3",label:"متوسط السهولة"}, {code:"2",label:"صعب"}, {code:"1",label:"صعب جداً"}, {code:"NA",label:"لا ينطبق على عملي"}, {code:"DK",label:"لا أعرف أو ليست لدي خبرة كافية"}],
+  "CT05": [{code:"MASS",label:"الكتلة والنسب"}, {code:"OPENINGS",label:"الفتحات والإيقاع"}, {code:"SHADE",label:"التظليل والعمق"}, {code:"MATERIAL",label:"المواد والألوان"}, {code:"ENTRANCE",label:"المداخل"}, {code:"BOUNDARY",label:"الأسوار والحدود"}, {code:"COURT",label:"الأفنية والفراغات الخارجية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"SERVICES",label:"حجب الخدمات والمعدات"}, {code:"SIGNAGE",label:"اللوحات والعناصر الظاهرة"}, {code:"OTHER",label:"عنصر آخر",other:true}],
+  "CT06": [{code:"FACADE",label:"مواد وتشطيبات الواجهات"}, {code:"COLORS",label:"الألوان"}, {code:"SHADE",label:"عناصر التظليل"}, {code:"LANDSCAPE",label:"مواد تنسيق الموقع"}, {code:"SIGNAGE",label:"اللوحات"}, {code:"EQUIPSCREEN",label:"وسائل حجب المعدات"}, {code:"OTHER",label:"عنصر آخر",other:true}],
+  "CT07": [{code:"LAND",label:"استعمال الأرض أو ملاءمة الموقع"}, {code:"SETBACK",label:"الارتدادات والارتفاعات"}, {code:"PARKING",label:"مواقف السيارات"}, {code:"ACCESS",label:"المداخل والمخارج والحركة"}, {code:"FIRE",label:"السلامة والحماية من الحريق"}, {code:"SERVICES",label:"الخدمات والمعدات الفنية"}, {code:"FACADE",label:"الواجهات والهوية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"EXISTING",label:"المباني القائمة أو تغيير الاستخدام"}, {code:"DOCS",label:"المستندات والإثباتات"}, {code:"SECTOR",label:"متطلبات الجهات القطاعية"}, {code:"OTHER",label:"موضوع آخر",other:true}],
+  "CT08": [{code:"UNCLEAR",label:"عدم وضوح التفاصيل"}, {code:"CHANGE",label:"تغيير أثناء التنفيذ"}, {code:"CONFLICT",label:"تعارض المخططات"}, {code:"MATERIAL",label:"عدم توافر المادة"}, {code:"COST",label:"اعتبارات التكلفة"}, {code:"SUPERVISION",label:"ضعف التنسيق أو الإشراف"}, {code:"SITE",label:"ظروف الموقع"}, {code:"OTHER",label:"سبب آخر",other:true}],
+  "CT09": [{code:"CHECK",label:"قائمة تحقق"}, {code:"DRAW",label:"رسومات توضيحية"}, {code:"GOODBAD",label:"حالات صحيحة وغير صحيحة"}, {code:"DETAIL",label:"تفاصيل نموذجية"}, {code:"TABLE",label:"جداول مختصرة"}, {code:"FAQ",label:"أسئلة متكررة"}, {code:"FORM",label:"نماذج موحدة"}, {code:"LINK",label:"روابط مباشرة للمراجع"}, {code:"OTHER",label:"أداة أخرى",other:true}],
+  "OP01": [{code:"G01",label:"إنشاء المباني السكنية"}, {code:"G02",label:"قاعات المناسبات والمعارض"}, {code:"G03",label:"مراكز خدمات النقل"}, {code:"G04",label:"المباني الترفيهية"}, {code:"G05",label:"تصميم مواقف السيارات"}, {code:"G06",label:"المباني التعليمية الخاصة"}, {code:"G07",label:"المجمعات التجارية والأسواق الشعبية"}, {code:"G08",label:"المستودعات والمخازن"}, {code:"G09",label:"الورش المهنية"}, {code:"G10",label:"المباني الرياضية"}, {code:"G11",label:"البقالات والتموينات والأسواق المركزية"}, {code:"G12",label:"مغاسل الملابس والمفروشات"}, {code:"G13",label:"منافذ بيع المواد غير الغذائية"}, {code:"G14",label:"مرافق الضيافة السياحية"}, {code:"OTHER",label:"نشاط آخر",other:true}],
+  "OP02": [{code:"5",label:"واضح جداً"}, {code:"4",label:"واضح"}, {code:"3",label:"واضح جزئياً"}, {code:"2",label:"غير واضح"}, {code:"1",label:"غير واضح إطلاقاً"}, {code:"NA",label:"لا ينطبق على عملي"}, {code:"DK",label:"لا أعرف أو ليست لدي خبرة كافية"}],
+  "OP03": [{code:"LAND",label:"استعمال الأرض أو ملاءمة الموقع"}, {code:"SETBACK",label:"الارتدادات والارتفاعات"}, {code:"PARKING",label:"مواقف السيارات"}, {code:"ACCESS",label:"المداخل والمخارج والحركة"}, {code:"FIRE",label:"السلامة والحماية من الحريق"}, {code:"SERVICES",label:"الخدمات والمعدات الفنية"}, {code:"FACADE",label:"الواجهات والهوية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"EXISTING",label:"المباني القائمة أو تغيير الاستخدام"}, {code:"DOCS",label:"المستندات والإثباتات"}, {code:"SECTOR",label:"متطلبات الجهات القطاعية"}, {code:"OTHER",label:"موضوع آخر",other:true}],
+  "OP04": [{code:"FLOW",label:"حركة المستخدمين"}, {code:"ACCESS",label:"الدخول والخروج"}, {code:"PARKING",label:"المواقف"}, {code:"LOADING",label:"التحميل والتنزيل"}, {code:"MAINT",label:"الصيانة والوصول للمعدات"}, {code:"STORAGE",label:"التخزين"}, {code:"WASTE",label:"النفايات والخدمات"}, {code:"FLEX",label:"مرونة التوسع والتعديل"}, {code:"CLIMATE",label:"الراحة المناخية"}, {code:"OTHER",label:"تحد آخر",other:true}],
+  "OP05": [{code:"5",label:"سهل جداً"}, {code:"4",label:"سهل"}, {code:"3",label:"متوسط السهولة"}, {code:"2",label:"صعب"}, {code:"1",label:"صعب جداً"}, {code:"NA",label:"لا ينطبق على عملي"}, {code:"DK",label:"لا أعرف أو ليست لدي خبرة كافية"}],
+  "OP06": [{code:"LAND",label:"استعمال الأرض أو ملاءمة الموقع"}, {code:"SETBACK",label:"الارتدادات والارتفاعات"}, {code:"PARKING",label:"مواقف السيارات"}, {code:"ACCESS",label:"المداخل والمخارج والحركة"}, {code:"FIRE",label:"السلامة والحماية من الحريق"}, {code:"SERVICES",label:"الخدمات والمعدات الفنية"}, {code:"FACADE",label:"الواجهات والهوية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"EXISTING",label:"المباني القائمة أو تغيير الاستخدام"}, {code:"DOCS",label:"المستندات والإثباتات"}, {code:"SECTOR",label:"متطلبات الجهات القطاعية"}, {code:"OTHER",label:"موضوع آخر",other:true}],
+  "OP07": [{code:"5",label:"واضح جداً"}, {code:"4",label:"واضح"}, {code:"3",label:"واضح جزئياً"}, {code:"2",label:"غير واضح"}, {code:"1",label:"غير واضح إطلاقاً"}, {code:"NA",label:"لا ينطبق على عملي"}, {code:"DK",label:"لا أعرف أو ليست لدي خبرة كافية"}],
+  "OP08": [{code:"LAND",label:"استعمال الأرض أو ملاءمة الموقع"}, {code:"SETBACK",label:"الارتدادات والارتفاعات"}, {code:"PARKING",label:"مواقف السيارات"}, {code:"ACCESS",label:"المداخل والمخارج والحركة"}, {code:"FIRE",label:"السلامة والحماية من الحريق"}, {code:"SERVICES",label:"الخدمات والمعدات الفنية"}, {code:"FACADE",label:"الواجهات والهوية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"EXISTING",label:"المباني القائمة أو تغيير الاستخدام"}, {code:"DOCS",label:"المستندات والإثباتات"}, {code:"SECTOR",label:"متطلبات الجهات القطاعية"}, {code:"OTHER",label:"موضوع آخر",other:true}],
+  "OP09": [{code:"CHECK",label:"قائمة تحقق"}, {code:"DRAW",label:"رسومات توضيحية"}, {code:"GOODBAD",label:"حالات صحيحة وغير صحيحة"}, {code:"DETAIL",label:"تفاصيل نموذجية"}, {code:"TABLE",label:"جداول مختصرة"}, {code:"FAQ",label:"أسئلة متكررة"}, {code:"FORM",label:"نماذج موحدة"}, {code:"LINK",label:"روابط مباشرة للمراجع"}, {code:"OTHER",label:"أداة أخرى",other:true}],
+  "AC01": [{code:"ARCH",label:"العمارة والتصميم"}, {code:"URBAN",label:"التخطيط والعمران"}, {code:"IDENTITY",label:"الهوية والتراث"}, {code:"CLIMATE",label:"المناخ والاستدامة"}, {code:"MOBILITY",label:"الحركة والنقل"}, {code:"REG",label:"التنظيمات والاشتراطات"}, {code:"ECON",label:"الاقتصاد والاستثمار"}, {code:"DATA",label:"البيانات والمؤشرات"}, {code:"OTHER",label:"مجال آخر",other:true}],
+  "AC02": [{code:"LAW",label:"أنظمة ولوائح"}, {code:"CODE",label:"أكواد ومعايير"}, {code:"PLAN",label:"مخططات مكانية"}, {code:"OBS",label:"بيانات المرصد الحضري"}, {code:"PERMIT",label:"بيانات التراخيص"}, {code:"FIELD",label:"رصد ميداني"}, {code:"ACADEMIC",label:"دراسات أكاديمية"}, {code:"HERITAGE",label:"توثيق تراثي"}, {code:"CLIMATE",label:"بيانات مناخية"}, {code:"OTHER",label:"مصدر آخر",other:true}],
+  "AC03": [{code:"PLOTS",label:"قطع الأراضي"}, {code:"FABRIC",label:"النسيج العمراني"}, {code:"MOBILITY",label:"الحركة والمواقف"}, {code:"CLIMATE",label:"المناخ"}, {code:"INFRA",label:"البنية التحتية"}, {code:"HERITAGE",label:"المواقع التراثية"}, {code:"ECON",label:"الأنشطة الاقتصادية"}, {code:"EXISTING",label:"المباني القائمة"}, {code:"VARIATION",label:"التفاوت بين المدن والمحافظات"}, {code:"OTHER",label:"خاصية أخرى",other:true}],
+  "AC04": [{code:"MASS",label:"الكتلة والنسب"}, {code:"OPENINGS",label:"الفتحات والإيقاع"}, {code:"SHADE",label:"التظليل والعمق"}, {code:"MATERIAL",label:"المواد والألوان"}, {code:"ENTRANCE",label:"المداخل"}, {code:"BOUNDARY",label:"الأسوار والحدود"}, {code:"COURT",label:"الأفنية والفراغات الخارجية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"SERVICES",label:"حجب الخدمات والمعدات"}, {code:"SIGNAGE",label:"اللوحات والعناصر الظاهرة"}, {code:"OTHER",label:"عنصر آخر",other:true}],
+  "AC05": [{code:"5",label:"قابلة للتحقق بدرجة كبيرة"}, {code:"4",label:"قابلة للتحقق"}, {code:"3",label:"قابلة جزئياً"}, {code:"2",label:"صعبة التحقق"}, {code:"1",label:"غير قابلة للتحقق بصورتها الحالية"}, {code:"DK",label:"لا أعرف"}],
+  "AC06": [{code:"CITY",label:"اختلاف المدن والمحافظات"}, {code:"HERITAGE",label:"النطاقات التراثية"}, {code:"CORE",label:"المراكز الحضرية والأطراف"}, {code:"STREET",label:"الشوارع الرئيسة والداخلية"}, {code:"NEWOLD",label:"الأحياء الجديدة والقائمة"}, {code:"SIZE",label:"حجم المبنى وتأثيره البصري"}, {code:"USE",label:"نوع الاستخدام"}, {code:"OTHER",label:"وجه آخر",other:true}],
+  "AC07": [{code:"TIME",label:"زمن مراجعة الطلبات"}, {code:"RETURN",label:"نسبة الطلبات المعادة"}, {code:"INTERP",label:"طلبات التفسير"}, {code:"CONFLICT",label:"التعارضات المسجلة"}, {code:"COMPLY",label:"مستوى الالتزام"}, {code:"IDENTITY",label:"الالتزام بعناصر الهوية"}, {code:"VIOL",label:"المخالفات المتكررة"}, {code:"SAT",label:"رضا المستخدمين"}, {code:"UPDATE",label:"الحاجة إلى التحديث"}, {code:"OTHER",label:"مؤشر آخر",other:true}],
+  "AC09": [{code:"SPATIAL",label:"بيانات مكانية وقطع الأراضي"}, {code:"PERMIT",label:"بيانات التراخيص"}, {code:"VIOL",label:"المخالفات والتفتيش"}, {code:"TRAFFIC",label:"الحركة والمواقف"}, {code:"CLIMATE",label:"المناخ والبيئة"}, {code:"ACTIVITY",label:"الأنشطة والاقتصاد"}, {code:"HERITAGE",label:"التراث والهوية"}, {code:"BUILDING",label:"المباني القائمة"}, {code:"OTHER",label:"فجوة أخرى",other:true}],
+  "ID01": [{code:"HIGH",label:"اطلاع متعمق"}, {code:"GOOD",label:"اطلاع جيد"}, {code:"LIMITED",label:"اطلاع محدود"}, {code:"NONE",label:"لم أطلع عليها"}, {code:"UNSURE",label:"لست متأكداً من المرجع المقصود"}],
+  "ID02": [{code:"5",label:"واضح جداً"}, {code:"4",label:"واضح"}, {code:"3",label:"واضح جزئياً"}, {code:"2",label:"غير واضح"}, {code:"1",label:"غير واضح إطلاقاً"}, {code:"NA",label:"لا ينطبق على عملي"}, {code:"DK",label:"لا أعرف أو ليست لدي خبرة كافية"}],
+  "ID03": [{code:"MASS",label:"الكتلة والنسب"}, {code:"OPENINGS",label:"الفتحات والإيقاع"}, {code:"SHADE",label:"التظليل والعمق"}, {code:"MATERIAL",label:"المواد والألوان"}, {code:"ENTRANCE",label:"المداخل"}, {code:"BOUNDARY",label:"الأسوار والحدود"}, {code:"COURT",label:"الأفنية والفراغات الخارجية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"SERVICES",label:"حجب الخدمات والمعدات"}, {code:"SIGNAGE",label:"اللوحات والعناصر الظاهرة"}, {code:"OTHER",label:"عنصر آخر",other:true}],
+  "ID04": [{code:"MASS",label:"الكتلة والنسب"}, {code:"OPENINGS",label:"الفتحات والإيقاع"}, {code:"SHADE",label:"التظليل والعمق"}, {code:"MATERIAL",label:"المواد والألوان"}, {code:"ENTRANCE",label:"المداخل"}, {code:"BOUNDARY",label:"الأسوار والحدود"}, {code:"COURT",label:"الأفنية والفراغات الخارجية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"SERVICES",label:"حجب الخدمات والمعدات"}, {code:"SIGNAGE",label:"اللوحات والعناصر الظاهرة"}, {code:"OTHER",label:"عنصر آخر",other:true}],
+  "ID05": [{code:"5",label:"واضح جداً"}, {code:"4",label:"واضح"}, {code:"3",label:"واضح جزئياً"}, {code:"2",label:"غير واضح"}, {code:"1",label:"غير واضح إطلاقاً"}, {code:"NA",label:"لا ينطبق على عملي"}, {code:"DK",label:"لا أعرف أو ليست لدي خبرة كافية"}],
+  "ID06": [{code:"5",label:"واضح جداً"}, {code:"4",label:"واضح"}, {code:"3",label:"واضح جزئياً"}, {code:"2",label:"غير واضح"}, {code:"1",label:"غير واضح إطلاقاً"}, {code:"NA",label:"لا ينطبق على عملي"}, {code:"DK",label:"لا أعرف أو ليست لدي خبرة كافية"}],
+  "ID07": [{code:"SITE",label:"مخطط الموقع"}, {code:"MASS",label:"مناظير الكتلة"}, {code:"FACADE",label:"الواجهات"}, {code:"SECTION",label:"القطاعات"}, {code:"MATERIAL",label:"لوحة المواد والألوان"}, {code:"LANDSCAPE",label:"مخطط تنسيق الموقع"}, {code:"SERVICES",label:"مخطط الخدمات والأسطح"}, {code:"OTHER",label:"مستند آخر",other:true}],
+  "ID08": [{code:"MASS",label:"الكتلة والنسب"}, {code:"OPENINGS",label:"الفتحات والإيقاع"}, {code:"SHADE",label:"التظليل والعمق"}, {code:"MATERIAL",label:"المواد والألوان"}, {code:"ENTRANCE",label:"المداخل"}, {code:"BOUNDARY",label:"الأسوار والحدود"}, {code:"COURT",label:"الأفنية والفراغات الخارجية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"SERVICES",label:"حجب الخدمات والمعدات"}, {code:"SIGNAGE",label:"اللوحات والعناصر الظاهرة"}, {code:"OTHER",label:"عنصر آخر",other:true}],
+  "ID09": [{code:"INTEGRATE",label:"دمجها في تكوين المبنى"}, {code:"SCREEN",label:"حجبها بعناصر متوافقة"}, {code:"RELOCATE",label:"نقلها بعيداً عن المجال العام"}, {code:"GROUP",label:"تجميعها وتنظيمها"}, {code:"DETAIL",label:"إظهارها بتفصيل منضبط عند تعذر الحجب"}, {code:"OTHER",label:"معالجة أخرى",other:true}],
+  "CS01": [{code:"YES",label:"نعم"}, {code:"NO",label:"لا"}, {code:"UNSURE",label:"لست متأكداً"}],
+  "CS02": [{code:"G01",label:"إنشاء المباني السكنية"}, {code:"G02",label:"قاعات المناسبات والمعارض"}, {code:"G03",label:"مراكز خدمات النقل"}, {code:"G04",label:"المباني الترفيهية"}, {code:"G05",label:"تصميم مواقف السيارات"}, {code:"G06",label:"المباني التعليمية الخاصة"}, {code:"G07",label:"المجمعات التجارية والأسواق الشعبية"}, {code:"G08",label:"المستودعات والمخازن"}, {code:"G09",label:"الورش المهنية"}, {code:"G10",label:"المباني الرياضية"}, {code:"G11",label:"البقالات والتموينات والأسواق المركزية"}, {code:"G12",label:"مغاسل الملابس والمفروشات"}, {code:"G13",label:"منافذ بيع المواد غير الغذائية"}, {code:"G14",label:"مرافق الضيافة السياحية"}, {code:"OTHER",label:"نشاط آخر",other:true}],
+  "CS03": [{code:"SAKAKA",label:"سكاكا"}, {code:"QURAYYAT",label:"القريات"}, {code:"DUMAT",label:"دومة الجندل"}, {code:"TABARJAL",label:"طبرجل"}, {code:"SAWIR",label:"صوير"}, {code:"HADITHA",label:"الحديثة"}, {code:"OTHER",label:"موقع آخر",other:true}],
+  "CS05": [{code:"SITE",label:"دراسة الموقع"}, {code:"DESIGN",label:"التصميم"}, {code:"SUBMIT",label:"تقديم طلب الترخيص"}, {code:"REVIEW",label:"مراجعة طلب الترخيص"}, {code:"COORD",label:"التنسيق مع جهة قطاعية"}, {code:"EXEC",label:"التنفيذ"}, {code:"INSPECT",label:"التفتيش"}, {code:"OCCUP",label:"شهادة الإشغال"}, {code:"OPERATE",label:"التشغيل"}, {code:"CHANGE",label:"التوسع أو تغيير الاستخدام"}, {code:"OTHER",label:"مرحلة أخرى",other:true}],
+  "CS06": [{code:"YES",label:"نعم"}, {code:"NO",label:"لا أعرف"}],
+  "CS08": [{code:"UNCLEAR",label:"غموض الحكم"}, {code:"MULTIREF",label:"تعدد المراجع"}, {code:"INTERP",label:"اختلاف التفسير"}, {code:"SCOPE",label:"عدم وضوح نطاق التطبيق"}, {code:"DOCS",label:"عدم وضوح المستندات"}, {code:"VERIFY",label:"صعوبة القياس أو التحقق"}, {code:"PROPORTION",label:"عدم التناسب مع طبيعة النشاط"}, {code:"CONFLICT",label:"تعارض فني أو قطاعي"}, {code:"VISUAL",label:"غياب رسم أو مثال"}, {code:"DECISION",label:"الحاجة إلى قرار من جهة مختصة"}, {code:"OTHER",label:"مشكلة أخرى",other:true}],
+  "CS09": [{code:"1",label:"حدثت مرة واحدة"}, {code:"2",label:"نادراً"}, {code:"3",label:"أحياناً"}, {code:"4",label:"غالباً"}, {code:"5",label:"دائماً أو بصورة شبه دائمة"}, {code:"DK",label:"لا أستطيع التقدير"}],
+  "CS10": [{code:"SAFETY",label:"السلامة"}, {code:"URBAN",label:"الجودة العمرانية"}, {code:"IDENTITY",label:"الهوية"}, {code:"TIME",label:"زمن الترخيص"}, {code:"COST",label:"التكلفة"}, {code:"EXEC",label:"التنفيذ"}, {code:"OPERATE",label:"التشغيل والصيانة"}, {code:"INVEST",label:"الاستثمار"}, {code:"COORD",label:"التنسيق بين الجهات"}, {code:"OTHER",label:"أثر آخر",other:true}],
+  "CS11": [{code:"1",label:"محدود"}, {code:"2",label:"متوسط"}, {code:"3",label:"مرتفع"}, {code:"4",label:"حرج"}, {code:"DK",label:"لا أستطيع التقدير"}],
+  "CS12": [{code:"CLARIFY",label:"توضيح الحكم"}, {code:"SCOPE",label:"تحديد نطاق التطبيق"}, {code:"REORG",label:"إعادة التنظيم"}, {code:"REF",label:"إحالة أدق إلى المرجع"}, {code:"DRAW",label:"إضافة رسم أو مثال"}, {code:"CHECK",label:"إضافة قائمة تحقق"}, {code:"LOCAL",label:"دراسة مواءمة محلية"}, {code:"SECTOR",label:"تنسيق أو قرار من جهة مختصة"}, {code:"REVIEW",label:"مراجعة المتطلب"}, {code:"OTHER",label:"معالجة أخرى",other:true}],
+  "CS14": [{code:"YES",label:"نعم، إضافة حالة أخرى"}, {code:"NO",label:"لا، الانتقال إلى الأسئلة الختامية"}],
+  "FN01": [{code:"UNCLEAR",label:"غموض الحكم"}, {code:"MULTIREF",label:"تعدد المراجع"}, {code:"INTERP",label:"اختلاف التفسير"}, {code:"SCOPE",label:"عدم وضوح نطاق التطبيق"}, {code:"DOCS",label:"عدم وضوح المستندات"}, {code:"VERIFY",label:"صعوبة القياس أو التحقق"}, {code:"PROPORTION",label:"عدم التناسب مع طبيعة النشاط"}, {code:"CONFLICT",label:"تعارض فني أو قطاعي"}, {code:"VISUAL",label:"غياب رسم أو مثال"}, {code:"DECISION",label:"الحاجة إلى قرار من جهة مختصة"}, {code:"OTHER",label:"مشكلة أخرى",other:true}],
+  "FN02": [{code:"LAND",label:"استعمال الأرض أو ملاءمة الموقع"}, {code:"SETBACK",label:"الارتدادات والارتفاعات"}, {code:"PARKING",label:"مواقف السيارات"}, {code:"ACCESS",label:"المداخل والمخارج والحركة"}, {code:"FIRE",label:"السلامة والحماية من الحريق"}, {code:"SERVICES",label:"الخدمات والمعدات الفنية"}, {code:"FACADE",label:"الواجهات والهوية"}, {code:"LANDSCAPE",label:"تنسيق الموقع"}, {code:"EXISTING",label:"المباني القائمة أو تغيير الاستخدام"}, {code:"DOCS",label:"المستندات والإثباتات"}, {code:"SECTOR",label:"متطلبات الجهات القطاعية"}, {code:"OTHER",label:"موضوع آخر",other:true}],
+  "FN03": [{code:"LAND",label:"استعمالات الأراضي"}, {code:"PLOTS",label:"قطع الأراضي"}, {code:"BUILDING",label:"المباني القائمة"}, {code:"PERMIT",label:"التراخيص"}, {code:"VIOL",label:"المخالفات"}, {code:"TRAFFIC",label:"الحركة والمواقف"}, {code:"INFRA",label:"البنية التحتية"}, {code:"CLIMATE",label:"المناخ"}, {code:"HERITAGE",label:"المواقع التراثية"}, {code:"ACTIVITY",label:"الأنشطة والاقتصاد"}, {code:"OTHER",label:"بيانات أخرى",other:true}],
+  "FN05": [{code:"YES",label:"نعم"}, {code:"NO",label:"لا"}, {code:"UNSURE",label:"لست متأكداً"}],
+  "FN06": [{code:"YES",label:"نعم، أوافق على التواصل"}, {code:"NO",label:"لا أرغب في التواصل"}],
+};
+
+var TRACK_Q = {
+  "CN01": {track:"المكاتب الاستشارية والمصممون", text:"كم يبلغ تقريباً عدد المشروعات ذات الصلة التي تعاملت معها خلال السنوات الثلاث الأخيرة؟", help:"يستخدم لتوصيف حجم الخبرة التطبيقية.", type:"single", required:true, max:1, allowOther:false, varName:"consult_project_volume", next:"CN02", condOn:null},
+  "CN02": {track:"المكاتب الاستشارية والمصممون", text:"في أي مرحلة تظهر المتطلبات غير المتوقعة غالباً؟", help:"اختر ثلاث مراحل بحد أقصى.", type:"multi", required:true, max:3, allowOther:true, varName:"consult_late_requirements_stage", next:"CN03", condOn:null},
+  "CN03": {track:"المكاتب الاستشارية والمصممون", text:"ما الأسباب الأكثر تكراراً لإعادة التصميم أو تعديله؟", help:"اختر خمسة أسباب بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"consult_redesign_causes", next:"CN04", condOn:null},
+  "CN04": {track:"المكاتب الاستشارية والمصممون", text:"ما مدى وضوح المعلومات المطلوب التحقق منها قبل بدء التصميم؟", help:"يشمل بيانات الموقع والاستعمال والموافقات المطلوبة.", type:"single", required:true, max:1, allowOther:false, varName:"consult_pre_design_clarity", next:"CN05", condOn:null},
+  "CN05": {track:"المكاتب الاستشارية والمصممون", text:"ما مدى وضوح المخططات والمستندات المطلوبة لتقديم طلب الترخيص؟", help:"قيّم وفق تجربتك.", type:"single", required:true, max:1, allowOther:false, varName:"consult_submission_docs_clarity", next:"CN06", condOn:null},
+  "CN06": {track:"المكاتب الاستشارية والمصممون", text:"كم يتكرر اختلاف الملاحظات على الموضوع نفسه بين المراجعين أو الجهات؟", help:"اختر معدل التكرار الأقرب إلى تجربتك.", type:"single", required:true, max:1, allowOther:false, varName:"consult_review_variation_frequency", next:"CN07", condOn:null},
+  "CN07": {track:"المكاتب الاستشارية والمصممون", text:"في أي موضوعات يظهر اختلاف الملاحظات غالباً؟", help:"اختر خمسة موضوعات بحد أقصى.", type:"multi", required:false, max:5, allowOther:true, varName:"consult_review_variation_topics", next:"CN08", condOn:{dep:"CN06",values:["3", "4", "5"]}},
+  "CN08": {track:"المكاتب الاستشارية والمصممون", text:"ما المتطلبات التي يصعب تحويلها إلى قرار تصميمي واضح؟", help:"اختر كل ما ينطبق بحد أقصى خمسة.", type:"multi", required:true, max:5, allowOther:true, varName:"consult_design_translation_difficulties", next:"CN09", condOn:null},
+  "CN09": {track:"المكاتب الاستشارية والمصممون", text:"ما مدى وضوح إمكانية تقديم حل بديل يحقق الغرض من المتطلب؟", help:"يقصد بالحل البديل تحقيق نتيجة الأداء المطلوبة بطريقة أخرى مقبولة.", type:"single", required:true, max:1, allowOther:false, varName:"consult_alternative_solution_clarity", next:"CN10", condOn:null},
+  "CN10": {track:"المكاتب الاستشارية والمصممون", text:"ما الجوانب الأكثر صعوبة عند تطبيق موجهات الهوية العمرانية؟", help:"اختر أربعة جوانب بحد أقصى.", type:"multi", required:false, max:4, allowOther:true, varName:"consult_identity_difficulties", next:"CN11", condOn:null},
+  "CN11": {track:"المكاتب الاستشارية والمصممون", text:"ما أدوات الدعم الأكثر فائدة للمصمم؟", help:"اختر ثلاث أدوات بحد أقصى.", type:"multi", required:true, max:3, allowOther:true, varName:"consult_support_tools", next:"CN12", condOn:null},
+  "CN12": {track:"المكاتب الاستشارية والمصممون", text:"هل لديك ملاحظة إضافية تتعلق بالتصميم أو إعداد مستندات الترخيص؟", help:"اكتب ملاحظة موجزة إن وجدت.", type:"long", required:false, max:1, allowOther:false, varName:"consult_additional_comment", next:"ID01", condOn:null},
+  "LN01": {track:"مهندسو ومراجعو التراخيص", text:"كم يبلغ تقريباً عدد طلبات الترخيص ذات الصلة التي تراجعها سنوياً؟", help:"تقدير تقريبي مقبول.", type:"single", required:true, max:1, allowOther:false, varName:"license_annual_volume", next:"LN02", condOn:null},
+  "LN02": {track:"مهندسو ومراجعو التراخيص", text:"ما النسبة التقريبية للطلبات التي تستوفي المتطلبات الأساسية عند أول تقديم؟", help:"اختر النطاق الأقرب إلى تجربتك.", type:"single", required:true, max:1, allowOther:false, varName:"license_first_submission_complete", next:"LN03", condOn:null},
+  "LN03": {track:"مهندسو ومراجعو التراخيص", text:"ما أكثر أسباب إعادة طلب الترخيص؟", help:"اختر خمسة أسباب بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"license_return_reasons", next:"LN04", condOn:null},
+  "LN04": {track:"مهندسو ومراجعو التراخيص", text:"ما المستندات أو الرسومات التي يكثر نقصها؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"license_missing_documents", next:"LN05", condOn:null},
+  "LN05": {track:"مهندسو ومراجعو التراخيص", text:"كم يتكرر طلب تفسير لحكم أو اشتراط أثناء المراجعة؟", help:"اختر معدل التكرار الأقرب.", type:"single", required:true, max:1, allowOther:false, varName:"license_interpretation_frequency", next:"LN06", condOn:null},
+  "LN06": {track:"مهندسو ومراجعو التراخيص", text:"ما الموضوعات التي يكثر فيها اختلاف التفسير؟", help:"اختر خمسة موضوعات بحد أقصى.", type:"multi", required:false, max:5, allowOther:true, varName:"license_interpretation_topics", next:"LN07", condOn:{dep:"LN05",values:["3", "4", "5"]}},
+  "LN07": {track:"مهندسو ومراجعو التراخيص", text:"ما مدى سهولة التحقق من الاشتراطات من خلال المخططات المقدمة؟", help:"قيّم وفق تجربتك.", type:"single", required:true, max:1, allowOther:false, varName:"license_plan_verifiability", next:"LN08", condOn:null},
+  "LN08": {track:"مهندسو ومراجعو التراخيص", text:"ما المتطلبات التي تعتمد بدرجة كبيرة على التقدير الشخصي؟", help:"اختر أربعة موضوعات بحد أقصى.", type:"multi", required:false, max:4, allowOther:true, varName:"license_subjective_topics", next:"LN09", condOn:null},
+  "LN09": {track:"مهندسو ومراجعو التراخيص", text:"ما مدى وضوح معالجة المباني متعددة الاستخدامات؟", help:"يشمل تحديد الدليل الحاكم والأحكام المشتركة والخاصة.", type:"single", required:true, max:1, allowOther:false, varName:"license_mixed_use_clarity", next:"LN10", condOn:null},
+  "LN10": {track:"مهندسو ومراجعو التراخيص", text:"ما مدى وضوح معالجة المباني القائمة والتوسع وتغيير الاستخدام؟", help:"قيّم وفق تجربتك.", type:"single", required:true, max:1, allowOther:false, varName:"license_existing_change_clarity", next:"LN11", condOn:null},
+  "LN11": {track:"مهندسو ومراجعو التراخيص", text:"ما قوائم التحقق المطلوبة لدعم المراجعة؟", help:"اختر كل ما ينطبق.", type:"multi", required:true, max:6, allowOther:true, varName:"license_checklist_needs", next:"LN12", condOn:null},
+  "LN12": {track:"مهندسو ومراجعو التراخيص", text:"هل لديك ملاحظة إضافية تتعلق بمراجعة طلبات الترخيص؟", help:"اكتب ملاحظة موجزة إن وجدت.", type:"long", required:false, max:1, allowOther:false, varName:"license_additional_comment", next:"ID01", condOn:null},
+  "IN01": {track:"مراقبو البناء والمفتشون", text:"كم تبلغ سنوات خبرتك في أعمال الرقابة أو التفتيش؟", help:"يشمل الرقابة أثناء التنفيذ وما قبل الإشغال.", type:"single", required:true, max:1, allowOther:false, varName:"inspect_experience_band", next:"IN02", condOn:null},
+  "IN02": {track:"مراقبو البناء والمفتشون", text:"ما المخالفات أو حالات عدم المطابقة الأكثر تكراراً؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"inspect_common_noncompliance", next:"IN03", condOn:null},
+  "IN03": {track:"مراقبو البناء والمفتشون", text:"في أي مرحلة تكتشف حالات عدم المطابقة غالباً؟", help:"اختر مرحلتين بحد أقصى.", type:"multi", required:true, max:2, allowOther:true, varName:"inspect_detection_stage", next:"IN04", condOn:null},
+  "IN04": {track:"مراقبو البناء والمفتشون", text:"ما مدى سهولة التحقق ميدانياً من الاشتراطات الحالية؟", help:"قيّم وفق تجربتك.", type:"single", required:true, max:1, allowOther:false, varName:"inspect_field_verifiability", next:"IN05", condOn:null},
+  "IN05": {track:"مراقبو البناء والمفتشون", text:"ما الموضوعات التي يصعب إثبات مخالفتها أو تحديد معيار قبولها؟", help:"اختر خمسة موضوعات بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"inspect_hard_to_verify_topics", next:"IN06", condOn:null},
+  "IN06": {track:"مراقبو البناء والمفتشون", text:"ما المستندات أو الأدلة التي تحتاجها أثناء التفتيش؟", help:"اختر كل ما ينطبق.", type:"multi", required:true, max:7, allowOther:true, varName:"inspect_evidence_needed", next:"IN07", condOn:null},
+  "IN07": {track:"مراقبو البناء والمفتشون", text:"ما التعديلات غير المعتمدة التي تظهر بعد إصدار الترخيص؟", help:"اختر أربعة عناصر بحد أقصى.", type:"multi", required:false, max:4, allowOther:true, varName:"inspect_post_license_changes", next:"IN08", condOn:null},
+  "IN08": {track:"مراقبو البناء والمفتشون", text:"ما العناصر التي يجب التحقق منها قبل شهادة الإشغال؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"inspect_pre_occupancy_items", next:"IN09", condOn:null},
+  "IN09": {track:"مراقبو البناء والمفتشون", text:"ما عناصر الهوية التي يمكن التحقق منها ميدانياً بوضوح؟", help:"اختر كل ما ينطبق.", type:"multi", required:false, max:6, allowOther:true, varName:"inspect_identity_verifiable", next:"IN10", condOn:null},
+  "IN10": {track:"مراقبو البناء والمفتشون", text:"ما أدوات الدعم الأكثر فائدة للمراقب أو المفتش؟", help:"اختر ثلاث أدوات بحد أقصى.", type:"multi", required:true, max:3, allowOther:true, varName:"inspect_support_tools", next:"IN11", condOn:null},
+  "IN11": {track:"مراقبو البناء والمفتشون", text:"هل لديك ملاحظة إضافية تتعلق بالتنفيذ أو التفتيش؟", help:"اكتب ملاحظة موجزة إن وجدت.", type:"long", required:false, max:1, allowOther:false, varName:"inspect_additional_comment", next:"ID01", condOn:null},
+  "SC01": {track:"الجهات القطاعية", text:"ما الجهة أو القطاع الذي تمثله؟", help:"اكتب اسم الجهة أو مجال اختصاصها.", type:"short", required:true, max:1, allowOther:false, varName:"sector_entity", next:"SC02", condOn:null},
+  "SC02": {track:"الجهات القطاعية", text:"ما الأدلة أو الأنشطة التي تدخل ضمن اختصاص الجهة؟", help:"اختر كل ما ينطبق.", type:"multi", required:true, max:14, allowOther:true, varName:"sector_relevant_guides", next:"SC03", condOn:null},
+  "SC03": {track:"الجهات القطاعية", text:"في أي مرحلة ينبغي الحصول على موافقة الجهة أو التنسيق معها؟", help:"اختر جميع المراحل ذات الصلة.", type:"multi", required:true, max:6, allowOther:true, varName:"sector_approval_stage", next:"SC04", condOn:null},
+  "SC04": {track:"الجهات القطاعية", text:"ما مدى وضوح حدود اختصاص الجهة وعلاقتها بالترخيص البلدي؟", help:"قيّم وفق الممارسة الحالية.", type:"single", required:true, max:1, allowOther:false, varName:"sector_jurisdiction_clarity", next:"SC05", condOn:null},
+  "SC05": {track:"الجهات القطاعية", text:"ما المستندات التي يكثر غيابها عند الإحالة إلى الجهة؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:false, max:5, allowOther:true, varName:"sector_missing_documents", next:"SC06", condOn:null},
+  "SC06": {track:"الجهات القطاعية", text:"ما أبرز مشكلات التنسيق بين الجهة والأطراف الأخرى؟", help:"اختر أربعة موضوعات بحد أقصى.", type:"multi", required:true, max:4, allowOther:true, varName:"sector_coordination_issues", next:"SC07", condOn:null},
+  "SC07": {track:"الجهات القطاعية", text:"ما المتطلبات التي يجب أن يعرفها المالك أو المصمم مبكراً؟", help:"حدد الموضوعات التي قد يؤدي تأخر معرفتها إلى إعادة التصميم أو تأخر الترخيص.", type:"multi", required:true, max:5, allowOther:true, varName:"sector_early_requirements", next:"SC08", condOn:null},
+  "SC08": {track:"الجهات القطاعية", text:"ما الموضوعات التي ينبغي الاكتفاء فيها بالإحالة إلى مرجع الجهة دون تكرارها؟", help:"اختر ما ينطبق أو اذكر المرجع.", type:"multi", required:false, max:5, allowOther:true, varName:"sector_reference_only_topics", next:"SC09", condOn:null},
+  "SC09": {track:"الجهات القطاعية", text:"هل توجد مرجعيات أو إصدارات حديثة ينبغي إدراجها في سجل المرجعيات؟", help:"يمكن إدراج رابط أو اسم المرجع والإصدار.", type:"long", required:false, max:1, allowOther:false, varName:"sector_reference_updates", next:"SC10", condOn:null},
+  "SC10": {track:"الجهات القطاعية", text:"هل لديك ملاحظة إضافية تتعلق باختصاص الجهة أو آلية التنسيق؟", help:"اكتب ملاحظة موجزة إن وجدت.", type:"long", required:false, max:1, allowOther:false, varName:"sector_additional_comment", next:"ID01", condOn:null},
+  "CT01": {track:"المقاولون ومشرفو التنفيذ", text:"ما طبيعة دورك الرئيس في التنفيذ؟", help:"حدد الدور الأقرب إلى عملك.", type:"single", required:true, max:1, allowOther:true, varName:"contract_role", next:"CT02", condOn:null},
+  "CT02": {track:"المقاولون ومشرفو التنفيذ", text:"ما المتطلبات التي يصعب تحويلها إلى تفاصيل تنفيذية؟", help:"اختر خمسة موضوعات بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"contract_execution_difficulties", next:"CT03", condOn:null},
+  "CT03": {track:"المقاولون ومشرفو التنفيذ", text:"ما أنواع التعارض التي تظهر أثناء التنفيذ؟", help:"اختر أربعة أنواع بحد أقصى.", type:"multi", required:true, max:4, allowOther:true, varName:"contract_coordination_conflicts", next:"CT04", condOn:null},
+  "CT04": {track:"المقاولون ومشرفو التنفيذ", text:"ما مدى توافر المواد والحلول المطلوبة وسهولة صيانتها؟", help:"قيّم بصورة عامة للمشروعات التي تعاملت معها.", type:"single", required:true, max:1, allowOther:false, varName:"contract_material_availability", next:"CT05", condOn:null},
+  "CT05": {track:"المقاولون ومشرفو التنفيذ", text:"ما التفاصيل التي تحتاج إلى رسومات أو نماذج تنفيذية أوضح؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"contract_detail_needs", next:"CT06", condOn:null},
+  "CT06": {track:"المقاولون ومشرفو التنفيذ", text:"ما العناصر التي ينبغي اعتماد عيناتها قبل التنفيذ؟", help:"اختر كل ما ينطبق.", type:"multi", required:false, max:6, allowOther:true, varName:"contract_sample_approvals", next:"CT07", condOn:null},
+  "CT07": {track:"المقاولون ومشرفو التنفيذ", text:"ما الأعمال التي يجب فحصها قبل تغطيتها أو الانتقال للمرحلة التالية؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"contract_hold_points", next:"CT08", condOn:null},
+  "CT08": {track:"المقاولون ومشرفو التنفيذ", text:"ما الأسباب الأكثر تكراراً للاختلاف بين المخططات والتنفيذ؟", help:"اختر أربعة أسباب بحد أقصى.", type:"multi", required:true, max:4, allowOther:true, varName:"contract_deviation_causes", next:"CT09", condOn:null},
+  "CT09": {track:"المقاولون ومشرفو التنفيذ", text:"ما قوائم الفحص الأكثر احتياجاً أثناء التنفيذ؟", help:"اختر ثلاث قوائم بحد أقصى.", type:"multi", required:true, max:3, allowOther:true, varName:"contract_checklist_needs", next:"CT10", condOn:null},
+  "CT10": {track:"المقاولون ومشرفو التنفيذ", text:"هل لديك ملاحظة إضافية تتعلق بقابلية تنفيذ الاشتراطات؟", help:"اكتب ملاحظة موجزة إن وجدت.", type:"long", required:false, max:1, allowOther:false, varName:"contract_additional_comment", next:"CS01", condOn:null},
+  "OP01": {track:"المشغلون والمستثمرون", text:"ما نوع المبنى أو النشاط الأقرب إلى خبرتك التشغيلية؟", help:"اختر من الأدلة ذات الصلة.", type:"multi", required:true, max:5, allowOther:true, varName:"operator_activity_types", next:"OP02", condOn:null},
+  "OP02": {track:"المشغلون والمستثمرون", text:"ما مدى وضوح متطلبات الموقع قبل استئجاره أو شرائه أو تطويره؟", help:"يشمل الاستعمال والمواقف والحركة والموافقات.", type:"single", required:true, max:1, allowOther:false, varName:"operator_site_requirements_clarity", next:"OP03", condOn:null},
+  "OP03": {track:"المشغلون والمستثمرون", text:"ما المتطلبات التي ظهرت بعد بدء التصميم أو التجهيز ولم تكن متوقعة؟", help:"اختر خمسة موضوعات بحد أقصى.", type:"multi", required:false, max:5, allowOther:true, varName:"operator_unexpected_requirements", next:"OP04", condOn:null},
+  "OP04": {track:"المشغلون والمستثمرون", text:"ما التحديات التشغيلية المرتبطة بتصميم المبنى؟", help:"اختر خمسة موضوعات بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"operator_design_challenges", next:"OP05", condOn:null},
+  "OP05": {track:"المشغلون والمستثمرون", text:"ما مدى سهولة الوصول إلى المعدات والخدمات لأغراض الصيانة؟", help:"قيّم وفق تجربتك.", type:"single", required:true, max:1, allowOther:false, varName:"operator_maintenance_access", next:"OP06", condOn:null},
+  "OP06": {track:"المشغلون والمستثمرون", text:"ما أبرز مشكلات الحركة والمواقف والتحميل والتنزيل؟", help:"اختر أربعة موضوعات بحد أقصى.", type:"multi", required:true, max:4, allowOther:true, varName:"operator_mobility_service_issues", next:"OP07", condOn:null},
+  "OP07": {track:"المشغلون والمستثمرون", text:"ما مدى وضوح متطلبات التوسع أو تغيير النشاط أو الاستخدام؟", help:"قيّم وفق تجربتك.", type:"single", required:true, max:1, allowOther:false, varName:"operator_change_use_clarity", next:"OP08", condOn:null},
+  "OP08": {track:"المشغلون والمستثمرون", text:"ما الموضوعات التي تحتاج إلى توضيح مبكر قبل اتخاذ القرار الاستثماري؟", help:"اختر خمسة موضوعات بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"operator_early_guidance_needs", next:"OP09", condOn:null},
+  "OP09": {track:"المشغلون والمستثمرون", text:"ما وسائل التوضيح الأكثر فائدة للمشغل أو المستثمر؟", help:"اختر ثلاث وسائل بحد أقصى.", type:"multi", required:true, max:3, allowOther:true, varName:"operator_support_tools", next:"OP10", condOn:null},
+  "OP10": {track:"المشغلون والمستثمرون", text:"هل لديك ملاحظة إضافية تتعلق بالتشغيل أو الاستثمار؟", help:"اكتب ملاحظة موجزة إن وجدت.", type:"long", required:false, max:1, allowOther:false, varName:"operator_additional_comment", next:"CS01", condOn:null},
+  "AC01": {track:"الأكاديميون والباحثون والخبراء", text:"ما مجال خبرتك الرئيس المرتبط بموضوع الأدلة؟", help:"حدد المجال الأقرب إلى خبرتك.", type:"multi", required:true, max:4, allowOther:true, varName:"academic_expertise_fields", next:"AC02", condOn:null},
+  "AC02": {track:"الأكاديميون والباحثون والخبراء", text:"ما أنواع المصادر التي ترى أهمية الاعتماد عليها؟", help:"اختر خمسة مصادر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"academic_evidence_sources", next:"AC03", condOn:null},
+  "AC03": {track:"الأكاديميون والباحثون والخبراء", text:"ما الخصائص المحلية الأكثر تأثيراً في صياغة الاشتراطات؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"academic_local_characteristics", next:"AC04", condOn:null},
+  "AC04": {track:"الأكاديميون والباحثون والخبراء", text:"ما عناصر الهوية الأكثر أهمية عند تقييم علاقة المبنى بالمكان؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"academic_identity_elements", next:"AC05", condOn:null},
+  "AC05": {track:"الأكاديميون والباحثون والخبراء", text:"ما مدى قابلية موجهات الهوية الحالية للقياس والتحقق؟", help:"قيّم بصورة عامة.", type:"single", required:true, max:1, allowOther:false, varName:"academic_identity_measurability", next:"AC06", condOn:null},
+  "AC06": {track:"الأكاديميون والباحثون والخبراء", text:"ما أوجه التفاوت المكاني التي ينبغي مراعاتها داخل المنطقة؟", help:"اختر أربعة عناصر بحد أقصى.", type:"multi", required:true, max:4, allowOther:true, varName:"academic_spatial_variation", next:"AC07", condOn:null},
+  "AC07": {track:"الأكاديميون والباحثون والخبراء", text:"ما المؤشرات المناسبة لمتابعة فاعلية الأدلة؟", help:"اختر خمسة مؤشرات بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"academic_effectiveness_indicators", next:"AC08", condOn:null},
+  "AC08": {track:"الأكاديميون والباحثون والخبراء", text:"اذكر دراسة أو مرجعاً أو قاعدة بيانات ترى أهمية الرجوع إليها", help:"يمكن إضافة اسم المرجع أو رابطه.", type:"long", required:false, max:1, allowOther:false, varName:"academic_recommended_sources", next:"AC09", condOn:null},
+  "AC09": {track:"الأكاديميون والباحثون والخبراء", text:"ما فجوات البيانات الأكثر تأثيراً في إعداد الأدلة؟", help:"اختر أربعة أنواع بحد أقصى.", type:"multi", required:true, max:4, allowOther:true, varName:"academic_data_gaps", next:"AC10", condOn:null},
+  "AC10": {track:"الأكاديميون والباحثون والخبراء", text:"هل لديك ملاحظة إضافية تتعلق بالمنهج أو المعرفة المحلية؟", help:"اكتب ملاحظة موجزة إن وجدت.", type:"long", required:false, max:1, allowOther:false, varName:"academic_additional_comment", next:"ID01", condOn:null},
+  "ID01": {track:"الهوية العمرانية", text:"ما مدى اطلاعك على موجهات العمارة النجدية الشمالية؟", help:"حدد مستوى اطلاعك الفعلي.", type:"single", required:true, max:1, allowOther:false, varName:"identity_familiarity", next:"ID02", condOn:null},
+  "ID02": {track:"الهوية العمرانية", text:"ما مدى وضوح الموجهات التصميمية للهوية؟", help:"قيّم وفق خبرتك.", type:"single", required:true, max:1, allowOther:false, varName:"identity_guidance_clarity", next:"ID03", condOn:null},
+  "ID03": {track:"الهوية العمرانية", text:"ما العناصر الأكثر قابلية للتطبيق في المشروعات المعاصرة؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"identity_applicable_elements", next:"ID04", condOn:null},
+  "ID04": {track:"الهوية العمرانية", text:"ما العناصر التي تحتاج إلى مزيد من الرسومات أو الأمثلة؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"identity_example_needs", next:"ID05", condOn:null},
+  "ID05": {track:"الهوية العمرانية", text:"ما مدى وضوح اختلاف تطبيق الهوية بحسب نوع المبنى وحجمه وموقعه؟", help:"قيّم مدى وضوح التدرج المطلوب.", type:"single", required:true, max:1, allowOther:false, varName:"identity_context_differentiation", next:"ID06", condOn:null},
+  "ID06": {track:"الهوية العمرانية", text:"ما مدى وضوح قبول حلول معاصرة بديلة تحقق النتيجة العمرانية المطلوبة؟", help:"لا يقصد بالبديل إسقاط الهدف أو الاكتفاء بالزخرفة.", type:"single", required:true, max:1, allowOther:false, varName:"identity_alternative_solutions", next:"ID07", condOn:null},
+  "ID07": {track:"الهوية العمرانية", text:"ما المستندات الأنسب للتحقق من الهوية في مرحلة التصميم؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"identity_design_evidence", next:"ID08", condOn:null},
+  "ID08": {track:"الهوية العمرانية", text:"ما العناصر التي ينبغي التحقق منها أثناء التنفيذ أو قبيل الإشغال؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"identity_execution_checks", next:"ID09", condOn:null},
+  "ID09": {track:"الهوية العمرانية", text:"ما المعالجة الأنسب للعناصر والخدمات الفنية الظاهرة؟", help:"اختر المعالجات التي تراها مناسبة بحسب نوع العنصر.", type:"multi", required:true, max:4, allowOther:true, varName:"identity_visible_services", next:"ID10", condOn:null},
+  "ID10": {track:"الهوية العمرانية", text:"هل لديك مثال أو ملاحظة تساعد على تطبيق الهوية بصورة معاصرة؟", help:"يمكن وصف الحالة أو إرفاقها لاحقاً ضمن بطاقة الحالة.", type:"long", required:false, max:1, allowOther:false, varName:"identity_additional_comment", next:"CS01", condOn:null},
+  "CS01": {track:"بطاقة الحالة التطبيقية", text:"هل ترغب في تسجيل حالة تطبيقية محددة؟", help:"يمكن تسجيل حتى ثلاث حالات، ويجوز اختيار لا للانتقال إلى الأسئلة الختامية.", type:"single", required:true, max:1, allowOther:false, varName:"case_add", next:null, condOn:null},
+  "CS02": {track:"بطاقة الحالة التطبيقية", text:"ما الدليل أو النشاط المرتبط بالحالة؟", help:"اختر دليلاً واحداً.", type:"single", required:true, max:1, allowOther:true, varName:"case_guide", next:"CS03", condOn:null},
+  "CS03": {track:"بطاقة الحالة التطبيقية", text:"أين ظهرت الحالة؟", help:"حدد المدينة أو المحافظة.", type:"single", required:true, max:1, allowOther:true, varName:"case_location", next:"CS04", condOn:null},
+  "CS04": {track:"بطاقة الحالة التطبيقية", text:"ما نوع المشروع أو المبنى؟", help:"اكتب وصفاً موجزاً دون بيانات سرية.", type:"short", required:true, max:1, allowOther:false, varName:"case_project_type", next:"CS05", condOn:null},
+  "CS05": {track:"بطاقة الحالة التطبيقية", text:"في أي مرحلة ظهرت الحالة؟", help:"اختر مرحلة واحدة رئيسة.", type:"single", required:true, max:1, allowOther:true, varName:"case_stage", next:"CS06", condOn:null},
+  "CS06": {track:"بطاقة الحالة التطبيقية", text:"هل تعرف المرجع أو الحكم محل الملاحظة؟", help:"يمكن اختيار لا أعرف دون منع استكمال الحالة.", type:"single", required:true, max:1, allowOther:false, varName:"case_reference_known", next:null, condOn:null},
+  "CS07": {track:"بطاقة الحالة التطبيقية", text:"اذكر المرجع أو المادة أو موضوع الحكم", help:"يكفي ما يساعد على التعرف على الحكم.", type:"short", required:true, max:1, allowOther:false, varName:"case_reference_detail", next:"CS08", condOn:null},
+  "CS08": {track:"بطاقة الحالة التطبيقية", text:"ما طبيعة المشكلة أو الملاحظة؟", help:"اختر الوصف الأقرب.", type:"single", required:true, max:1, allowOther:true, varName:"case_issue_type", next:"CS09", condOn:null},
+  "CS09": {track:"بطاقة الحالة التطبيقية", text:"كم تكررت هذه الحالة وفق خبرتك؟", help:"اختر معدل التكرار الأقرب.", type:"single", required:true, max:1, allowOther:false, varName:"case_frequency", next:"CS10", condOn:null},
+  "CS10": {track:"بطاقة الحالة التطبيقية", text:"ما نوع الأثر الناتج عن الحالة؟", help:"اختر ثلاثة آثار بحد أقصى.", type:"multi", required:true, max:3, allowOther:true, varName:"case_impact_types", next:"CS11", condOn:null},
+  "CS11": {track:"بطاقة الحالة التطبيقية", text:"ما مستوى أثر الحالة؟", help:"قيّم الأثر العام.", type:"single", required:true, max:1, allowOther:false, varName:"case_impact_level", next:"CS12", condOn:null},
+  "CS12": {track:"بطاقة الحالة التطبيقية", text:"ما المعالجة الأقرب لهذه الحالة؟", help:"لا يلزم صياغة حكم نظامي؛ اختر نوع المعالجة فقط.", type:"multi", required:true, max:3, allowOther:true, varName:"case_suggested_treatment", next:"CS13", condOn:null},
+  "CS13": {track:"بطاقة الحالة التطبيقية", text:"صف الحالة والنتيجة المطلوب تحقيقها", help:"اكتب وصفاً مركزاً للحالة دون بيانات شخصية أو سرية.", type:"long", required:true, max:1, allowOther:false, varName:"case_description", next:"CS14", condOn:null},
+  "CS14": {track:"بطاقة الحالة التطبيقية", text:"هل ترغب في إضافة حالة أخرى؟", help:"يسمح بتكرار البطاقة مرتين إضافيتين بحد أقصى.", type:"single", required:true, max:1, allowOther:false, varName:"case_repeat", next:null, condOn:null},
+  "FN01": {track:"الأسئلة الختامية", text:"ما أهم ثلاث قضايا ينبغي أن تعالجها الأدلة؟", help:"اختر من القضايا التي ظهرت لك في الاستبيان أو أضف أخرى.", type:"multi", required:true, max:3, allowOther:true, varName:"final_top_issues", next:"FN02", condOn:null},
+  "FN02": {track:"الأسئلة الختامية", text:"ما أهم ثلاثة موضوعات تحتاج إلى رسومات أو حالات تطبيقية؟", help:"اختر ثلاثة بحد أقصى.", type:"multi", required:true, max:3, allowOther:true, varName:"final_visual_priorities", next:"FN03", condOn:null},
+  "FN03": {track:"الأسئلة الختامية", text:"ما أهم البيانات أو الخرائط التي ينبغي توافرها؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:false, max:5, allowOther:true, varName:"final_data_needs", next:"FN04", condOn:null},
+  "FN04": {track:"الأسئلة الختامية", text:"ما الاقتراح الواحد الذي ترى أنه سيحسن تطبيق الأدلة عملياً؟", help:"اكتب اقتراحاً محدداً وموجزاً.", type:"long", required:false, max:1, allowOther:false, varName:"final_single_recommendation", next:"FN05", condOn:null},
+  "FN05": {track:"الأسئلة الختامية", text:"هل لديك مستند أو صورة أو مخطط مساند ترغب في إتاحته؟", help:"تحدد آلية الرفع وفق المنصة المعتمدة، أو يطلب رابط آمن للملف.", type:"single", required:false, max:1, allowOther:false, varName:"final_has_attachment", next:"FN06", condOn:null},
+  "FN06": {track:"الأسئلة الختامية", text:"هل توافق على التواصل معك لطلب إيضاح عند الحاجة؟", help:"يستخدم التواصل المهني الوارد في بيانات المشارك.", type:"single", required:true, max:1, allowOther:false, varName:"final_followup_consent", next:null, condOn:null},
+};
+/* خريطة الدخول إلى المسار التخصصي بحسب R01 (primary_role) — مطابقة لورقة «خريطة المسارات».
+   ملاحظة/تعارض: لا تعرّف ورقة «خريطة المسارات» مساراً لقيمة OTHER في R01؛
+   اعتمدنا هنا أن من اختار "دور آخر" ينتقل مباشرة إلى بطاقة الحالة التطبيقية (CS01)
+   دون مسار تخصصي ودون وحدة الهوية العمرانية. هذا افتراض ينبغي اعتماده أو تعديله. */
+var ENTRY_BY_ROLE = {
+  CONSULT:"CN01", LICENSE:"LN01", INSPECT:"IN01", SECTOR:"SC01",
+  CONTRACT:"CT01", OPERATE:"OP01", ACADEMIC:"AC01"
+};
+var OTHER_ROLE_ENTRY = "CS01";
+
+/* أسئلة بطاقة الحالة التطبيقية القابلة للتكرار (بيانات الحالة نفسها، دون سؤالي التحكم CS01/CS14) */
+var CASE_FIELD_IDS = ["CS02","CS03","CS04","CS05","CS06","CS07","CS08","CS09","CS10","CS11","CS12","CS13"];
+var CASE_FIELDS_WITH_OTHER = CASE_FIELD_IDS.filter(function(id){
+  return (TRACK_OPT[id]||[]).some(function(o){return o.other;});
+});
+var MAX_CASES = 3;
+
+var TRACK_IDS = Object.keys(TRACK_Q);
+var TRACK_NONCASE_IDS = TRACK_IDS.filter(function(id){ return id.slice(0,2)!=="CS"; });
+var TRACK_QUESTIONS_WITH_OTHER = TRACK_NONCASE_IDS.filter(function(id){
+  return (TRACK_OPT[id]||[]).some(function(o){return o.other;});
+}).map(function(id){ return TRACK_Q[id].varName; });
+
+/* تقدير تقريبي لعدد أسئلة كل مسار (لعرض شريط تقدم تقريبي فقط) */
+var TRACK_LEN_ESTIMATE = {CONSULT:12,LICENSE:12,INSPECT:11,SECTOR:10,CONTRACT:10,OPERATE:10,ACADEMIC:10};
+var TRACK_HAS_IDENTITY = {CONSULT:1,LICENSE:1,INSPECT:1,SECTOR:1,ACADEMIC:1,CONTRACT:0,OPERATE:0};
+
+/* ---------------------------------------------------------------------
    الحالة العامة
 --------------------------------------------------------------------- */
 var answers = {};        // varName -> value
 var otherTexts = {};     // varName -> نص التوضيح لخيار "أخرى"
-var screen = "intro";    // intro | question | declined | review | done
+var screen = "intro";    // intro | question | track | review | done
 var qIndex = 0;
 var lastError = "";
 var submitState = "idle";  // idle | sending | sent | failed
 var hasSubmitted = false;
+
+/* حالة المسار التخصصي (v0.2) */
+var trackNodeId = null;        // معرّف السؤال الحالي داخل شجرة المسار
+var trackStack = [];           // سجل التنقل للخلف داخل المسار
+var visitedTrackNodes = {};    // id -> true لكل سؤال مسار ظهر فعلياً للمشارك
+var caseIterationIndex = 0;    // فهرس بطاقة الحالة الجارية (0 = الحالة الأولى)
+var caseRecords = [];          // بطاقات الحالة المكتملة (حتى 3 عناصر)
 
 function submitResponse(obj){
   if(hasSubmitted) return;
@@ -555,6 +792,11 @@ function submitResponse(obj){
   });
 }
 
+function retrySubmission(){
+  hasSubmitted = false;
+  submitResponse(buildExportObject());
+}
+
 function applicable(q){ return q.showIf(answers); }
 function applicableList(){ return Q.filter(applicable); }
 
@@ -564,6 +806,129 @@ function firstApplicableFrom(i, dir){
     i += dir;
   }
   return dir>0 ? Q.length : -1;
+}
+
+/* ---------------------------------------------------------------------
+   محرك المسار التخصصي (رسم بياني موجَّه يقوده حقل "next" في المصفوفة)
+--------------------------------------------------------------------- */
+
+/* يحوّل سؤال مسار إلى كائن سؤال بنفس شكل عناصر Q، ليعاد استخدامه في
+   دوال العرض والتحقق والمراجعة العامة دون تكرار كود. */
+function trackQuestionObj(id){
+  var meta = TRACK_Q[id];
+  return {
+    id: id,
+    section: meta.track,
+    varName: meta.varName,
+    type: meta.type,
+    required: meta.required,
+    max: meta.max,
+    text: meta.text,
+    help: meta.help,
+    audience: meta.track,
+    options: TRACK_OPT[id] || [],
+    poolFrom: null
+  };
+}
+
+/* السؤال المعروض حالياً، أياً كان مصدره (الجزء المشترك أو المسار التخصصي) */
+function currentQ(){
+  if(screen==="question") return Q[qIndex];
+  if(screen==="track") return trackQuestionObj(trackNodeId);
+  return null;
+}
+
+/* هل يظهر سؤال مسار معيّن بحسب شرط condOn (يخص CN07 وLN06 فقط) */
+function trackApplicable(id){
+  var meta = TRACK_Q[id];
+  if(!meta.condOn) return true;
+  /* condOn.dep يشير إلى رمز سؤال (مثل "CN06")، وليس اسم متغيره؛ يُحوَّل هنا إلى varName */
+  var depVarName = TRACK_Q[meta.condOn.dep] ? TRACK_Q[meta.condOn.dep].varName : meta.condOn.dep;
+  return meta.condOn.values.indexOf(answers[depVarName]) > -1;
+}
+
+/* يتبع حقل next بصورة تسلسلية متجاوزاً أي سؤال غير منطبق (condOn)،
+   حتى يصل إلى أول سؤال منطبق أو نهاية السلسلة (null => "REVIEW"). */
+function resolveNextAfter(id){
+  var n = TRACK_Q[id].next;
+  while(n && !trackApplicable(n)){
+    n = TRACK_Q[n].next;
+  }
+  return n || "REVIEW";
+}
+
+/* يدخل عقدة مسار جديدة ويسجلها كمعروضة فعلياً للمشارك (تُستخدم لاحقاً
+   لتحديد الحقول التي تُصدَّر بقيمة فعلية مقابل الحقول الفارغة). */
+function gotoTrackNode(id){
+  trackNodeId = id;
+  visitedTrackNodes[id] = true;
+}
+
+/* بطاقة الحالة التطبيقية: أخذ لقطة من الإجابات الحالية للحقول القابلة
+   للتكرار، ثم حفظها في caseRecords قبل الانتقال أو تفريغ الحقول لحالة جديدة. */
+function snapshotCurrentCase(){
+  var rec = {};
+  CASE_FIELD_IDS.forEach(function(id){
+    var meta = TRACK_Q[id];
+    rec[meta.varName] = answers[meta.varName] !== undefined ? answers[meta.varName] : (meta.type==="multi" ? [] : "");
+    rec[meta.varName + "_other_text"] = otherTexts[meta.varName] || "";
+  });
+  caseRecords.push(rec);
+}
+
+function clearCaseFields(){
+  CASE_FIELD_IDS.forEach(function(id){
+    var meta = TRACK_Q[id];
+    delete answers[meta.varName];
+    delete otherTexts[meta.varName];
+  });
+}
+
+/* عكس snapshotCurrentCase عند الرجوع للخلف عبر حد تكرار بطاقة الحالة */
+function restoreLastCase(){
+  var rec = caseRecords.pop();
+  if(!rec) return;
+  caseIterationIndex = Math.max(0, caseIterationIndex - 1);
+  CASE_FIELD_IDS.forEach(function(id){
+    var meta = TRACK_Q[id];
+    if(rec[meta.varName] !== undefined) answers[meta.varName] = rec[meta.varName];
+    if(rec[meta.varName + "_other_text"]) otherTexts[meta.varName] = rec[meta.varName + "_other_text"];
+  });
+}
+
+/* منطق الانتقال الخاص بعقد التفريع الأربع (CS01, CS06, CS14) + الانتقال
+   العام القائم على next لبقية أسئلة المسار (بما فيها FN06 التي تنهي المسار). */
+function advanceFromTrack(fromId){
+  if(fromId==="CS01"){
+    return answers.case_add === "YES" ? "CS02" : "FN01";
+  }
+  if(fromId==="CS06"){
+    return answers.case_reference_known === "YES" ? "CS07" : "CS08";
+  }
+  if(fromId==="CS14"){
+    if(answers.case_repeat==="YES" && caseIterationIndex < MAX_CASES-1){
+      snapshotCurrentCase();
+      caseIterationIndex += 1;
+      clearCaseFields();
+      return "CS02";
+    }
+    snapshotCurrentCase();
+    return "FN01";
+  }
+  var next = resolveNextAfter(fromId);
+  if(next==="CS14" && caseIterationIndex >= MAX_CASES-1){
+    /* بلغنا الحد الأقصى لعدد الحالات (3) — لا يُعرض سؤال "إضافة حالة أخرى" */
+    snapshotCurrentCase();
+    return "FN01";
+  }
+  return next;
+}
+
+function trackFlowEstimate(){
+  var role = answers.primary_role;
+  var base = TRACK_LEN_ESTIMATE[role] || 10;
+  var idn = TRACK_HAS_IDENTITY[role] ? 10 : 0;
+  return base + idn + 8 + 6; /* + بطاقة حالة تقديرية + الأسئلة الختامية */
 }
 
 /* ---------------------------------------------------------------------
@@ -611,10 +976,19 @@ var stepPill = document.getElementById("stepPill");
 var sectionLabel = document.getElementById("sectionLabel");
 
 function updateTopbar(){
+  if(screen==="track"){
+    stepPill.textContent = "المسار التخصصي";
+    sectionLabel.textContent = TRACK_Q[trackNodeId].track;
+    var estTotal = trackFlowEstimate();
+    var doneCount = Object.keys(visitedTrackNodes).length;
+    var tpct = 94 + Math.min(6, Math.round((doneCount/estTotal)*6));
+    progressFill.style.width = tpct + "%";
+    return;
+  }
   if(screen!=="question"){
     stepPill.textContent = screen==="intro" ? "البداية" : screen==="review" ? "المراجعة" : screen==="done" ? "تم" : "";
     sectionLabel.textContent = "";
-    var pct = screen==="intro" ? 0 : screen==="review" ? 96 : screen==="done" ? 100 : 0;
+    var pct = screen==="intro" ? 0 : screen==="review" ? 98 : screen==="done" ? 100 : 0;
     progressFill.style.width = pct + "%";
     return;
   }
@@ -623,14 +997,13 @@ function updateTopbar(){
   var total = list.length;
   stepPill.textContent = "سؤال " + pos + " من " + total;
   sectionLabel.textContent = Q[qIndex].section;
-  progressFill.style.width = Math.max(4, Math.round((pos/total)*94)) + "%";
+  progressFill.style.width = Math.max(4, Math.round((pos/total)*90)) + "%";
 }
 
 function render(){
   app.innerHTML = "";
   if(screen==="intro") renderIntro();
-  else if(screen==="question") renderQuestion();
-  else if(screen==="declined") renderDeclined();
+  else if(screen==="question" || screen==="track") renderQuestion();
   else if(screen==="review") renderReview();
   else if(screen==="done") renderDone();
   updateTopbar();
@@ -639,61 +1012,45 @@ function render(){
 }
 
 function updateNav(){
-  if(screen==="declined" || screen==="done"){ navbar.hidden = true; return; }
+  if(screen==="done"){ navbar.hidden = true; return; }
   navbar.hidden = false;
   btnPrev.style.visibility = (screen==="intro") ? "hidden" : "visible";
   if(screen==="review"){
-    btnNext.textContent = "إرسال (تجريبي)";
+    btnNext.textContent = "إرسال";
   } else if(screen==="intro"){
     btnNext.textContent = "ابدأ الاستبيان";
+  } else if(screen==="track"){
+    btnNext.textContent = (trackNodeId==="FN06") ? "مراجعة الإجابات" : "التالي";
   } else {
     var list = applicableList();
     var isLast = list.indexOf(Q[qIndex]) === list.length-1;
-    btnNext.textContent = isLast ? "مراجعة الإجابات" : "التالي";
+    btnNext.textContent = isLast ? "متابعة إلى المسار التخصصي" : "التالي";
   }
 }
 
 /* ---------- شاشة البداية ---------- */
 function renderIntro(){
   var box = el("div", {class:"card hero"});
-  box.appendChild(el("span", {class:"hero-badge"}, ["نموذج أولي — للمراجعة فقط"]));
+  var introLogo = el("img", {class:"intro-logo", alt:"شعار المكتب الاستراتيجي لتطوير منطقة الجوف", src:"data:image/webp;base64," + LOGO_B64});
+  box.appendChild(introLogo);
   box.appendChild(el("h1", {}, ["استبيان المشاركة الفنية في إعداد أدلة اشتراطات المباني والأنشطة بمنطقة الجوف"]));
-  box.appendChild(el("p", {}, ["الغرض: تثبيت نصوص الأسئلة وخيارات الإجابة وشروط الظهور ومخرجات التحليل قبل بناء الصفحة الإلكترونية النهائية."]));
-  box.appendChild(el("p", {}, ["النطاق الحالي: الموافقة على المشاركة، بيانات المشارك، الصفة المهنية، نطاق الخبرة، وضوح المرجعيات، تحديات التطبيق، خصائص الجوف، ووسائل دعم التطبيق — الجزء المشترك فقط، دون المسارات التخصصية."]));
+  box.appendChild(el("p", {class:"intro-motivate"}, ["تمثل اشتراطات المباني والأنشطة جزءاً مؤثراً في حياة الناس وسلامتهم وجودة بيئتهم العمرانية وسهولة ممارسة أنشطتهم. وتسهم مشاركتكم بخبراتكم وملاحظاتكم في إعداد أدلة واضحة وواقعية وقابلة للتطبيق، تراعي خصائص منطقة الجوف، وتوازن بين السلامة وجودة العمران وتيسير الاستثمار، بما يحقق النفع للمجتمع بمختلف فئاته."]));
 
   var grid = el("div", {class:"info-grid"});
   grid.appendChild(el("div", {class:"info-row"}, [
-    el("div", {class:"k"}, ["المدة المتوقعة"]), el("div", {class:"v"}, ["يفضّل ألا تتجاوز الإجابة عن الجزء المشترك عشر دقائق."])
+    el("div", {class:"k"}, ["المدة المتوقعة"]), el("div", {class:"v"}, ["يفضّل ألا تتجاوز الإجابة الكاملة عشرين إلى خمس وعشرين دقيقة بحسب المسار وعدد الحالات المسجَّلة."])
   ]));
   grid.appendChild(el("div", {class:"info-row"}, [
     el("div", {class:"k"}, ["عدد الأسئلة"]), el("div", {class:"v"}, [Q.length + " سؤالاً كحد أقصى، تظهر منها فقط الأسئلة المرتبطة بإجاباتك."])
   ]));
   box.appendChild(grid);
 
-  box.appendChild(el("div", {class:"notice"}, [
-    el("b", {}, ["ملاحظة: "]), "هذا نموذج تجريبي أولي لاختبار البنية والتفرعات، وليس جاهزاً للنشر أو لجمع إجابات فعلية. البيانات التي تُدخل هنا تبقى في متصفحك فقط ولا تُرسَل إلى أي خادم."
-  ]));
-
-  var devRow = el("div", {style:"margin-top:14px"});
-  devRow.appendChild(el("button", {class:"btn btn-ghost btn-sm", onclick:autofillDemo}, ["⚡ تعبئة تلقائية ببيانات تجريبية (لأغراض الاختبار)"]));
-  box.appendChild(devRow);
-
-  app.appendChild(box);
-}
-
-/* ---------- شاشة الرفض ---------- */
-function renderDeclined(){
-  var box = el("div", {class:"card hero"});
-  box.appendChild(el("div", {class:"done-icon", style:"background:var(--danger-tint);color:var(--danger)"}, ["✕"]));
-  box.appendChild(el("h1", {}, ["انتهى الاستبيان"]));
-  box.appendChild(el("p", {}, ["بناءً على اختيارك عدم الموافقة على المشاركة، تم إنهاء الاستبيان دون تسجيل أي بيانات أخرى. شكراً لاهتمامك."]));
-  box.appendChild(el("button", {class:"btn btn-ghost", onclick:function(){ resetAll(); }}, ["الرجوع إلى البداية"]));
   app.appendChild(box);
 }
 
 /* ---------- شاشة السؤال ---------- */
 function renderQuestion(){
-  var q = Q[qIndex];
+  var q = currentQ();
   var box = el("div", {class:"card"});
   var meta = el("div", {class:"q-meta"});
   meta.appendChild(el("span", {class:"q-code"}, [q.id]));
@@ -703,6 +1060,7 @@ function renderQuestion(){
   if(q.type==="rank") meta.appendChild(el("span", {class:"q-opt-tag"}, ["ترتيب أولويات"]));
   box.appendChild(meta);
 
+  if(q.sectionNote) box.appendChild(el("div", {class:"notice"}, [q.sectionNote]));
   box.appendChild(el("div", {class:"q-text"}, [q.text]));
   if(q.help) box.appendChild(el("div", {class:"q-help"}, [q.help]));
   if(q.audience && q.audience!=="جميع المشاركين") box.appendChild(el("div", {class:"q-audience"}, ["يظهر لـ: " + q.audience]));
@@ -760,7 +1118,15 @@ function renderMulti(q){
       var arr = (answers[q.varName]||[]).slice();
       var i = arr.indexOf(opt.code);
       if(i>-1) arr.splice(i,1);
-      else { if(arr.length>=q.max) return; arr.push(opt.code); }
+      else if(opt.exclusive){
+        arr = [opt.code];
+      } else {
+        if(arr.length>=q.max) return;
+        /* اختيار خيار عادي يلغي أي خيار حصري (مثل "لا ينطبق") كان محدداً */
+        var exclusiveCodes = list.filter(function(o){return o.exclusive;}).map(function(o){return o.code;});
+        arr = arr.filter(function(c){return exclusiveCodes.indexOf(c)===-1;});
+        arr.push(opt.code);
+      }
       answers[q.varName] = arr;
       if(opt.code==="OTHER" && i>-1) delete otherTexts[q.varName];
       lastError=""; render();
@@ -828,7 +1194,7 @@ function renderRank(q){
    التحقق
 --------------------------------------------------------------------- */
 function validateCurrent(){
-  var q = Q[qIndex];
+  var q = currentQ();
   var v = answers[q.varName];
   if(q.type==="single"){
     if(q.required && !v) return "هذا السؤال إلزامي، يرجى اختيار إجابة.";
@@ -861,10 +1227,27 @@ btnNext.addEventListener("click", function(){
   if(screen==="question"){
     var err = validateCurrent();
     if(err){ lastError = err; render(); return; }
-    if(Q[qIndex].id==="A01" && answers.consent==="B"){ screen="declined"; lastError=""; render(); return; }
     var next = firstApplicableFrom(qIndex+1,1);
-    if(next>=Q.length){ screen="review"; lastError=""; render(); }
+    if(next>=Q.length){
+      /* نهاية الجزء المشترك — الدخول إلى المسار التخصصي بحسب primary_role (R01) */
+      var entry = ENTRY_BY_ROLE[answers.primary_role] || OTHER_ROLE_ENTRY;
+      trackStack = []; caseIterationIndex = 0; caseRecords = []; visitedTrackNodes = {};
+      screen="track"; lastError="";
+      gotoTrackNode(entry);
+      render();
+    }
     else { qIndex = next; lastError=""; render(); }
+    return;
+  }
+  if(screen==="track"){
+    var terr = validateCurrent();
+    if(terr){ lastError = terr; render(); return; }
+    var fromId = trackNodeId;
+    trackStack.push(fromId);
+    var tnext = advanceFromTrack(fromId);
+    if(tnext==="REVIEW"){ screen="review"; lastError=""; render(); return; }
+    gotoTrackNode(tnext);
+    lastError=""; render();
     return;
   }
   if(screen==="review"){
@@ -881,7 +1264,22 @@ btnPrev.addEventListener("click", function(){
     else { qIndex=prev; lastError=""; render(); }
     return;
   }
+  if(screen==="track"){
+    var prevId = trackStack.pop();
+    if(prevId===undefined){
+      /* لا يوجد سجل تنقل داخل المسار — الرجوع إلى آخر سؤال في الجزء المشترك */
+      screen="question"; qIndex = firstApplicableFrom(Q.length-1,-1); lastError=""; render(); return;
+    }
+    if(trackNodeId==="CS02" && prevId==="CS14"){
+      /* عبور حد تكرار بطاقة الحالة إلى الخلف — استرجاع بيانات الحالة السابقة */
+      restoreLastCase();
+    }
+    trackNodeId = prevId; lastError=""; render(); return;
+  }
   if(screen==="review"){
+    if(Object.keys(visitedTrackNodes).length>0){
+      screen="track"; trackNodeId="FN06"; lastError=""; render(); return;
+    }
     qIndex = firstApplicableFrom(Q.length-1,-1);
     screen="question"; lastError=""; render(); return;
   }
@@ -892,10 +1290,11 @@ function jumpToQuestion(id){
   if(i>-1){ qIndex=i; screen="question"; lastError=""; render(); }
 }
 
-function resetAll(){
-  answers = {}; otherTexts = {}; qIndex = 0; screen = "intro"; lastError="";
-  submitState = "idle"; hasSubmitted = false;
-  render();
+/* الانتقال إلى سؤال داخل المسار التخصصي من شاشة المراجعة (تعديل).
+   لا يعيد بناء سجل التنقل الكامل — الضغط على "السابق" بعد هذا الانتقال
+   يعود مباشرة إلى نهاية الجزء المشترك. */
+function jumpToTrack(id){
+  screen="track"; trackNodeId=id; visitedTrackNodes[id]=true; lastError=""; render();
 }
 
 /* ---------------------------------------------------------------------
@@ -937,6 +1336,32 @@ function formatAnswer(q){
   return null;
 }
 
+function formatCaseValue(id, v, otherTxt){
+  var meta = TRACK_Q[id];
+  var opts = TRACK_OPT[id] || [];
+  if(meta.type==="single"){
+    if(!v) return null;
+    var opt = opts.filter(function(o){return o.code===v;})[0];
+    var lbl = opt ? opt.label : v;
+    if(opt && opt.other && otherTxt) lbl += "（" + otherTxt + "）";
+    return lbl;
+  }
+  if(meta.type==="multi"){
+    var arr = v || [];
+    if(arr.length===0) return null;
+    return arr.map(function(c){
+      var o = opts.filter(function(x){return x.code===c;})[0];
+      var l = o ? o.label : c;
+      if(c==="OTHER" && otherTxt) l += "（" + otherTxt + "）";
+      return l;
+    }).join("، ");
+  }
+  if(meta.type==="short" || meta.type==="long"){
+    return (v||"").trim() || null;
+  }
+  return null;
+}
+
 function renderReview(){
   var box = el("div", {class:"card"});
   box.appendChild(el("h2", {}, ["مراجعة الإجابات"]));
@@ -958,6 +1383,44 @@ function renderReview(){
     box.appendChild(item);
   });
 
+  /* المسار التخصصي + وحدة الهوية العمرانية + الأسئلة الختامية */
+  var trackSection = null;
+  TRACK_NONCASE_IDS.forEach(function(id){
+    if(!visitedTrackNodes[id]) return;
+    var meta = TRACK_Q[id];
+    if(meta.track !== trackSection){
+      trackSection = meta.track;
+      box.appendChild(el("div", {class:"section-divider"}, [trackSection]));
+    }
+    var q = trackQuestionObj(id);
+    var ans = formatAnswer(q);
+    var item = el("div", {class:"rev-item"});
+    var head = el("div", {class:"rev-head"});
+    head.appendChild(el("div", {class:"rev-q"}, ["[" + id + "] " + meta.text]));
+    head.appendChild(el("button", {class:"rev-edit", onclick:(function(nid){ return function(){ jumpToTrack(nid); }; })(id)}, ["تعديل"]));
+    item.appendChild(head);
+    item.appendChild(el("div", {class:"rev-ans" + (ans?"":" empty")}, [ans || "بدون إجابة"]));
+    box.appendChild(item);
+  });
+
+  /* بطاقات الحالة التطبيقية المكتملة */
+  if(caseRecords.length>0){
+    box.appendChild(el("div", {class:"section-divider"}, ["بطاقة الحالة التطبيقية"]));
+    caseRecords.forEach(function(rec, idx){
+      var item = el("div", {class:"rev-item"});
+      item.appendChild(el("div", {class:"rev-q"}, ["الحالة رقم " + (idx+1)]));
+      var lines = CASE_FIELD_IDS.map(function(id){
+        var meta = TRACK_Q[id];
+        var lbl = formatCaseValue(id, rec[meta.varName], rec[meta.varName+"_other_text"]);
+        return meta.text + "：" + (lbl || "بدون إجابة");
+      });
+      var ansBox = el("div", {class:"rev-ans"});
+      lines.forEach(function(l){ ansBox.appendChild(el("div", {style:"margin-bottom:4px"}, [l])); });
+      item.appendChild(ansBox);
+      box.appendChild(item);
+    });
+  }
+
   app.appendChild(box);
 }
 
@@ -975,11 +1438,14 @@ var QUESTIONS_WITH_OTHER = Q.filter(function(q){
    عدد وترتيب الأعمدة ثابتاً في كل صف يصل إلى الجدول. */
 function buildExportObject(){
   var applicableIds = applicableList().map(function(q){return q.id;});
+  var trackVisitedIds = TRACK_NONCASE_IDS.filter(function(id){ return !!visitedTrackNodes[id]; });
   var out = {
     submitted_at: new Date().toISOString(),
-    form: "survey_common_part_v0",
-    applicable_questions: applicableIds.join("|")
+    form: "survey_full_v02",
+    applicable_questions: applicableIds.concat(trackVisitedIds).join("|")
   };
+
+  /* الجزء المشترك — أربعون متغيراً ثابتة دائماً (دون أي تعديل على الإصدار السابق) */
   Q.forEach(function(q){
     var shown = applicableIds.indexOf(q.id) > -1;
     var val = shown && answers[q.varName] !== undefined ? answers[q.varName] : (q.type==="multi"||q.type==="rank" ? [] : "");
@@ -988,60 +1454,43 @@ function buildExportObject(){
   QUESTIONS_WITH_OTHER.forEach(function(varName){
     out[varName + "_other_text"] = otherTexts[varName] || "";
   });
+
+  /* المسار التخصصي + وحدة الهوية العمرانية + الأسئلة الختامية — أعمدة ثابتة
+     لكل أسئلة المسارات كافة، فارغة لكل سؤال لم يظهر فعلياً لهذا المشارك. */
+  TRACK_NONCASE_IDS.forEach(function(id){
+    var meta = TRACK_Q[id];
+    var shown = !!visitedTrackNodes[id];
+    var val = shown && answers[meta.varName] !== undefined ? answers[meta.varName] : (meta.type==="multi" ? [] : "");
+    out[meta.varName] = val;
+  });
+  TRACK_QUESTIONS_WITH_OTHER.forEach(function(varName){
+    out[varName + "_other_text"] = otherTexts[varName] || "";
+  });
+
+  /* بطاقة الحالة التطبيقية — أعمدة مرقمة ثابتة case1_/case2_/case3_ لكل
+     حقل قابل للتكرار، فارغة إذا لم تُسجَّل هذه الحالة. */
+  out.case_add = answers.case_add || "";
+  out.case_repeat = answers.case_repeat || "";
+  out.case_count = caseRecords.length;
+  for(var ci=0; ci<MAX_CASES; ci++){
+    (function(ci){
+      var rec = caseRecords[ci];
+      CASE_FIELD_IDS.forEach(function(id){
+        var meta = TRACK_Q[id];
+        var key = "case" + (ci+1) + "_" + meta.varName;
+        out[key] = rec ? (rec[meta.varName] !== undefined ? rec[meta.varName] : (meta.type==="multi" ? [] : "")) : (meta.type==="multi" ? [] : "");
+        if(CASE_FIELDS_WITH_OTHER.indexOf(id)>-1){
+          out[key + "_other_text"] = rec ? (rec[meta.varName + "_other_text"] || "") : "";
+        }
+      });
+    })(ci);
+  }
+
+  /* رمز المسار الذي أكمله المشارك، وهل ظهرت له وحدة الهوية العمرانية */
+  out.completed_track_code = answers.primary_role ? (ENTRY_BY_ROLE[answers.primary_role] ? answers.primary_role : "OTHER_UNMAPPED") : "";
+  out.identity_shown = trackVisitedIds.some(function(id){ return id.slice(0,2)==="ID"; }) ? "YES" : "NO";
+
   return out;
-}
-
-function toCsvValue(v){
-  if(Array.isArray(v)) v = v.join("|");
-  v = String(v===undefined||v===null?"":v);
-  if(/[",\n]/.test(v)) v = '"' + v.replace(/"/g,'""') + '"';
-  return v;
-}
-
-function buildCsv(obj){
-  var keys = Object.keys(obj).filter(function(k){return k!=="meta";});
-  var header = keys.join(",");
-  var row = keys.map(function(k){return toCsvValue(obj[k]);}).join(",");
-  return header + "\n" + row;
-}
-
-var downloadsCap = null;
-if(window.claude && typeof window.claude.use === "function"){
-  window.claude.use("downloads").then(function(d){ downloadsCap = d; }).catch(function(){ downloadsCap = null; });
-}
-
-function download(filename, content, mime, btn){
-  var blob = new Blob([content], {type:mime});
-  if(downloadsCap){
-    var prevLabel = btn ? btn.textContent : null;
-    if(btn){ btn.disabled = true; btn.textContent = "جارٍ التنزيل…"; }
-    downloadsCap.save({filename:filename, data:blob}).then(function(){
-      if(btn){ btn.disabled = false; btn.textContent = prevLabel; }
-    }).catch(function(err){
-      if(btn){ btn.disabled = false; btn.textContent = prevLabel; }
-      if(err && err.code==="declined") return;
-      showDownloadFallback(filename, content, mime);
-    });
-    return;
-  }
-  showDownloadFallback(filename, content, mime);
-}
-
-function showDownloadFallback(filename, content, mime){
-  var win = window.open("", "_blank");
-  if(win && win.document){
-    win.document.title = filename;
-    var pre = win.document.createElement("pre");
-    pre.style.whiteSpace = "pre-wrap";
-    pre.style.direction = "ltr";
-    pre.style.textAlign = "left";
-    pre.style.fontFamily = "ui-monospace,Menlo,Consolas,monospace";
-    pre.style.padding = "16px";
-    pre.textContent = content;
-    win.document.body.appendChild(pre);
-  } else {
-    alert("تعذّر حفظ الملف تلقائياً في هذه البيئة. المحتوى معروض في معاينة JSON أدناه لنسخه يدوياً.");
-  }
 }
 
 /* ---------------------------------------------------------------------
@@ -1057,95 +1506,27 @@ function renderDone(){
   } else if(submitState==="sent"){
     box.appendChild(el("div", {class:"done-icon"}, ["✓"]));
     box.appendChild(el("h1", {}, ["تم إرسال إجابتك"]));
-    box.appendChild(el("p", {}, ["شكراً لمشاركتك. تم إرسال إجاباتك لتُحفظ ضمن إجابات الاستبيان."]));
-    box.appendChild(el("div", {class:"notice"}, [
-      el("b", {}, ["ملاحظة: "]), "لأسباب تقنية في المتصفح لا يمكن للصفحة تأكيد استلام الخادم للبيانات بنسبة قطعية. يمكنك أيضاً تنزيل نسخة من إجابتك أدناه للاحتفاظ بها."
-    ]));
+    box.appendChild(el("p", {}, ["شكراً لمشاركتك ولوقتك. تم إرسال إجاباتك لتُحفظ ضمن إجابات الاستبيان."]));
   } else if(submitState==="failed"){
     box.appendChild(el("div", {class:"done-icon", style:"background:var(--danger-tint);color:var(--danger)"}, ["!"]));
     box.appendChild(el("h1", {}, ["تعذّر إرسال الإجابة تلقائياً"]));
-    box.appendChild(el("p", {}, ["حدث خطأ في الاتصال أثناء الإرسال. يرجى تنزيل نسخة من إجابتك أدناه وإرسالها يدوياً، أو إعادة المحاولة لاحقاً."]));
+    box.appendChild(el("p", {}, ["حدث خطأ في الاتصال أثناء الإرسال. يرجى إعادة المحاولة، أو التواصل مع فريق إعداد الأدلة إن تكرر الخطأ."]));
+    box.appendChild(el("button", {class:"btn btn-primary btn-block", style:"margin-top:16px", onclick:retrySubmission}, ["إعادة المحاولة"]));
   } else {
     box.appendChild(el("div", {class:"done-icon"}, ["✓"]));
     box.appendChild(el("h1", {}, ["تم إنهاء الاستبيان"]));
   }
 
-  var obj = buildExportObject();
-  var exportRow = el("div", {class:"export-row"});
-  var jsonBtn = el("button", {class:"btn btn-accent"}, ["⭳ تصدير JSON"]);
-  jsonBtn.addEventListener("click", function(){
-    download("trial-response.json", JSON.stringify(obj, null, 2), "application/json", jsonBtn);
-  });
-  var csvBtn = el("button", {class:"btn btn-ghost"}, ["⭳ تصدير CSV"]);
-  csvBtn.addEventListener("click", function(){
-    download("trial-response.csv", buildCsv(obj), "text/csv;charset=utf-8", csvBtn);
-  });
-  exportRow.appendChild(jsonBtn);
-  exportRow.appendChild(csvBtn);
-  box.appendChild(exportRow);
-
-  box.appendChild(el("div", {style:"margin-top:16px"}, [el("div",{class:"q-help",style:"margin-bottom:6px"},["معاينة JSON:"])]));
-  box.appendChild(el("pre", {class:"data-preview"}, [JSON.stringify(obj, null, 2)]));
-
-  box.appendChild(el("button", {class:"btn btn-ghost btn-block", style:"margin-top:16px", onclick:resetAll}, ["بدء تعبئة جديدة"]));
+  if(submitState==="sent" || submitState==="idle"){
+    box.appendChild(el("div", {class:"notice", style:"margin-top:16px"}, ["إنهاء الاستبيان — يمكنكم الآن إغلاق هذه الصفحة."]));
+  }
   app.appendChild(box);
-}
-
-/* ---------------------------------------------------------------------
-   تعبئة تجريبية سريعة (أداة اختبار)
---------------------------------------------------------------------- */
-function autofillDemo(){
-  answers = {
-    consent:"A",
-    organization_name:"مكتب الواحة الاستشاري",
-    respondent_name:"م. سالم العتيبي",
-    job_title:"مدير القسم الفني",
-    primary_specialty:"ARCH",
-    experience_band:"10_14",
-    work_locations:["SAKAKA","DUMAT"],
-    professional_contact:"salem@example.com",
-    response_capacity:"PERSONAL",
-    primary_role:"CONSULT",
-    secondary_roles:["LICENSE"],
-    experienced_guides:["G01","G06","G07","G14"],
-    priority_guides:["G01","G07"],
-    experience_stages:["DESIGN","SUBMIT","REVIEW"],
-    clarity_governing_reference:"3",
-    clarity_current_version:"2",
-    clarity_activity_code_relation:"3",
-    clarity_sector_requirements:"4",
-    clarity_mandatory_guidance:"3",
-    clarity_cross_references:"2",
-    clarity_evidence_documents:"4",
-    has_reference_difficulty:"YES",
-    reference_difficulty_detail:"يصعب أحياناً تحديد النسخة النافذة من كود البناء السعودي عند التعارض مع اشتراط محلي.",
-    application_challenges:["MULTIREF","INTERP","DOCS","VISUAL"],
-    challenge_priorities:["MULTIREF","DOCS","INTERP"],
-    challenge_comment:"غالباً ما تتعدد جهات المراجعة لنفس النشاط التجاري.",
-    impact_plot_characteristics:"3",
-    impact_urban_fabric:"3",
-    impact_streets_access:"4",
-    impact_parking_mobility:"4",
-    impact_climate:"3",
-    impact_infrastructure:"2",
-    impact_heritage_sensitive:"2",
-    impact_subregional_variation:"3",
-    impact_economic_tourism:"2",
-    impact_existing_buildings:"3",
-    has_other_local_factor:"NO",
-    support_tools:["CHECK","DRAW","GOODBAD","TEMPLATES"],
-    support_tools_priorities:["DRAW","CHECK","GOODBAD"]
-  };
-  otherTexts = {};
-  qIndex = firstApplicableFrom(0,1);
-  screen = "question";
-  lastError = "";
-  render();
 }
 
 /* ---------------------------------------------------------------------
    ضبط ظل الشريط العلوي عند التمرير + الإقلاع
 --------------------------------------------------------------------- */
+document.getElementById("topbarLogo").src = "data:image/webp;base64," + LOGO_B64;
 var topbar = document.getElementById("topbar");
 document.addEventListener("scroll", function(){
   if(window.scrollY>4) topbar.classList.add("scrolled"); else topbar.classList.remove("scrolled");
