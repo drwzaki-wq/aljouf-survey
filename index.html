@@ -262,6 +262,19 @@ var LOGO_B64 = "UklGRk4uAABXRUJQVlA4IEIuAABQrACdASryAaMAPjEWiUMiISEU2C3MIAMEs5ni
    مجموعات الخيارات المشتركة (مطابقة لورقة «خيارات الإجابة»)
 --------------------------------------------------------------------- */
 var OPT = {
+  localFactors:[
+    {code:"PLOT",label:"أحجام وأشكال قطع الأراضي"},
+    {code:"FABRIC",label:"طبيعة النسيج العمراني والمجاورات"},
+    {code:"STREETS",label:"عرض الشوارع وسهولة الدخول والخروج"},
+    {code:"PARKING",label:"استخدام المركبات والحاجة إلى المواقف"},
+    {code:"CLIMATE",label:"الظروف المناخية"},
+    {code:"INFRA",label:"توافر البنية التحتية والخدمات"},
+    {code:"HERITAGE",label:"المواقع التراثية أو ذات الحساسية العمرانية"},
+    {code:"SUBREGION",label:"اختلاف الظروف بين مدن ومحافظات المنطقة"},
+    {code:"ECONOMY",label:"طبيعة الأنشطة الاقتصادية والسياحية"},
+    {code:"EXISTING",label:"وجود مبان قائمة يصعب تعديلها"},
+    {code:"OTHER",label:"خاصية أخرى",other:true}
+  ],
   clarity: [
     {code:"5",label:"واضحة جداً"},
     {code:"4",label:"واضحة"},
@@ -385,19 +398,8 @@ var Q = [
    text:"اسم المشارك", help:"يمكن جعل الاسم اختيارياً إذا قرر المكتب ذلك.", audience:"جميع المشاركين",
    showIf:consentOk},
 
-  {id:"P03", section:"بيانات المشارك", varName:"job_title", type:"short", required:true,
-   text:"المسمى الوظيفي", help:"المسمى الحالي داخل المكتب أو الجهة.", audience:"جميع المشاركين",
-   showIf:consentOk},
-
-  {id:"P04", section:"بيانات المشارك", varName:"primary_specialty", type:"single", required:true,
-   text:"ما تخصصك الرئيس؟", help:"اختر التخصص الأقرب إلى طبيعة عملك الحالية.", audience:"جميع المشاركين",
-   options:[
-     {code:"ARCH",label:"عمارة"},{code:"URBAN",label:"تخطيط عمراني"},{code:"CIVIL",label:"هندسة مدنية أو إنشائية"},
-     {code:"MECH",label:"هندسة ميكانيكية"},{code:"ELEC",label:"هندسة كهربائية"},
-     {code:"FIRE",label:"هندسة سلامة وحماية من الحريق"},{code:"TRANS",label:"هندسة نقل ومرور"},
-     {code:"LAND",label:"تنسيق مواقع"},{code:"FM",label:"إدارة وتشغيل منشآت"},{code:"OTHER",label:"تخصص آخر",other:true}
-   ], showIf:consentOk},
-
+  
+  
   {id:"P05", section:"بيانات المشارك", varName:"experience_band", type:"single", required:true,
    text:"كم تبلغ سنوات خبرتك المهنية؟", help:"يشمل مجموع الخبرة المهنية ذات الصلة.", audience:"جميع المشاركين",
    options:[
@@ -421,114 +423,31 @@ var Q = [
    text:"ما الدور الرئيس الذي تجيب من خلال خبرتك فيه؟", help:"يبنى على هذا الاختيار المسار التخصصي الذي سيظهر لاحقاً.", audience:"جميع المشاركين",
    options:OPT.roles, showIf:consentOk},
 
-  {id:"R02", section:"الصفة المهنية", varName:"secondary_roles", type:"multi", required:false, max:6,
-   text:"هل تمارس أدواراً مهنية أخرى ذات صلة؟", help:"اختر كل ما ينطبق بخلاف الدور الرئيس.", audience:"جميع المشاركين",
-   options:OPT.roles, showIf:consentOk},
-
+  
   {id:"G01", section:"نطاق الخبرة", varName:"experienced_guides", type:"multi", required:true, max:14,
    text:"ما الأدلة التي لديك خبرة مباشرة في مبانيها أو أنشطتها؟", help:"اختر الأدلة التي تعاملت فعلياً مع موضوعاتها.", audience:"جميع المشاركين",
    options:OPT.guides, showIf:consentOk},
 
-  {id:"G02", section:"نطاق الخبرة", varName:"priority_guides", type:"multi", required:true, max:3,
-   text:"اختر حتى ثلاثة أدلة تراها أولوية للإجابة التفصيلية", help:"يجب أن تكون الأدلة المختارة ضمن إجابة السؤال السابق.", audience:"جميع المشاركين",
-   poolFrom:"experienced_guides", poolOptions:OPT.guides,
-   showIf:hasGuideExperience},
-
-  {id:"G03", section:"نطاق الخبرة", varName:"experience_stages", type:"multi", required:true, max:9,
-   text:"في أي مراحل تعاملت مع المباني أو الأنشطة المختارة؟", help:"اختر جميع المراحل التي تدخل ضمن خبرتك.", audience:"جميع المشاركين",
-   options:OPT.stages, showIf:hasGuideExperience},
-
-  {id:"RF01", section:"وضوح المرجعيات", varName:"clarity_governing_reference", type:"single", required:true,
-   text:"يسهل تحديد المرجع الحاكم للمبنى أو النشاط",
-   help:"المرجع الحاكم هو الدليل أو الكود الأساسي الذي يجب الرجوع إليه أولاً لمعرفة اشتراطات مبنى أو نشاط معيّن (مثل دليل تخصصي معتمد أو كود البناء السعودي).",
-   sectionNote:"يقصد بـ\"المرجع\" في هذا القسم: الوثائق والأكواد الوطنية القائمة فعلياً التي يُرجع إليها عند تصميم المبنى أو النشاط أو ترخيصه — مثل أدلة اشتراطات إنشاء المباني الصادرة عن وزارة الشؤون البلدية والقروية والإسكان، والموجهات التصميمية الوطنية للهوية العمرانية، وكود البناء السعودي، والمخططات التنظيمية للمدن والمحافظات، واشتراطات الجهات القطاعية (الدفاع المدني، الكهرباء، الاتصالات، المياه...). هذه الأسئلة لا تتعلق بأدلة الجوف الأربعة عشر التي يجري إعدادها حالياً ضمن هذا المشروع.",
-   audience:"جميع المشاركين",
-   options:OPT.clarity, showIf:consentOk},
-  {id:"RF03", section:"وضوح المرجعيات", varName:"clarity_activity_code_relation", type:"single", required:true,
-   text:"العلاقة بين اشتراطات النشاط وكود البناء السعودي واضحة", help:"قيّم العبارة وفق خبرتك العملية.", audience:"جميع المشاركين",
-   options:OPT.clarity, showIf:consentOk},
-  {id:"RF04", section:"وضوح المرجعيات", varName:"clarity_sector_requirements", type:"single", required:true,
-   text:"متطلبات الجهات القطاعية (مثل: كهرباء، ...) محددة ويمكن التعرف عليها مبكراً", help:"قيّم العبارة وفق خبرتك العملية.", audience:"جميع المشاركين",
-   options:OPT.clarity, showIf:consentOk},
-  {id:"RF05", section:"وضوح المرجعيات", varName:"clarity_mandatory_guidance", type:"single", required:true,
-   text:"يمكن التمييز بين المتطلبات الملزمة والتوجيهات الإرشادية", help:"المتطلب الملزم اشتراط لا بد من تحقيقه ويترتب على مخالفته رفض أو تعديل، أما التوجيه الإرشادي فتوصية لتحسين جودة التصميم دون إلزام قانوني بتطبيقه بحذافيره.", audience:"جميع المشاركين",
-   options:OPT.clarity, showIf:consentOk},
-  {id:"RF07", section:"وضوح المرجعيات", varName:"clarity_evidence_documents", type:"single", required:true,
-   text:"الوثائق والمخططات المطلوبة واضحة", help:"قيّم العبارة وفق خبرتك العملية.", audience:"جميع المشاركين",
-   options:OPT.clarity, showIf:consentOk},
-
-  {id:"RF08", section:"وضوح المرجعيات", varName:"has_reference_difficulty", type:"single", required:false,
-   text:"هل يوجد مرجع يصعب تحديده أو الوصول إليه أو فهم علاقته بالمراجع الأخرى؟",
-   help:"يظهر عند انخفاض تقييم واحد أو أكثر من أسئلة وضوح المرجعيات، ويمكن إتاحته للجميع اختيارياً.", audience:"جميع المشاركين",
-   options:OPT.yesNoUnsure,
-   showIf:function(a){return clarityLowKeys().some(function(k){return ["1","2","3"].indexOf(a[k])>-1;});}},
-
-  {id:"RF09", section:"وضوح المرجعيات", varName:"reference_difficulty_detail", type:"multi", required:true, max:2,
-   text:"ما المرجع الذي يصعب تحديده أو الوصول إليه أو فهم علاقته بالمراجع الأخرى؟", help:"اختر مما يلي (حتى مرجعين)، أو اذكره في \"مرجع آخر\" إن لم يكن ضمن القائمة.", audience:"من اختار نعم في RF08",
-   options:OPT.referenceTypes,
-   showIf:function(a){return a.has_reference_difficulty==="YES";}},
-
+  
+  
+          
+  
+  
   {id:"CH01", section:"تحديات التطبيق", varName:"application_challenges", type:"multi", required:true, max:5,
    text:"ما أبرز أنواع التحديات التي لاحظتها عند تطبيق الاشتراطات؟", help:"اختر خمسة تحديات بحد أقصى.", audience:"جميع المشاركين",
    options:OPT.challenges, showIf:consentOk},
 
-  {id:"CH02", section:"تحديات التطبيق", varName:"challenge_priorities", type:"rank", required:true, max:3,
-   text:"حدد التحديات الثلاثة الأعلى أولوية من بين اختياراتك", help:"رتب الأول والثاني والثالث.", audience:"جميع المشاركين",
-   poolFrom:"application_challenges", poolOptions:OPT.challenges,
-   showIf:function(a){return (a.application_challenges||[]).length>0;}},
-
-  {id:"CH03", section:"تحديات التطبيق", varName:"challenge_comment", type:"short", required:false,
-   text:"هل ترغب في توضيح أحد التحديات المختارة؟", help:"يمكن ذكر مثال موجز دون بيانات سرية.", audience:"جميع المشاركين",
-   showIf:function(a){return (a.application_challenges||[]).length>0;}},
-
-  {id:"LC01", section:"خصائص الجوف", varName:"impact_plot_characteristics", type:"single", required:true,
-   text:"ما مدى تأثير أحجام وأشكال قطع الأراضي في تطبيق الاشتراطات؟", help:"قيّم الأثر المباشر وفق خبرتك.", audience:"جميع المشاركين",
-   options:OPT.impact, showIf:consentOk},
-  {id:"LC02", section:"خصائص الجوف", varName:"impact_urban_fabric", type:"single", required:true,
-   text:"ما مدى تأثير طبيعة النسيج العمراني والمجاورات؟", help:"قيّم الأثر المباشر وفق خبرتك.", audience:"جميع المشاركين",
-   options:OPT.impact, showIf:consentOk},
-  {id:"LC03", section:"خصائص الجوف", varName:"impact_streets_access", type:"single", required:true,
-   text:"ما مدى تأثير عرض الشوارع وسهولة الدخول والخروج؟", help:"قيّم الأثر المباشر وفق خبرتك.", audience:"جميع المشاركين",
-   options:OPT.impact, showIf:consentOk},
-  {id:"LC04", section:"خصائص الجوف", varName:"impact_parking_mobility", type:"single", required:true,
-   text:"ما مدى تأثير استخدام المركبات والحاجة إلى المواقف؟", help:"قيّم الأثر المباشر وفق خبرتك.", audience:"جميع المشاركين",
-   options:OPT.impact, showIf:consentOk},
-  {id:"LC05", section:"خصائص الجوف", varName:"impact_climate", type:"single", required:true,
-   text:"ما مدى تأثير الظروف المناخية؟", help:"يشمل الحرارة والإشعاع والرياح والأمطار والغبار.", audience:"جميع المشاركين",
-   options:OPT.impact, showIf:consentOk},
-  {id:"LC06", section:"خصائص الجوف", varName:"impact_infrastructure", type:"single", required:true,
-   text:"ما مدى تأثير توافر البنية التحتية والخدمات؟", help:"قيّم الأثر المباشر وفق خبرتك.", audience:"جميع المشاركين",
-   options:OPT.impact, showIf:consentOk},
-  {id:"LC07", section:"خصائص الجوف", varName:"impact_heritage_sensitive", type:"single", required:true,
-   text:"ما مدى تأثير المواقع التراثية أو ذات الحساسية العمرانية؟", help:"قيّم الأثر المباشر وفق خبرتك.", audience:"جميع المشاركين",
-   options:OPT.impact, showIf:consentOk},
-  {id:"LC08", section:"خصائص الجوف", varName:"impact_subregional_variation", type:"single", required:true,
-   text:"ما مدى تأثير اختلاف الظروف بين مدن ومحافظات المنطقة؟", help:"قيّم الأثر المباشر وفق خبرتك.", audience:"جميع المشاركين",
-   options:OPT.impact, showIf:consentOk},
-  {id:"LC09", section:"خصائص الجوف", varName:"impact_economic_tourism", type:"single", required:true,
-   text:"ما مدى تأثير طبيعة الأنشطة الاقتصادية والسياحية؟", help:"قيّم الأثر المباشر وفق خبرتك.", audience:"جميع المشاركين",
-   options:OPT.impact, showIf:consentOk},
-  {id:"LC10", section:"خصائص الجوف", varName:"impact_existing_buildings", type:"single", required:true,
-   text:"ما مدى تأثير وجود مبان قائمة يصعب تعديلها؟", help:"يشمل التوسع وتغيير الاستخدام وتوفيق الأوضاع.", audience:"جميع المشاركين",
-   options:OPT.impact, showIf:consentOk},
-
-  {id:"LC11", section:"خصائص الجوف", varName:"has_other_local_factor", type:"single", required:false,
-   text:"هل توجد خاصية محلية أخرى لها أثر مباشر في اشتراطات أحد المباني أو الأنشطة؟", help:"اختر نعم إذا كانت لديك خاصية محددة لم ترد أعلاه.", audience:"جميع المشاركين",
-   options:OPT.yesNoUnsure, showIf:consentOk},
-
-  {id:"LC12", section:"خصائص الجوف", varName:"other_local_factor_detail", type:"long", required:true,
-   text:"حدد الخاصية المحلية وأثرها المباشر", help:"اذكر الخاصية والنشاط أو المبنى المتأثر والنتيجة التي تلاحظها.", audience:"من اختار نعم في LC11",
-   showIf:function(a){return a.has_other_local_factor==="YES";}},
-
+  
+  
+  {id:"LC01", section:"خصائص الجوف", varName:"top_local_characteristics", type:"multi", required:true, max:3, text:"ما أكثر ثلاث خصائص محلية في الجوف تؤثر في تطبيق الاشتراطات؟", help:"اختر ثلاث خصائص بحد أقصى مما واجهته في عملك.", audience:"جميع المشاركين", options:OPT.localFactors, showIf:consentOk},
+                    
+  
+  
   {id:"DS01", section:"وسائل دعم التطبيق", varName:"support_tools", type:"multi", required:true, max:5,
    text:"ما الوسائل الأكثر فائدة لتوضيح الأدلة ودعم تطبيقها؟", help:"اختر خمس وسائل بحد أقصى.", audience:"جميع المشاركين",
    options:OPT.supportTools, showIf:consentOk},
 
-  {id:"DS02", section:"وسائل دعم التطبيق", varName:"support_tools_priorities", type:"rank", required:true, max:3,
-   text:"حدد الوسائل الثلاث الأعلى أولوية من بين اختياراتك", help:"رتب الأول والثاني والثالث.", audience:"جميع المشاركين",
-   poolFrom:"support_tools", poolOptions:OPT.supportTools,
-   showIf:function(a){return (a.support_tools||[]).length>0;}}
-];
+  ];
 
 /* ---------------------------------------------------------------------
    بيانات المسارات التخصصية (v0.2) — مطابقة لأوراق «خريطة المسارات»،
@@ -630,12 +549,12 @@ var TRACK_OPT = {
 var TRACK_Q = {
   "CN01": {track:"المكاتب الاستشارية والمصممون", text:"كم يبلغ تقريباً عدد المشروعات ذات الصلة التي تعاملت معها خلال السنوات الثلاث الأخيرة؟", help:"يستخدم لتوصيف حجم الخبرة التطبيقية.", type:"single", required:true, max:1, allowOther:false, varName:"consult_project_volume", next:"CN02", condOn:null},
   "CN02": {track:"المكاتب الاستشارية والمصممون", text:"في أي مرحلة تظهر المتطلبات غير المتوقعة غالباً؟", help:"اختر ثلاث مراحل بحد أقصى.", type:"multi", required:true, max:3, allowOther:true, varName:"consult_late_requirements_stage", next:"CN03", condOn:null},
-  "CN03": {track:"المكاتب الاستشارية والمصممون", text:"ما الأسباب الأكثر تكراراً لإعادة التصميم أو تعديله؟", help:"اختر خمسة أسباب بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"consult_redesign_causes", next:"CN04", condOn:null},
+  "CN03": {track:"المكاتب الاستشارية والمصممون", text:"ما الأسباب الأكثر تكراراً لإعادة التصميم أو تعديله؟", help:"اختر خمسة أسباب بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"consult_redesign_causes", next:"CN05", condOn:null},
   "CN04": {track:"المكاتب الاستشارية والمصممون", text:"ما مدى وضوح المعلومات المطلوب التحقق منها قبل بدء التصميم؟", help:"يشمل بيانات الموقع والاستعمال والموافقات المطلوبة.", type:"single", required:true, max:1, allowOther:false, varName:"consult_pre_design_clarity", next:"CN05", condOn:null},
   "CN05": {track:"المكاتب الاستشارية والمصممون", text:"ما مدى وضوح المخططات والمستندات المطلوبة لتقديم طلب الترخيص؟", help:"قيّم وفق تجربتك.", type:"single", required:true, max:1, allowOther:false, varName:"consult_submission_docs_clarity", next:"CN06", condOn:null},
   "CN06": {track:"المكاتب الاستشارية والمصممون", text:"كم يتكرر اختلاف الملاحظات على الموضوع نفسه بين المراجعين أو الجهات؟", help:"اختر معدل التكرار الأقرب إلى تجربتك.", type:"single", required:true, max:1, allowOther:false, varName:"consult_review_variation_frequency", next:"CN07", condOn:null},
   "CN07": {track:"المكاتب الاستشارية والمصممون", text:"في أي موضوعات يظهر اختلاف الملاحظات غالباً؟", help:"اختر خمسة موضوعات بحد أقصى.", type:"multi", required:false, max:5, allowOther:true, varName:"consult_review_variation_topics", next:"CN08", condOn:{dep:"CN06",values:["3", "4", "5"]}},
-  "CN08": {track:"المكاتب الاستشارية والمصممون", text:"ما المتطلبات التي يصعب تحويلها إلى قرار تصميمي واضح؟", help:"اختر كل ما ينطبق بحد أقصى خمسة.", type:"multi", required:true, max:5, allowOther:true, varName:"consult_design_translation_difficulties", next:"CN09", condOn:null},
+  "CN08": {track:"المكاتب الاستشارية والمصممون", text:"ما المتطلبات التي يصعب تحويلها إلى قرار تصميمي واضح؟", help:"اختر كل ما ينطبق بحد أقصى خمسة.", type:"multi", required:true, max:5, allowOther:true, varName:"consult_design_translation_difficulties", next:"ID01", condOn:null},
   "CN09": {track:"المكاتب الاستشارية والمصممون", text:"ما مدى وضوح إمكانية تقديم حل بديل يحقق الغرض من المتطلب؟", help:"يقصد بالحل البديل تحقيق نتيجة الأداء المطلوبة بطريقة أخرى مقبولة.", type:"single", required:true, max:1, allowOther:false, varName:"consult_alternative_solution_clarity", next:"CN10", condOn:null},
   "CN10": {track:"المكاتب الاستشارية والمصممون", text:"ما الجوانب الأكثر صعوبة عند تطبيق موجهات الهوية العمرانية؟", help:"اختر أربعة جوانب بحد أقصى.", type:"multi", required:false, max:4, allowOther:true, varName:"consult_identity_difficulties", next:"CN11", condOn:null},
   "CN11": {track:"المكاتب الاستشارية والمصممون", text:"ما أدوات الدعم الأكثر فائدة للمصمم؟", help:"اختر ثلاث أدوات بحد أقصى.", type:"multi", required:true, max:3, allowOther:true, varName:"consult_support_tools", next:"CN12", condOn:null},
@@ -647,7 +566,7 @@ var TRACK_Q = {
   "LN05": {track:"مهندسو ومراجعو التراخيص", text:"كم يتكرر طلب تفسير لحكم أو اشتراط أثناء المراجعة؟", help:"اختر معدل التكرار الأقرب.", type:"single", required:true, max:1, allowOther:false, varName:"license_interpretation_frequency", next:"LN06", condOn:null},
   "LN06": {track:"مهندسو ومراجعو التراخيص", text:"ما الموضوعات التي يكثر فيها اختلاف التفسير؟", help:"اختر خمسة موضوعات بحد أقصى.", type:"multi", required:false, max:5, allowOther:true, varName:"license_interpretation_topics", next:"LN07", condOn:{dep:"LN05",values:["3", "4", "5"]}},
   "LN07": {track:"مهندسو ومراجعو التراخيص", text:"ما مدى سهولة التحقق من الاشتراطات من خلال المخططات المقدمة؟", help:"قيّم وفق تجربتك.", type:"single", required:true, max:1, allowOther:false, varName:"license_plan_verifiability", next:"LN08", condOn:null},
-  "LN08": {track:"مهندسو ومراجعو التراخيص", text:"ما المتطلبات التي تعتمد بدرجة كبيرة على التقدير الشخصي؟", help:"اختر أربعة موضوعات بحد أقصى.", type:"multi", required:false, max:4, allowOther:true, varName:"license_subjective_topics", next:"LN09", condOn:null},
+  "LN08": {track:"مهندسو ومراجعو التراخيص", text:"ما المتطلبات التي تعتمد بدرجة كبيرة على التقدير الشخصي؟", help:"اختر أربعة موضوعات بحد أقصى.", type:"multi", required:false, max:4, allowOther:true, varName:"license_subjective_topics", next:"ID01", condOn:null},
   "LN09": {track:"مهندسو ومراجعو التراخيص", text:"ما مدى وضوح معالجة المباني متعددة الاستخدامات؟", help:"يشمل تحديد الدليل الحاكم والأحكام المشتركة والخاصة.", type:"single", required:true, max:1, allowOther:false, varName:"license_mixed_use_clarity", next:"LN10", condOn:null},
   "LN10": {track:"مهندسو ومراجعو التراخيص", text:"ما مدى وضوح معالجة المباني القائمة والتوسع وتغيير الاستخدام؟", help:"قيّم وفق تجربتك.", type:"single", required:true, max:1, allowOther:false, varName:"license_existing_change_clarity", next:"LN11", condOn:null},
   "LN11": {track:"مهندسو ومراجعو التراخيص", text:"ما قوائم التحقق المطلوبة لدعم المراجعة؟", help:"اختر كل ما ينطبق.", type:"multi", required:true, max:6, allowOther:true, varName:"license_checklist_needs", next:"LN12", condOn:null},
@@ -656,10 +575,10 @@ var TRACK_Q = {
   "IN02": {track:"مراقبو البناء والمفتشون", text:"ما المخالفات أو حالات عدم المطابقة الأكثر تكراراً؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"inspect_common_noncompliance", next:"IN03", condOn:null},
   "IN03": {track:"مراقبو البناء والمفتشون", text:"في أي مرحلة تكتشف حالات عدم المطابقة غالباً؟", help:"اختر مرحلتين بحد أقصى.", type:"multi", required:true, max:2, allowOther:true, varName:"inspect_detection_stage", next:"IN04", condOn:null},
   "IN04": {track:"مراقبو البناء والمفتشون", text:"ما مدى سهولة التحقق ميدانياً من الاشتراطات الحالية؟", help:"قيّم وفق تجربتك.", type:"single", required:true, max:1, allowOther:false, varName:"inspect_field_verifiability", next:"IN05", condOn:null},
-  "IN05": {track:"مراقبو البناء والمفتشون", text:"ما الموضوعات التي يصعب إثبات مخالفتها أو تحديد معيار قبولها؟", help:"اختر خمسة موضوعات بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"inspect_hard_to_verify_topics", next:"IN06", condOn:null},
+  "IN05": {track:"مراقبو البناء والمفتشون", text:"ما الموضوعات التي يصعب إثبات مخالفتها أو تحديد معيار قبولها؟", help:"اختر خمسة موضوعات بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"inspect_hard_to_verify_topics", next:"IN07", condOn:null},
   "IN06": {track:"مراقبو البناء والمفتشون", text:"ما المستندات أو الأدلة التي تحتاجها أثناء التفتيش؟", help:"اختر كل ما ينطبق.", type:"multi", required:true, max:7, allowOther:true, varName:"inspect_evidence_needed", next:"IN07", condOn:null},
   "IN07": {track:"مراقبو البناء والمفتشون", text:"ما التعديلات غير المعتمدة التي تظهر بعد إصدار الترخيص؟", help:"اختر أربعة عناصر بحد أقصى.", type:"multi", required:false, max:4, allowOther:true, varName:"inspect_post_license_changes", next:"IN08", condOn:null},
-  "IN08": {track:"مراقبو البناء والمفتشون", text:"ما العناصر التي يجب التحقق منها قبل شهادة الإشغال؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"inspect_pre_occupancy_items", next:"IN09", condOn:null},
+  "IN08": {track:"مراقبو البناء والمفتشون", text:"ما العناصر التي يجب التحقق منها قبل شهادة الإشغال؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"inspect_pre_occupancy_items", next:"ID01", condOn:null},
   "IN09": {track:"مراقبو البناء والمفتشون", text:"ما عناصر الهوية التي يمكن التحقق منها ميدانياً بوضوح؟", help:"اختر كل ما ينطبق.", type:"multi", required:false, max:6, allowOther:true, varName:"inspect_identity_verifiable", next:"IN10", condOn:null},
   "IN10": {track:"مراقبو البناء والمفتشون", text:"ما أدوات الدعم الأكثر فائدة للمراقب أو المفتش؟", help:"اختر ثلاث أدوات بحد أقصى.", type:"multi", required:true, max:3, allowOther:true, varName:"inspect_support_tools", next:"IN11", condOn:null},
   "IN11": {track:"مراقبو البناء والمفتشون", text:"هل لديك ملاحظة إضافية تتعلق بالتنفيذ أو التفتيش؟", help:"اكتب ملاحظة موجزة إن وجدت.", type:"long", required:false, max:1, allowOther:false, varName:"inspect_additional_comment", next:"ID01", condOn:null},
@@ -669,68 +588,68 @@ var TRACK_Q = {
   "SC04": {track:"الجهات القطاعية", text:"ما مدى وضوح حدود اختصاص الجهة وعلاقتها بالترخيص البلدي؟", help:"قيّم وفق الممارسة الحالية.", type:"single", required:true, max:1, allowOther:false, varName:"sector_jurisdiction_clarity", next:"SC05", condOn:null},
   "SC05": {track:"الجهات القطاعية", text:"ما المستندات التي يكثر غيابها عند الإحالة إلى الجهة؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:false, max:5, allowOther:true, varName:"sector_missing_documents", next:"SC06", condOn:null},
   "SC06": {track:"الجهات القطاعية", text:"ما أبرز مشكلات التنسيق بين الجهة والأطراف الأخرى؟", help:"اختر أربعة موضوعات بحد أقصى.", type:"multi", required:true, max:4, allowOther:true, varName:"sector_coordination_issues", next:"SC07", condOn:null},
-  "SC07": {track:"الجهات القطاعية", text:"ما المتطلبات التي يجب أن يعرفها المالك أو المصمم مبكراً؟", help:"حدد الموضوعات التي قد يؤدي تأخر معرفتها إلى إعادة التصميم أو تأخر الترخيص.", type:"multi", required:true, max:5, allowOther:true, varName:"sector_early_requirements", next:"SC08", condOn:null},
+  "SC07": {track:"الجهات القطاعية", text:"ما المتطلبات التي يجب أن يعرفها المالك أو المصمم مبكراً؟", help:"حدد الموضوعات التي قد يؤدي تأخر معرفتها إلى إعادة التصميم أو تأخر الترخيص.", type:"multi", required:true, max:5, allowOther:true, varName:"sector_early_requirements", next:"ID01", condOn:null},
   "SC08": {track:"الجهات القطاعية", text:"ما الموضوعات التي ينبغي الاكتفاء فيها بالإحالة إلى مرجع الجهة دون تكرارها؟", help:"اختر ما ينطبق أو اذكر المرجع.", type:"multi", required:false, max:5, allowOther:true, varName:"sector_reference_only_topics", next:"SC09", condOn:null},
   "SC09": {track:"الجهات القطاعية", text:"هل توجد مرجعيات أو إصدارات حديثة ينبغي إدراجها في سجل المرجعيات؟", help:"يمكن إدراج رابط أو اسم المرجع والإصدار.", type:"long", required:false, max:1, allowOther:false, varName:"sector_reference_updates", next:"SC10", condOn:null},
   "SC10": {track:"الجهات القطاعية", text:"هل لديك ملاحظة إضافية تتعلق باختصاص الجهة أو آلية التنسيق؟", help:"اكتب ملاحظة موجزة إن وجدت.", type:"long", required:false, max:1, allowOther:false, varName:"sector_additional_comment", next:"ID01", condOn:null},
   "CT01": {track:"المقاولون ومشرفو التنفيذ", text:"ما طبيعة دورك الرئيس في التنفيذ؟", help:"حدد الدور الأقرب إلى عملك.", type:"single", required:true, max:1, allowOther:true, varName:"contract_role", next:"CT02", condOn:null},
   "CT02": {track:"المقاولون ومشرفو التنفيذ", text:"ما المتطلبات التي يصعب تحويلها إلى تفاصيل تنفيذية؟", help:"اختر خمسة موضوعات بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"contract_execution_difficulties", next:"CT03", condOn:null},
-  "CT03": {track:"المقاولون ومشرفو التنفيذ", text:"ما أنواع التعارض التي تظهر أثناء التنفيذ؟", help:"اختر أربعة أنواع بحد أقصى.", type:"multi", required:true, max:4, allowOther:true, varName:"contract_coordination_conflicts", next:"CT04", condOn:null},
+  "CT03": {track:"المقاولون ومشرفو التنفيذ", text:"ما أنواع التعارض التي تظهر أثناء التنفيذ؟", help:"اختر أربعة أنواع بحد أقصى.", type:"multi", required:true, max:4, allowOther:true, varName:"contract_coordination_conflicts", next:"CT05", condOn:null},
   "CT04": {track:"المقاولون ومشرفو التنفيذ", text:"ما مدى توافر المواد والحلول المطلوبة وسهولة صيانتها؟", help:"قيّم بصورة عامة للمشروعات التي تعاملت معها.", type:"single", required:true, max:1, allowOther:false, varName:"contract_material_availability", next:"CT05", condOn:null},
   "CT05": {track:"المقاولون ومشرفو التنفيذ", text:"ما التفاصيل التي تحتاج إلى رسومات أو نماذج تنفيذية أوضح؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"contract_detail_needs", next:"CT06", condOn:null},
   "CT06": {track:"المقاولون ومشرفو التنفيذ", text:"ما العناصر التي ينبغي اعتماد عيناتها قبل التنفيذ؟", help:"اختر كل ما ينطبق.", type:"multi", required:false, max:6, allowOther:true, varName:"contract_sample_approvals", next:"CT07", condOn:null},
   "CT07": {track:"المقاولون ومشرفو التنفيذ", text:"ما الأعمال التي يجب فحصها قبل تغطيتها أو الانتقال للمرحلة التالية؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"contract_hold_points", next:"CT08", condOn:null},
-  "CT08": {track:"المقاولون ومشرفو التنفيذ", text:"ما الأسباب الأكثر تكراراً للاختلاف بين المخططات والتنفيذ؟", help:"اختر أربعة أسباب بحد أقصى.", type:"multi", required:true, max:4, allowOther:true, varName:"contract_deviation_causes", next:"CT09", condOn:null},
+  "CT08": {track:"المقاولون ومشرفو التنفيذ", text:"ما الأسباب الأكثر تكراراً للاختلاف بين المخططات والتنفيذ؟", help:"اختر أربعة أسباب بحد أقصى.", type:"multi", required:true, max:4, allowOther:true, varName:"contract_deviation_causes", next:"CS01", condOn:null},
   "CT09": {track:"المقاولون ومشرفو التنفيذ", text:"ما قوائم الفحص الأكثر احتياجاً أثناء التنفيذ؟", help:"اختر ثلاث قوائم بحد أقصى.", type:"multi", required:true, max:3, allowOther:true, varName:"contract_checklist_needs", next:"CT10", condOn:null},
   "CT10": {track:"المقاولون ومشرفو التنفيذ", text:"هل لديك ملاحظة إضافية تتعلق بقابلية تنفيذ الاشتراطات؟", help:"اكتب ملاحظة موجزة إن وجدت.", type:"long", required:false, max:1, allowOther:false, varName:"contract_additional_comment", next:"CS01", condOn:null},
   "OP01": {track:"المشغلون والمستثمرون", text:"ما نوع المبنى أو النشاط الأقرب إلى خبرتك التشغيلية؟", help:"اختر من الأدلة ذات الصلة.", type:"multi", required:true, max:5, allowOther:true, varName:"operator_activity_types", next:"OP02", condOn:null},
   "OP02": {track:"المشغلون والمستثمرون", text:"ما مدى وضوح متطلبات الموقع قبل استئجاره أو شرائه أو تطويره؟", help:"يشمل الاستعمال والمواقف والحركة والموافقات.", type:"single", required:true, max:1, allowOther:false, varName:"operator_site_requirements_clarity", next:"OP03", condOn:null},
   "OP03": {track:"المشغلون والمستثمرون", text:"ما المتطلبات التي ظهرت بعد بدء التصميم أو التجهيز ولم تكن متوقعة؟", help:"اختر خمسة موضوعات بحد أقصى.", type:"multi", required:false, max:5, allowOther:true, varName:"operator_unexpected_requirements", next:"OP04", condOn:null},
-  "OP04": {track:"المشغلون والمستثمرون", text:"ما التحديات التشغيلية المرتبطة بتصميم المبنى؟", help:"اختر خمسة موضوعات بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"operator_design_challenges", next:"OP05", condOn:null},
+  "OP04": {track:"المشغلون والمستثمرون", text:"ما التحديات التشغيلية المرتبطة بتصميم المبنى؟", help:"اختر خمسة موضوعات بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"operator_design_challenges", next:"OP06", condOn:null},
   "OP05": {track:"المشغلون والمستثمرون", text:"ما مدى سهولة الوصول إلى المعدات والخدمات لأغراض الصيانة؟", help:"قيّم وفق تجربتك.", type:"single", required:true, max:1, allowOther:false, varName:"operator_maintenance_access", next:"OP06", condOn:null},
   "OP06": {track:"المشغلون والمستثمرون", text:"ما أبرز مشكلات الحركة والمواقف والتحميل والتنزيل؟", help:"اختر أربعة موضوعات بحد أقصى.", type:"multi", required:true, max:4, allowOther:true, varName:"operator_mobility_service_issues", next:"OP07", condOn:null},
   "OP07": {track:"المشغلون والمستثمرون", text:"ما مدى وضوح متطلبات التوسع أو تغيير النشاط أو الاستخدام؟", help:"قيّم وفق تجربتك.", type:"single", required:true, max:1, allowOther:false, varName:"operator_change_use_clarity", next:"OP08", condOn:null},
-  "OP08": {track:"المشغلون والمستثمرون", text:"ما الموضوعات التي تحتاج إلى توضيح مبكر قبل اتخاذ القرار الاستثماري؟", help:"اختر خمسة موضوعات بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"operator_early_guidance_needs", next:"OP09", condOn:null},
+  "OP08": {track:"المشغلون والمستثمرون", text:"ما الموضوعات التي تحتاج إلى توضيح مبكر قبل اتخاذ القرار الاستثماري؟", help:"اختر خمسة موضوعات بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"operator_early_guidance_needs", next:"CS01", condOn:null},
   "OP09": {track:"المشغلون والمستثمرون", text:"ما وسائل التوضيح الأكثر فائدة للمشغل أو المستثمر؟", help:"اختر ثلاث وسائل بحد أقصى.", type:"multi", required:true, max:3, allowOther:true, varName:"operator_support_tools", next:"OP10", condOn:null},
   "OP10": {track:"المشغلون والمستثمرون", text:"هل لديك ملاحظة إضافية تتعلق بالتشغيل أو الاستثمار؟", help:"اكتب ملاحظة موجزة إن وجدت.", type:"long", required:false, max:1, allowOther:false, varName:"operator_additional_comment", next:"CS01", condOn:null},
   "AC01": {track:"الأكاديميون والباحثون والخبراء", text:"ما مجال خبرتك الرئيس المرتبط بموضوع الأدلة؟", help:"حدد المجال الأقرب إلى خبرتك.", type:"multi", required:true, max:4, allowOther:true, varName:"academic_expertise_fields", next:"AC02", condOn:null},
   "AC02": {track:"الأكاديميون والباحثون والخبراء", text:"ما أنواع المصادر التي ترى أهمية الاعتماد عليها؟", help:"اختر خمسة مصادر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"academic_evidence_sources", next:"AC03", condOn:null},
-  "AC03": {track:"الأكاديميون والباحثون والخبراء", text:"ما الخصائص المحلية الأكثر تأثيراً في صياغة الاشتراطات؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"academic_local_characteristics", next:"AC04", condOn:null},
+  "AC03": {track:"الأكاديميون والباحثون والخبراء", text:"ما الخصائص المحلية الأكثر تأثيراً في صياغة الاشتراطات؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"academic_local_characteristics", next:"AC05", condOn:null},
   "AC04": {track:"الأكاديميون والباحثون والخبراء", text:"ما عناصر الهوية الأكثر أهمية عند تقييم علاقة المبنى بالمكان؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"academic_identity_elements", next:"AC05", condOn:null},
   "AC05": {track:"الأكاديميون والباحثون والخبراء", text:"ما مدى قابلية موجهات الهوية الحالية للقياس والتحقق؟", help:"قيّم بصورة عامة.", type:"single", required:true, max:1, allowOther:false, varName:"academic_identity_measurability", next:"AC06", condOn:null},
   "AC06": {track:"الأكاديميون والباحثون والخبراء", text:"ما أوجه التفاوت المكاني التي ينبغي مراعاتها داخل المنطقة؟", help:"اختر أربعة عناصر بحد أقصى.", type:"multi", required:true, max:4, allowOther:true, varName:"academic_spatial_variation", next:"AC07", condOn:null},
   "AC07": {track:"الأكاديميون والباحثون والخبراء", text:"ما المؤشرات المناسبة لمتابعة فاعلية الأدلة؟", help:"اختر خمسة مؤشرات بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"academic_effectiveness_indicators", next:"AC08", condOn:null},
   "AC08": {track:"الأكاديميون والباحثون والخبراء", text:"اذكر دراسة أو مرجعاً أو قاعدة بيانات ترى أهمية الرجوع إليها", help:"يمكن إضافة اسم المرجع أو رابطه.", type:"long", required:false, max:1, allowOther:false, varName:"academic_recommended_sources", next:"AC09", condOn:null},
-  "AC09": {track:"الأكاديميون والباحثون والخبراء", text:"ما فجوات البيانات الأكثر تأثيراً في إعداد الأدلة؟", help:"اختر أربعة أنواع بحد أقصى.", type:"multi", required:true, max:4, allowOther:true, varName:"academic_data_gaps", next:"AC10", condOn:null},
+  "AC09": {track:"الأكاديميون والباحثون والخبراء", text:"ما فجوات البيانات الأكثر تأثيراً في إعداد الأدلة؟", help:"اختر أربعة أنواع بحد أقصى.", type:"multi", required:true, max:4, allowOther:true, varName:"academic_data_gaps", next:"ID01", condOn:null},
   "AC10": {track:"الأكاديميون والباحثون والخبراء", text:"هل لديك ملاحظة إضافية تتعلق بالمنهج أو المعرفة المحلية؟", help:"اكتب ملاحظة موجزة إن وجدت.", type:"long", required:false, max:1, allowOther:false, varName:"academic_additional_comment", next:"ID01", condOn:null},
   "ID01": {track:"الهوية العمرانية", text:"ما مدى اطلاعك على موجهات العمارة النجدية الشمالية؟", help:"حدد مستوى اطلاعك الفعلي.", type:"single", required:true, max:1, allowOther:false, varName:"identity_familiarity", next:"ID02", condOn:null},
-  "ID02": {track:"الهوية العمرانية", text:"ما مدى وضوح الموجهات التصميمية للهوية؟", help:"قيّم وفق خبرتك.", type:"single", required:true, max:1, allowOther:false, varName:"identity_guidance_clarity", next:"ID03", condOn:null},
+  "ID02": {track:"الهوية العمرانية", text:"ما مدى وضوح الموجهات التصميمية للهوية؟", help:"قيّم وفق خبرتك.", type:"single", required:true, max:1, allowOther:false, varName:"identity_guidance_clarity", next:"ID04", condOn:null},
   "ID03": {track:"الهوية العمرانية", text:"ما العناصر الأكثر قابلية للتطبيق في المشروعات المعاصرة؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"identity_applicable_elements", next:"ID04", condOn:null},
-  "ID04": {track:"الهوية العمرانية", text:"ما العناصر التي تحتاج إلى مزيد من الرسومات أو الأمثلة؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"identity_example_needs", next:"ID05", condOn:null},
+  "ID04": {track:"الهوية العمرانية", text:"ما العناصر التي تحتاج إلى مزيد من الرسومات أو الأمثلة؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"identity_example_needs", next:"CS01", condOn:null},
   "ID05": {track:"الهوية العمرانية", text:"ما مدى وضوح اختلاف تطبيق الهوية بحسب نوع المبنى وحجمه وموقعه؟", help:"قيّم مدى وضوح التدرج المطلوب.", type:"single", required:true, max:1, allowOther:false, varName:"identity_context_differentiation", next:"ID06", condOn:null},
   "ID06": {track:"الهوية العمرانية", text:"ما مدى وضوح قبول حلول معاصرة بديلة تحقق النتيجة العمرانية المطلوبة؟", help:"لا يقصد بالبديل إسقاط الهدف أو الاكتفاء بالزخرفة.", type:"single", required:true, max:1, allowOther:false, varName:"identity_alternative_solutions", next:"ID07", condOn:null},
   "ID07": {track:"الهوية العمرانية", text:"ما المستندات الأنسب للتحقق من الهوية في مرحلة التصميم؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"identity_design_evidence", next:"ID08", condOn:null},
   "ID08": {track:"الهوية العمرانية", text:"ما العناصر التي ينبغي التحقق منها أثناء التنفيذ أو قبيل الإشغال؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:true, max:5, allowOther:true, varName:"identity_execution_checks", next:"ID09", condOn:null},
   "ID09": {track:"الهوية العمرانية", text:"ما المعالجة الأنسب للعناصر والخدمات الفنية الظاهرة؟", help:"اختر المعالجات التي تراها مناسبة بحسب نوع العنصر.", type:"multi", required:true, max:4, allowOther:true, varName:"identity_visible_services", next:"ID10", condOn:null},
   "ID10": {track:"الهوية العمرانية", text:"هل لديك مثال أو ملاحظة تساعد على تطبيق الهوية بصورة معاصرة؟", help:"يمكن وصف الحالة أو إرفاقها لاحقاً ضمن بطاقة الحالة.", type:"long", required:false, max:1, allowOther:false, varName:"identity_additional_comment", next:"CS01", condOn:null},
-  "CS01": {track:"بطاقة الحالة التطبيقية", text:"هل ترغب في تسجيل حالة تطبيقية محددة؟", help:"يمكن تسجيل حتى ثلاث حالات، ويجوز اختيار لا للانتقال إلى الأسئلة الختامية.", type:"single", required:true, max:1, allowOther:false, varName:"case_add", next:null, condOn:null},
-  "CS02": {track:"بطاقة الحالة التطبيقية", text:"ما الدليل أو النشاط المرتبط بالحالة؟", help:"اختر دليلاً واحداً.", type:"single", required:true, max:1, allowOther:true, varName:"case_guide", next:"CS03", condOn:null},
+  "CS01": {track:"بطاقة الحالة التطبيقية", text:"هل ترغب في تسجيل حالة تطبيقية محددة؟", help:"يمكن تسجيل حالة أو حالتين، ويجوز اختيار لا للانتقال إلى الأسئلة الختامية.", type:"single", required:true, max:1, allowOther:false, varName:"case_add", next:null, condOn:null},
+  "CS02": {track:"بطاقة الحالة التطبيقية", text:"ما الدليل أو النشاط المرتبط بالحالة؟", help:"اختر دليلاً واحداً.", type:"single", required:true, max:1, allowOther:true, varName:"case_guide", next:"CS08", condOn:null},
   "CS03": {track:"بطاقة الحالة التطبيقية", text:"أين ظهرت الحالة؟", help:"حدد المدينة أو المحافظة.", type:"single", required:true, max:1, allowOther:true, varName:"case_location", next:"CS04", condOn:null},
   "CS04": {track:"بطاقة الحالة التطبيقية", text:"ما نوع المشروع أو المبنى؟", help:"اكتب وصفاً موجزاً دون بيانات سرية.", type:"short", required:true, max:1, allowOther:false, varName:"case_project_type", next:"CS05", condOn:null},
   "CS05": {track:"بطاقة الحالة التطبيقية", text:"في أي مرحلة ظهرت الحالة؟", help:"اختر مرحلة واحدة رئيسة.", type:"single", required:true, max:1, allowOther:true, varName:"case_stage", next:"CS06", condOn:null},
   "CS06": {track:"بطاقة الحالة التطبيقية", text:"هل تعرف المرجع أو الحكم محل الملاحظة؟", help:"يمكن اختيار لا أعرف دون منع استكمال الحالة.", type:"single", required:true, max:1, allowOther:false, varName:"case_reference_known", next:null, condOn:null},
   "CS07": {track:"بطاقة الحالة التطبيقية", text:"اذكر المرجع أو المادة أو موضوع الحكم", help:"يكفي ما يساعد على التعرف على الحكم.", type:"short", required:true, max:1, allowOther:false, varName:"case_reference_detail", next:"CS08", condOn:null},
   "CS08": {track:"بطاقة الحالة التطبيقية", text:"ما طبيعة المشكلة أو الملاحظة؟", help:"اختر الوصف الأقرب.", type:"single", required:true, max:1, allowOther:true, varName:"case_issue_type", next:"CS09", condOn:null},
-  "CS09": {track:"بطاقة الحالة التطبيقية", text:"كم تكررت هذه الحالة وفق خبرتك؟", help:"اختر معدل التكرار الأقرب.", type:"single", required:true, max:1, allowOther:false, varName:"case_frequency", next:"CS10", condOn:null},
+  "CS09": {track:"بطاقة الحالة التطبيقية", text:"كم تكررت هذه الحالة وفق خبرتك؟", help:"اختر معدل التكرار الأقرب.", type:"single", required:true, max:1, allowOther:false, varName:"case_frequency", next:"CS11", condOn:null},
   "CS10": {track:"بطاقة الحالة التطبيقية", text:"ما نوع الأثر الناتج عن الحالة؟", help:"اختر ثلاثة آثار بحد أقصى.", type:"multi", required:true, max:3, allowOther:true, varName:"case_impact_types", next:"CS11", condOn:null},
   "CS11": {track:"بطاقة الحالة التطبيقية", text:"ما مستوى أثر الحالة؟", help:"قيّم الأثر العام.", type:"single", required:true, max:1, allowOther:false, varName:"case_impact_level", next:"CS12", condOn:null},
   "CS12": {track:"بطاقة الحالة التطبيقية", text:"ما المعالجة الأقرب لهذه الحالة؟", help:"لا يلزم صياغة حكم نظامي؛ اختر نوع المعالجة فقط.", type:"multi", required:true, max:3, allowOther:true, varName:"case_suggested_treatment", next:"CS13", condOn:null},
   "CS13": {track:"بطاقة الحالة التطبيقية", text:"صف الحالة والنتيجة المطلوب تحقيقها", help:"اكتب وصفاً مركزاً للحالة دون بيانات شخصية أو سرية.", type:"long", required:true, max:1, allowOther:false, varName:"case_description", next:"CS14", condOn:null},
-  "CS14": {track:"بطاقة الحالة التطبيقية", text:"هل ترغب في إضافة حالة أخرى؟", help:"يسمح بتكرار البطاقة مرتين إضافيتين بحد أقصى.", type:"single", required:true, max:1, allowOther:false, varName:"case_repeat", next:null, condOn:null},
-  "FN01": {track:"الأسئلة الختامية", text:"ما أهم ثلاث قضايا ينبغي أن تعالجها الأدلة؟", help:"اختر من القضايا التي ظهرت لك في الاستبيان أو أضف أخرى.", type:"multi", required:true, max:3, allowOther:true, varName:"final_top_issues", next:"FN02", condOn:null},
+  "CS14": {track:"بطاقة الحالة التطبيقية", text:"هل ترغب في إضافة حالة أخرى؟", help:"يسمح بإضافة حالة ثانية واحدة فقط.", type:"single", required:true, max:1, allowOther:false, varName:"case_repeat", next:null, condOn:null},
+  "FN01": {track:"الأسئلة الختامية", text:"ما أهم ثلاث قضايا ينبغي أن تعالجها الأدلة؟", help:"اختر من القضايا التي ظهرت لك في الاستبيان أو أضف أخرى.", type:"multi", required:true, max:3, allowOther:true, varName:"final_top_issues", next:"FN04", condOn:null},
   "FN02": {track:"الأسئلة الختامية", text:"ما أهم ثلاثة موضوعات تحتاج إلى رسومات أو حالات تطبيقية؟", help:"اختر ثلاثة بحد أقصى.", type:"multi", required:true, max:3, allowOther:true, varName:"final_visual_priorities", next:"FN03", condOn:null},
   "FN03": {track:"الأسئلة الختامية", text:"ما أهم البيانات أو الخرائط التي ينبغي توافرها؟", help:"اختر خمسة عناصر بحد أقصى.", type:"multi", required:false, max:5, allowOther:true, varName:"final_data_needs", next:"FN04", condOn:null},
-  "FN04": {track:"الأسئلة الختامية", text:"ما الاقتراح الواحد الذي ترى أنه سيحسن تطبيق الأدلة عملياً؟", help:"اكتب اقتراحاً محدداً وموجزاً.", type:"long", required:false, max:1, allowOther:false, varName:"final_single_recommendation", next:"FN05", condOn:null},
+  "FN04": {track:"الأسئلة الختامية", text:"ما الاقتراح الواحد الذي ترى أنه سيحسن تطبيق الأدلة عملياً؟", help:"اكتب اقتراحاً محدداً وموجزاً.", type:"long", required:false, max:1, allowOther:false, varName:"final_single_recommendation", next:"FN06", condOn:null},
   "FN05": {track:"الأسئلة الختامية", text:"هل لديك مستند أو صورة أو مخطط مساند ترغب في إتاحته؟", help:"تحدد آلية الرفع وفق المنصة المعتمدة، أو يطلب رابط آمن للملف.", type:"single", required:false, max:1, allowOther:false, varName:"final_has_attachment", next:"FN06", condOn:null},
   "FN06": {track:"الأسئلة الختامية", text:"هل توافق على التواصل معك لطلب إيضاح عند الحاجة؟", help:"يستخدم التواصل المهني الوارد في بيانات المشارك.", type:"single", required:true, max:1, allowOther:false, varName:"final_followup_consent", next:null, condOn:null},
 };
@@ -739,17 +658,17 @@ var TRACK_Q = {
    اعتمدنا هنا أن من اختار "دور آخر" ينتقل مباشرة إلى بطاقة الحالة التطبيقية (CS01)
    دون مسار تخصصي ودون وحدة الهوية العمرانية. هذا افتراض ينبغي اعتماده أو تعديله. */
 var ENTRY_BY_ROLE = {
-  CONSULT:"CN01", LICENSE:"LN01", INSPECT:"IN01", SECTOR:"SC01",
-  CONTRACT:"CT01", OPERATE:"OP01", ACADEMIC:"AC01"
+  CONSULT:"CN02", LICENSE:"LN03", INSPECT:"IN02", SECTOR:"SC02",
+  CONTRACT:"CT02", OPERATE:"OP02", ACADEMIC:"AC03"
 };
 var OTHER_ROLE_ENTRY = "CS01";
 
 /* أسئلة بطاقة الحالة التطبيقية القابلة للتكرار (بيانات الحالة نفسها، دون سؤالي التحكم CS01/CS14) */
-var CASE_FIELD_IDS = ["CS02","CS03","CS04","CS05","CS06","CS07","CS08","CS09","CS10","CS11","CS12","CS13"];
+var CASE_FIELD_IDS = ["CS02","CS08","CS09","CS11","CS12","CS13"];
 var CASE_FIELDS_WITH_OTHER = CASE_FIELD_IDS.filter(function(id){
   return (TRACK_OPT[id]||[]).some(function(o){return o.other;});
 });
-var MAX_CASES = 3;
+var MAX_CASES = 2;
 
 var TRACK_IDS = Object.keys(TRACK_Q);
 var TRACK_NONCASE_IDS = TRACK_IDS.filter(function(id){ return id.slice(0,2)!=="CS"; });
@@ -758,7 +677,7 @@ var TRACK_QUESTIONS_WITH_OTHER = TRACK_NONCASE_IDS.filter(function(id){
 }).map(function(id){ return TRACK_Q[id].varName; });
 
 /* تقدير تقريبي لعدد أسئلة كل مسار (لعرض شريط تقدم تقريبي فقط) */
-var TRACK_LEN_ESTIMATE = {CONSULT:12,LICENSE:12,INSPECT:11,SECTOR:10,CONTRACT:10,OPERATE:10,ACADEMIC:10};
+var TRACK_LEN_ESTIMATE = {CONSULT:6,LICENSE:6,INSPECT:6,SECTOR:6,CONTRACT:6,OPERATE:6,ACADEMIC:6};
 var TRACK_HAS_IDENTITY = {CONSULT:1,LICENSE:1,INSPECT:1,SECTOR:1,ACADEMIC:1,CONTRACT:0,OPERATE:0};
 
 /* ---------------------------------------------------------------------
@@ -931,8 +850,8 @@ function advanceFromTrack(fromId){
 function trackFlowEstimate(){
   var role = answers.primary_role;
   var base = TRACK_LEN_ESTIMATE[role] || 10;
-  var idn = TRACK_HAS_IDENTITY[role] ? 10 : 0;
-  return base + idn + 8 + 6; /* + بطاقة حالة تقديرية + الأسئلة الختامية */
+  var idn = TRACK_HAS_IDENTITY[role] ? 3 : 0;
+  return base + idn + 6 + 3; /* + بطاقة حالة تقديرية + الأسئلة الختامية */
 }
 
 /* ---------------------------------------------------------------------
@@ -1042,10 +961,10 @@ function renderIntro(){
 
   var grid = el("div", {class:"info-grid"});
   grid.appendChild(el("div", {class:"info-row"}, [
-    el("div", {class:"k"}, ["المدة المتوقعة"]), el("div", {class:"v"}, ["يفضّل ألا تتجاوز الإجابة الكاملة عشرين إلى خمس وعشرين دقيقة بحسب المسار وعدد الحالات المسجَّلة."])
+    el("div", {class:"k"}, ["المدة المتوقعة"]), el("div", {class:"v"}, ["نحو سبع إلى عشر دقائق بحسب المسار وعدد الحالات المسجَّلة."])
   ]));
   grid.appendChild(el("div", {class:"info-row"}, [
-    el("div", {class:"k"}, ["عدد الأسئلة"]), el("div", {class:"v"}, [Q.length + " سؤالاً كحد أقصى، تظهر منها فقط الأسئلة المرتبطة بإجاباتك."])
+    el("div", {class:"k"}, ["عدد الأسئلة"]), el("div", {class:"v"}, ["نحو ثلاثين سؤالاً كحد أقصى، تظهر منها فقط الأسئلة المرتبطة بإجاباتك."])
   ]));
   box.appendChild(grid);
 
